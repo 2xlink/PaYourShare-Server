@@ -1,4 +1,4 @@
-package com.vogella.jersey.first;
+package restRequest;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
