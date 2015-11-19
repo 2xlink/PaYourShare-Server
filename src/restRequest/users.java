@@ -18,29 +18,30 @@ import javax.ws.rs.core.MediaType;
 @Path("/users")
 public class users {
 
-  // This method is called if TEXT_PLAIN is request
-  @GET
-  @Produces(MediaType.TEXT_PLAIN)
-  public String sayPlainTextHello() {
-    return getUsers();
-  }
+	// This method is called if TEXT_PLAIN is request
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public String sayPlainTextHello() {
+		return getUsers();
+	}
 
-  // This method is called if XML is request
-  @GET
-  @Produces(MediaType.TEXT_XML)
-  public String sayXMLHello() {
-	  return getUsers();
-  }
+	// This method is called if XML is request
+	@GET
+	@Produces(MediaType.TEXT_XML)
+	public String sayXMLHello() {
+		return getUsers();
+	}
 
-  // This method is called if HTML is request
-  @GET
-  @Produces(MediaType.TEXT_HTML)
-  public String sayHtmlHello() {
-	  return getUsers();
-  }
-  private String getUsers() {
-	  // return JSON object here
-	  return "Alice, Bob";
-  }
+	// This method is called if HTML is request
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+	public String sayHtmlHello() {
+		return getUsers();
+	}
 
-} 
+	private String getUsers() {
+		// return JSON object here
+		return "Alice, Bob";
+	}
+
+}
