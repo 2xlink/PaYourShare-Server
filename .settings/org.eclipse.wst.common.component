@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="PaYourShare-Server">
+    <wb-module deploy-name="payourshare-server">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <property name="java-output-path" value="/PaYourShare-Server/build/classes"/>
-        <property name="context-root" value="PaYourShare-Server"/>
+        <property name="java-output-path" value="/payourshare-server/build/classes"/>
+        <property name="context-root" value="payourshare-server"/>
     </wb-module>
 </project-modules>
