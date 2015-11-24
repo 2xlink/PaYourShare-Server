@@ -1,10 +1,8 @@
-package event;
+package restRequest;
 
 import java.util.ArrayList;
 import java.util.List;
 import entities.User;
-import restRequest.Todo;
-import restRequest.TodoDao;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
@@ -32,14 +30,23 @@ public class eventResource {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public String getTodosBrowser() {
-		return("test");
+		return ("test");
 	}
 
+	@Path("create")
 	@POST
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public void createEvent(@FormParam("name") String name, @FormParam("users") String users,
 			@Context HttpServletResponse servletResponse) {
 		System.out.println(name + users);
+	}
+
+	@Path("delete")
+	@POST
+	@Produces(MediaType.TEXT_HTML)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public void deleteEvent(@FormParam("id") Integer id) {
+		System.out.println(id.toString());
 	}
 }
