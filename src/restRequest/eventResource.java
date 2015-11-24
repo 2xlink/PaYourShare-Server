@@ -1,12 +1,9 @@
 package restRequest;
 
-import java.util.ArrayList;
-import java.util.List;
 import entities.User;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -48,5 +45,12 @@ public class eventResource {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public void deleteEvent(@FormParam("id") Integer id) {
 		System.out.println(id.toString());
+	}
+	
+	@Path("get/{id}")
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+	public void getEvent(@PathParam("id") Integer id) {
+		System.out.println("Requested information about " + id);
 	}
 }
