@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -73,6 +74,17 @@ public class TodosResource {
 	    TodoDao.instance.getModel().put(id, todo);
 	}
     //servletResponse.sendRedirect("../create_todo.html");
+  }
+  
+  @POST
+  @Path("delete")
+  @Produces(MediaType.TEXT_HTML)
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+  public void deleteTodo(@FormParam("id") String id) {
+	  System.out.println(id); 
+	  if (!TodoDao.instance.getModel().containsKey(id)) {
+		  TodoDao.instance.getModel().remove(id);
+	  }
   }
 
   // Defines that the next path parameter after todos is
