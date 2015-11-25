@@ -1,9 +1,11 @@
 package entities;
 
-public class User {
+import java.util.List;
+
+public class Event {
 	private String name;
 	private Integer id;
-	private String email;
+	private List<User> users;
 	public String getName() {
 		return name;
 	}
@@ -16,10 +18,10 @@ public class User {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getEmail() {
-		return email;
+	public List<User> getUsers() {
+		return users;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 }
