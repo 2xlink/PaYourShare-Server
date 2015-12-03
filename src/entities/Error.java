@@ -2,11 +2,11 @@ package entities;
 
 public class Error {
 	private Boolean hasError;
-	private String errorMessage;
+	private String message;
 	
-	private Error() {
+	public Error() {
 		setHasError(false);
-		setErrorMessage("");
+		setMessage("");
 	}
 	
 	public Boolean getHasError() {
@@ -15,10 +15,10 @@ public class Error {
 	public void setHasError(Boolean hasError) {
 		this.hasError = hasError;
 	}
-	public String getErrorMessage() {
-		return errorMessage;
+	public String getMessage() {
+		return message;
 	}
-	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
+	public void setMessage(String errorMessage) {
+		this.message = errorMessage;
 	}
 }
