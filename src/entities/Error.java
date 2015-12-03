@@ -1,8 +1,13 @@
 package entities;
 
 public class Error {
-	private Boolean hasError = false;
-	private String errorMessage = "";
+	private Boolean hasError;
+	private String errorMessage;
+	
+	private Error() {
+		setHasError(false);
+		setErrorMessage("");
+	}
 	
 	public Boolean getHasError() {
 		return hasError;
