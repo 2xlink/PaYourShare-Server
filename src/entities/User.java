@@ -9,9 +9,9 @@ public class User {
 	}
 	
 	public User(String name, Integer id, String email) {
-		this.name = name;
-		this.id = id;
-		this.email = email;
+		setName(name);
+		setId(id);
+		setEmail(email);
 	}
 
 	public String getName() {

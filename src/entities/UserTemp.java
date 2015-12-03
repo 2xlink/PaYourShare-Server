@@ -12,8 +12,8 @@ public class UserTemp {
 	}
 	
 	public UserTemp(String email, String password) {
-		this.email = email;
-		this.setPassword(password);
+		setEmail(email);
+		setPassword(password);
 	}
 
 	public String getEmail() {

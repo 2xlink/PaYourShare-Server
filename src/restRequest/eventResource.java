@@ -1,9 +1,7 @@
 package restRequest;
 
 import entities.*;
-
-import java.util.HashMap;
-import java.util.Map;
+import entities.Error;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
@@ -18,8 +16,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
-
-import org.glassfish.jersey.server.JSONP;
 
 @Path("/event")
 public class eventResource {
@@ -51,13 +47,12 @@ public class eventResource {
 	@Produces(MediaType.APPLICATION_JSON)
 //	@Consumes(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public UserTemp createEvent1() {
-		UserTemp t_user = new UserTemp();
-		t_user.setEmail("email");
-		t_user.setPassword("pw");
-		System.out.println(t_user.getEmail() + t_user.getPassword());
-//		return "{\"email\": " + email + ", \"password\" : " + pw + "}";
-		return new UserTemp("email", "pass");
+	public EventResponse createEvent1(@FormParam("name") String name, @FormParam("users") String users) {
+		// look up user
+		
+		Event event = new Event(name, 1, null, "Custom description.", 1);
+		Error error = new Error();
+		return new EventResponse(event, error);
 	}
 
 	
