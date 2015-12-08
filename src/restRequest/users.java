@@ -43,11 +43,10 @@ public class users {
 
 	private String getUsers() {
 		// return JSON object here
-		SQLConnection.printNameList();
-//		SQLConnection.createEvent("Zug", "3");
 		//SQLConnection.printNameList();
 		//SQLConnection.createEvent("Zug", "3");
-		SQLConnection.getHashToEmail("test2@test.de");
+		//SQLConnection.getHashToEmail("test2@test.de");
+		SQLConnection.getUsernameFromIduser("1");
 		return "Alice, Bob";
 	}
 
