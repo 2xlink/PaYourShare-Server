@@ -43,8 +43,8 @@ public class users {
 
 	private String getUsers() {
 		// return JSON object here
-		//SQLConnection.printNameList();
-		SQLConnection.createEvent("Zug", "3");
+		SQLConnection.printNameList();
+//		SQLConnection.createEvent("Zug", "3");
 		return "Alice, Bob";
 	}
 
