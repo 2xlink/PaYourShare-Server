@@ -26,8 +26,7 @@ public class SQLConnection {
       // nur einmal geladen werden.
       Class.forName("com.mysql.jdbc.Driver");
       
-      // Verbindung zur ODBC-Datenbank 'sakila' herstellen.
-      // Es wird die JDBC-ODBC-Br�cke verwendet.
+      // Verbindung zur Datenbank herstellen
       conn = DriverManager.getConnection("jdbc:mysql://" + dbHost + ":"
           + dbPort + "/" + database + "?" + "user=" + dbUser + "&"
           + "password=" + dbPassword);
@@ -47,6 +46,7 @@ public class SQLConnection {
  
   /**
    * Schreibt die Namensliste in die Konsole
+   * Nur zum testen
    */
   public static void printNameList()
   {
@@ -71,7 +71,7 @@ public class SQLConnection {
         // Ergebniss�tze durchfahren.
         while (result.next()) {
           String name = result.getString("name"); // Alternativ: result.getString(1);
-          System.out.println(name);
+          //System.out.println(name);
         }
       } catch (SQLException e) {
         e.printStackTrace();
@@ -123,8 +123,7 @@ public class SQLConnection {
 	  
 	  conn = getInstance();
 	  if(conn != null){
-		
-		  
+				  
 		  Statement query;
 	      try {
 	        query = conn.createStatement();
@@ -136,17 +135,15 @@ public class SQLConnection {
 	        
 	        while (result.next()) {
 	            password = result.getString("password"); // Alternativ: result.getString(1);
-	            System.out.println(password);
+	            //System.out.println(password);
 	          }
 	        
 	      } catch (SQLException e) {
 	        e.printStackTrace();
 	      }
-	  
-	      
-	      if(password == null) System.out.println("DEPP!!");
-	  
-	  
+	  	      
+	      //if(password == null) System.out.println("DEPP!!");
+
 	  }
 	  
 	  return password;
@@ -168,7 +165,8 @@ public class SQLConnection {
 	  return null;
   }
   
-  public static ArrayList<String> getUsernameFromIduser(String iduser){
+  
+  public static String getUsernameFromIduser(String iduser){
 	  conn = getInstance();
 	  
 	  ArrayList<String> liste = new ArrayList<String>();
@@ -191,12 +189,36 @@ public class SQLConnection {
 			 
 	  }
 		  
-	System.out.println(liste.get(0));  
-	  return null;
+	  //System.out.println(liste.get(0));  
+	  return liste.get(0);
   }
   
+  
   public static String getEventnameFromIdevent(String idevent){
-	  return null;
+	  conn = getInstance();
+	  
+	  ArrayList<String> liste = new ArrayList<String>();
+	  
+	  if(conn != null){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "Select name From event where idevent =" + "'" + idevent + "'";
+			  ResultSet result = query.executeQuery(sql);
+			  
+			  while(result.next()){
+				  liste.add(result.getString("name"));
+			  }
+			  
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }
+			 
+	  }
+		  
+	  //System.out.println(liste.get(0));  
+	  return liste.get(0);
   }
   
 }
