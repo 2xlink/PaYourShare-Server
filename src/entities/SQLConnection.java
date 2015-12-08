@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import java.util.UUID;
 	 
 public class SQLConnection {
  
@@ -77,8 +79,13 @@ public class SQLConnection {
     }
   }
   
+  
+  
   public static void createEvent(String name, String idcreator){
 	  String idevent="3";
+	  String test = UUID.randomUUID().toString();
+	  System.out.println(test);
+	  //idevent = test;
 	  
 	  conn = getInstance();
 	 
@@ -95,9 +102,18 @@ public class SQLConnection {
 	        preparedStatement.setString(3, idcreator);
 	        // SQL ausführen.
 	        preparedStatement.executeUpdate();
+	        
+	        String sql2 = "INSERT INTO eventuser(ideventuser, idevent, iduser) " +
+                    "VALUES(?, ?, ?)";
+	        PreparedStatement prepStatment2= conn.prepareStatement(sql2);
+	        prepStatment2.setString(1, "4");
+	        prepStatment2.setString(2, idevent);
+	        prepStatment2.setString(3, idcreator);
+	        prepStatment2.executeUpdate();
+	        
 	 
 	      } catch (SQLException e) {
-	        e.printStackTrace();
+	    	  e.printStackTrace();	        
 	      }
 	    }
 	  
