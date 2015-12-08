@@ -5,6 +5,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import entities.SQLConnection;
+
 // Plain old Java Object it does not extend as class or implements 
 // an interface
 
@@ -41,6 +43,8 @@ public class users {
 
 	private String getUsers() {
 		// return JSON object here
+		//SQLConnection.printNameList();
+		SQLConnection.createEvent("Zug", "3");
 		return "Alice, Bob";
 	}
 
