@@ -47,7 +47,8 @@ public class users {
 		//SQLConnection.createEvent("Zug", "3");
 		//SQLConnection.getHashToEmail("test2@test.de");
 		//SQLConnection.getUsernameFromIduser("2");
-		SQLConnection.getEventnameFromIdevent("2");
+		//SQLConnection.getEventnameFromIdevent("2");
+		SQLConnection.createUser("Gustaf", "test4@test.de", "pw4");
 		return "Alice, Bob";
 	}
 

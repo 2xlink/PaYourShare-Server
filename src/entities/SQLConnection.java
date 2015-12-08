@@ -221,4 +221,39 @@ public class SQLConnection {
 	  return liste.get(0);
   }
   
+  
+  public static boolean createUser(String name, String email, String password){
+	  boolean check = false;
+	  conn = getInstance();
+	  String iduser = UUID.randomUUID().toString();
+	  
+	  if(conn != null){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "INSERT INTO user(iduser, name, email) " +
+	                     "VALUES(?, ?, ?)";
+			  PreparedStatement preparedStatement = conn.prepareStatement(sql);
+			  preparedStatement.setString(1, iduser);
+			  preparedStatement.setString(2, name);
+			  preparedStatement.setString(3, email);
+			  preparedStatement.executeUpdate();
+			  
+			  String sql2 = "INSERT INTO userlogin(iduser, password, email) " +
+	                     "VALUES(?, ?, ?)";
+			  PreparedStatement preparedStatement2 = conn.prepareStatement(sql2);
+			  preparedStatement2.setString(1, iduser);
+			  preparedStatement2.setString(2, password);
+			  preparedStatement2.setString(3, email);
+			  preparedStatement2.executeUpdate();
+			  
+			  check = true;
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }
+	  }
+	  
+	  return check;
+  }
 }
