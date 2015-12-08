@@ -44,7 +44,8 @@ public class users {
 	private String getUsers() {
 		// return JSON object here
 		//SQLConnection.printNameList();
-		SQLConnection.createEvent("Zug", "3");
+		//SQLConnection.createEvent("Zug", "3");
+		SQLConnection.getHashToEmail("test2@test.de");
 		return "Alice, Bob";
 	}
 

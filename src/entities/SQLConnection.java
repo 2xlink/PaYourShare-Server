@@ -67,7 +67,7 @@ public class SQLConnection {
         			" join ausgaben ag on au.idbetrag = ag.idbetrag" +
         			" Where ag.name = 'Ticket'";
         ResultSet result = query.executeQuery(sql);
- 
+
         // Ergebnissätze durchfahren.
         while (result.next()) {
           String name = result.getString("name"); // Alternativ: result.getString(1);
@@ -84,8 +84,7 @@ public class SQLConnection {
   public static void createEvent(String name, String idcreator){
 	  String idevent="3";
 	  String test = UUID.randomUUID().toString();
-	  System.out.println(test);
-	  //idevent = test;
+	  idevent = test;
 	  
 	  conn = getInstance();
 	 
@@ -117,6 +116,40 @@ public class SQLConnection {
 	      }
 	    }
 	  
+  }
+  
+  public static String getHashToEmail(String email){
+	  String password = null;
+	  
+	  conn = getInstance();
+	  if(conn != null){
+		
+		  
+		  Statement query;
+	      try {
+	        query = conn.createStatement();
+	        
+	        String sql = ("Select password From userlogin where email = " + "'" + email + "'");
+	        
+	        
+	        ResultSet result = query.executeQuery(sql);
+	        
+	        while (result.next()) {
+	            password = result.getString("password"); // Alternativ: result.getString(1);
+	            System.out.println(password);
+	          }
+	        
+	      } catch (SQLException e) {
+	        e.printStackTrace();
+	      }
+	  
+	      
+	      if(password == null) System.out.println("DEPP!!");
+	  
+	  
+	  }
+	  
+	  return password;
   }
 
 }
