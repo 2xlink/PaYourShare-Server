@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.util.ArrayList;
 import java.util.UUID;
 	 
 public class SQLConnection {
@@ -151,5 +151,52 @@ public class SQLConnection {
 	  
 	  return password;
   }
-
+  
+  public static boolean addUserToEvent(String idevent, String iduser){
+	  return true;
+  }
+  
+  public static boolean deleteUserFromEvent(String idevent, String iduser){
+	  return true;	  
+  }
+  
+  public static String showEventsFromUser(String iduser){
+	  return null;
+  }
+  
+  public static String showUserFromEvent(String idevent){
+	  return null;
+  }
+  
+  public static ArrayList<String> getUsernameFromIduser(String iduser){
+	  conn = getInstance();
+	  
+	  ArrayList<String> liste = new ArrayList<String>();
+	  
+	  if(conn != null){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "Select name From user where iduser =" + "'" + iduser + "'";
+			  ResultSet result = query.executeQuery(sql);
+			  
+			  while(result.next()){
+				  liste.add(result.getString("name"));
+			  }
+			  
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }
+			 
+	  }
+		  
+	System.out.println(liste.size());  
+	  return null;
+  }
+  
+  public static String getEventnameFromIdevent(String idevent){
+	  return null;
+  }
+  
 }
