@@ -42,9 +42,9 @@ public class userResource {
 		String hash_db = SQLConnection.getHashToEmail(email);
 		if (hash_db != null) {
 //			Boolean isValid = Crypto.PasswordHash.validatePassword(pass, hash_db);
-			System.out.println(email+","+pass);
+//			System.out.println(email+","+pass);
 			Boolean isValid = pass.equals(hash_db);
-			System.out.println(pass + ", " + hash_db + ", " + isValid);
+//			System.out.println(pass + ", " + hash_db + ", " + isValid);
 			if (isValid) {
 				response.setStatus("Ok.");
 			}
@@ -62,27 +62,25 @@ public class userResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	// @Consumes(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public EventResponse createEventForm(@FormParam("name") String name, @FormParam("users") String users) {
-		// look up user
-
-		Event event = new Event(name, 1, null, "Custom description.", 1);
-		Error error = new Error();
-		return new EventResponse(event, error);
+	public LoginResponse createUser(
+			@FormParam("name") String name, 
+			@FormParam("users") String users) {
+		return null;
 	}
 
 	@Path("delete")
 	@POST
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public void deleteEvent(@FormParam("id") Integer id) {
+	public void deleteUser(@FormParam("id") Integer id) {
 		System.out.println(id.toString());
 	}
 
 	@Path("get/{id}")
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public String getEvent(@PathParam("id") Integer id) {
+	public String getUser(@PathParam("id") Integer id) {
 		System.out.println("Requested information about " + id);
-		return id.toString();
+		return SQLConnection.getUsernameFromIduser("1").toString();
 	}
 }
