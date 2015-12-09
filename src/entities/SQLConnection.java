@@ -16,7 +16,7 @@ public class SQLConnection {
   private static String dbHost = "localhost";
   private static String dbPort = "3306";
   private static String database = "payourshare";
-  private static String dbUser = "root"; 
+  private static String dbUser = "payourshare"; 
   private static String dbPassword = "";
   
   private SQLConnection() {
