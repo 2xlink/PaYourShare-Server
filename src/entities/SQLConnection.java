@@ -157,7 +157,7 @@ public class SQLConnection {
 	  return true;	  
   }
   
-  public static ArrayList<String> showEventsFromUser(String iduser){
+  public static ArrayList<String> getEventsFromIduser(String iduser){
 	  conn = getInstance();
 	  
 	  ArrayList <String> liste = new ArrayList<String>();
@@ -188,7 +188,7 @@ public class SQLConnection {
 	  return liste;
   }
   
-  public static String showUserFromEvent(String idevent){
+  public static String getUserFromIdevent(String idevent){
 	  return null;
   }
   
@@ -282,5 +282,65 @@ public class SQLConnection {
 	  }
 	  
 	  return check;
+  }
+  
+  public static String getIduserFromEmail(String email){
+	  
+	  conn = getInstance();
+	  
+	  ArrayList<String> liste = new ArrayList<String>();
+	  
+	  if(conn != null){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "Select iduser From userlogin where email =" + "'" + email + "'";
+			  ResultSet result = query.executeQuery(sql);
+			  
+			  while(result.next()){
+				  liste.add(result.getString("iduser"));
+			  }
+			  
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }
+			 
+	  }
+		  
+	  System.out.println(liste.get(0));  
+	  return liste.get(0);
+  }
+  
+  public static Event getEventFromIdevent(String idevent){
+	  
+	  Event event = new Event();
+	  
+	  conn = getInstance();	  
+	  
+	  if(conn != null){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "Select idevent, name, idmoderator From event where idevent =" + "'" + idevent + "'";
+			  ResultSet result = query.executeQuery(sql);
+			  
+			  event.setId(result.getString(1));
+			  event.setName(result.getString(2));
+			  event.setCreatorId(result.getString(3));
+			  
+			  
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }
+			 
+	  }
+	  
+	  System.out.println(event.getId());
+	  System.out.println(event.getName());
+	  System.out.println(event.getCreatorId());
+	  
+	  return null;
   }
 }

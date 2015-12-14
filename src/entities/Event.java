@@ -4,17 +4,17 @@ import java.util.List;
 
 public class Event {
 	private String name;
-	private Integer id;
+	private String id;
 	private List<User> users;
 	private String description;
-	private Integer creatorId;
+	private String creatorId;
 	
 	public String getName() {
 		return name;
 	}
 	
 	public Event() {}
-	public Event(String name, Integer Id, List<User> users, String description, Integer creatorId) {
+	public Event(String name, String Id, List<User> users, String description, String creatorId) {
 		setName(name);
 		setId(Id);
 		setUsers(users);
@@ -25,10 +25,10 @@ public class Event {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public List<User> getUsers() {
@@ -46,11 +46,11 @@ public class Event {
 		this.description = description;
 	}
 
-	public Integer getCreatorId() {
+	public String getCreatorId() {
 		return creatorId;
 	}
 
-	public void setCreatorId(Integer creatorId) {
+	public void setCreatorId(String creatorId) {
 		this.creatorId = creatorId;
 	}
 }

@@ -49,7 +49,11 @@ public class users {
 		//SQLConnection.getUsernameFromIduser("2");
 		//SQLConnection.getEventnameFromIdevent("2");
 		//SQLConnection.createUser("Gustaf", "test4@test.de", "pw4");
-		SQLConnection.showEventsFromUser("3");
+		//SQLConnection.getEventsFromIduser("3");
+		//SQLConnection.getIduserFromEmail("test2@test.de");
+		SQLConnection.getEventFromIdevent("5cc8597f-fce9-40e1-9935-c5836d1aa6f0");
+		
+		
 		return "Alice, Bob";
 	}
 
