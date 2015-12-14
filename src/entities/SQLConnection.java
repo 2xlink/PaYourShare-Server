@@ -215,7 +215,9 @@ public class SQLConnection {
 		  }
 			 
 	  }
-		  
+	  
+	  if(liste.size() == 0) return null;
+	  
 	  //System.out.println(liste.get(0));  
 	  return liste.get(0);
   }
