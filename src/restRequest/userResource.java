@@ -91,11 +91,22 @@ public class userResource {
 		}
 	}
 	
-	@Path("exists/{id}")
+	@Path("exists")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Boolean isUser(@PathParam("id") Integer id) {
-		return SQLConnection.isUserFromIduser(id.toString()).toString();
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Boolean isUser(@FormParam("id") Integer id, @FormParam("email") String email) {
+//		try {
+//			if (!id.equals(null)) {
+//				return SQLConnection.isUserFromIduser(id.toString()).toString();
+//			}
+//			else {
+//				return SQLConnection.isUserFromEmail(email).toString();
+//			}
+//		} catch (Exception e) {
+//			
+//		}
+		return null;
 		//TODO What does getUsernameFromIduser give if user does not exist?
 	}
 	
@@ -103,12 +114,17 @@ public class userResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Event> getEventsFromUser(@PathParam("id") Integer user_id) {
-		if (isUser(user_id)) {
-			List<String> eventsListString = SQLConnection.showEventsFromUser(user_id.toString()).toString();
+//		List<Event> a = new ArrayList<Event>();
+//		a.add(new Event("Event1Name", 1, null, "Description 1.", 1));
+//		a.add(new Event("Event2Name", 2, null, "Description 2.", 1));
+//		return a;
+		
+		if (isUser(user_id, null)) {
+			List<String> eventsListString = SQLConnection.getEventsFromIduser(user_id.toString());
 			List<Event> eventsList = new ArrayList<Event>();
 			
 			for (String thisEventId : eventsListString) {
-				eventsList.add(SQLConnection.getEventFromEventId(thisEventId.toString()));
+				eventsList.add(SQLConnection.getEventFromIdevent(thisEventId.toString()));
 			}
 			return eventsList;
 		}

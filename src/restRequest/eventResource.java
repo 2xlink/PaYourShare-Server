@@ -50,7 +50,7 @@ public class eventResource {
 	public EventResponse createEventForm(@FormParam("name") String name, @FormParam("users") String users) {
 		// look up user
 		
-		Event event = new Event(name, 1, null, "Custom description.", 1);
+		Event event = new Event(name, "1", null, "Custom description.", "1");
 		Error error = new Error();
 		return new EventResponse(event, error);
 	}
