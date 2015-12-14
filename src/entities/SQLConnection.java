@@ -148,8 +148,33 @@ public class SQLConnection {
 	  return password;
   }
   
-  public static boolean addUserToEvent(String idevent, String iduser){
-	  return true;
+  public static boolean addUserToEvent(String email, String idevent){
+	  conn = getInstance();
+	  boolean check = false;
+	  String iduser = getIduserFromEmail(email);
+	  String ideventuser = UUID.randomUUID().toString();
+	  
+	  if(conn != null && existUserEvent(iduser, idevent)){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "INSERT INTO eventuser(ideventuser, idevent, iduser) " +
+	                    "VALUES(?, ?, ?)";
+		        PreparedStatement prepStatment2= conn.prepareStatement(sql);
+		        prepStatment2.setString(1, ideventuser);
+		        prepStatment2.setString(2, idevent);
+		        prepStatment2.setString(3, iduser);
+		        prepStatment2.executeUpdate();
+		        
+		       check = true; 
+		       
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }
+	  }
+		  
+	  return check;
   }
   
   public static boolean deleteUserFromEvent(String idevent, String iduser){
@@ -182,8 +207,6 @@ public class SQLConnection {
 		  
 	  }
 	  
-	  System.out.println(liste.get(0));
-	  
 	  return liste;
   }
   
@@ -209,11 +232,6 @@ public class SQLConnection {
 		}
 	  }
 	  
-	 /*
-	  for(int i = 0; i< liste.size(); i++){
-		  System.out.println(liste.get(i));
-	  }
-	*/
 	  
 	  return liste;
   }
@@ -243,8 +261,7 @@ public class SQLConnection {
 	  }
 	  
 	  if(liste.size() == 0) return null;
-	  
-	  //System.out.println(liste.get(0));  
+	   
 	  return liste.get(0);
   }
   
@@ -337,8 +354,7 @@ public class SQLConnection {
 	  }
 	  
 	  if(liste.size() == 0) return null;
-	  
-	  System.out.println(liste.get(0));  
+	   
 	  return liste.get(0);
   }
   
@@ -368,10 +384,36 @@ public class SQLConnection {
 			 
 	  }
 	  
-	  System.out.println(event.getId());
-	  System.out.println(event.getName());
-	  System.out.println(event.getCreatorId());
-	  
 	  return event;
   }
+  
+  public static boolean existUserEvent(String iduser, String idevent){
+	  boolean check = true;
+	  ArrayList<String>	liste = new ArrayList<String>();
+	  conn = getInstance();	  
+	  
+	  if(conn != null){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "Select ideventuser From eventuser where idevent = " + "'" + idevent + "'" + " and iduser = " + "'" + iduser + "'";
+			  ResultSet result = query.executeQuery(sql);
+			  
+			  while(result.next()){
+				  liste.add(result.getString("ideventuser"));
+			  }
+			  
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }
+			 
+	  }
+	  System.out.println(liste.size());
+	  if(liste.size() != 0) check = false;
+	  System.out.println(check);
+	  return check;
+  }
+  
+  
 }

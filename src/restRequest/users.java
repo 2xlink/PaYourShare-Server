@@ -52,7 +52,8 @@ public class users {
 		//SQLConnection.getEventsFromIduser("3");
 		//SQLConnection.getIduserFromEmail("test2@test.de");
 		//SQLConnection.getEventFromIdevent("5cc8597f-fce9-40e1-9935-c5836d1aa6f0");
-		SQLConnection.getUserFromIdevent("1");
+		//SQLConnection.getUserFromIdevent("1");
+		SQLConnection.addUserToEvent("test3@test.de", "1");
 		
 		return "Alice, Bob";
 	}
