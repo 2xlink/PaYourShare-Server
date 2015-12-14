@@ -194,7 +194,7 @@ public class SQLConnection {
 			String sql = "SELECT ev.idevent FROM user us "
 						+ "join eventuser eu on us.iduser = eu.iduser "
 						+ "join event ev on ev.idevent = eu.idevent "
-						+ "WHERE us.iduser = " + iduser;
+						+ "WHERE us.iduser = " +  "'" + iduser + "'";
 			ResultSet result = query.executeQuery(sql);
 			
 			while(result.next()){
@@ -409,9 +409,7 @@ public class SQLConnection {
 		  }
 			 
 	  }
-	  System.out.println(liste.size());
 	  if(liste.size() != 0) check = false;
-	  System.out.println(check);
 	  return check;
   }
   
