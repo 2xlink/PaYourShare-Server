@@ -188,7 +188,27 @@ public class SQLConnection {
 	  return liste;
   }
   
-  public static String getUserFromIdevent(String idevent){
+  public static ArrayList<String> getUserFromIdevent(String idevent){
+	  conn = getInstance();
+	  
+	  ArrayList<String> liste = new ArrayList<String>();
+	  
+	  if(conn != null){
+		  Statement query;
+		  try {
+			query = conn.createStatement();
+			
+			String sql ="Select iduser From eventuser Where idevent = " + idevent;
+			ResultSet result = query.executeQuery(sql);
+			
+			
+		} catch (Exception e) {
+			
+		}
+	  }
+			 
+	  
+	  
 	  return null;
   }
   
@@ -309,7 +329,9 @@ public class SQLConnection {
 		  }
 			 
 	  }
-		  
+	  
+	  if(liste.size() == 0) return null;
+	  
 	  System.out.println(liste.get(0));  
 	  return liste.get(0);
   }
@@ -328,10 +350,11 @@ public class SQLConnection {
 			  String sql = "Select idevent, name, idmoderator From event where idevent =" + "'" + idevent + "'";
 			  ResultSet result = query.executeQuery(sql);
 			  
-			  event.setId(result.getString(1));
-			  event.setName(result.getString(2));
-			  event.setCreatorId(result.getString(3));
-			  
+			  while(result.next()){
+				  event.setId(result.getString(1));
+				  event.setName(result.getString(2));
+				  event.setCreatorId(result.getString(3));
+			  }
 			  
 		  }catch(SQLException e){
 			  e.printStackTrace();
@@ -343,6 +366,6 @@ public class SQLConnection {
 	  System.out.println(event.getName());
 	  System.out.println(event.getCreatorId());
 	  
-	  return null;
+	  return event;
   }
 }
