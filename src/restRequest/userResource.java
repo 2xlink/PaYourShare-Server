@@ -38,24 +38,20 @@ public class userResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public LoginResponse UserLogin(@FormParam("email") String email, 
-			@FormParam("password") String pass)
+	public LoginResponse loginUser(@FormParam("email") String email, @FormParam("password") String pass)
 			throws NoSuchAlgorithmException, InvalidKeySpecException {
-		LoginResponse response = new LoginResponse(new Error(), "", "1");
+		//TODO Maybe return a User item?
+		String userId = SQLConnection.getIduserFromEmail(email);
+		LoginResponse response = new LoginResponse(new Error(), "Invalid password or username.", userId);
 		String hash_db = SQLConnection.getHashToEmail(email);
 		if (hash_db != null) {
 //			Boolean isValid = Crypto.PasswordHash.validatePassword(pass, hash_db);
-			System.out.println(email+","+pass);
+			System.out.println(email + "," + pass);
 			Boolean isValid = pass.equals(hash_db);
 			System.out.println(pass + ", " + hash_db + ", " + isValid);
 			if (isValid) {
 				response.setStatus("Ok.");
 			}
-			else {
-				response.setStatus("Invalid password or username.");
-			}
-		} else {
-			response.setStatus("Invalid password or username.");
 		}
 		return response;
 	}
@@ -65,10 +61,16 @@ public class userResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	// @Consumes(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public LoginResponse createUser(
-			@FormParam("name") String name, 
-			@FormParam("users") String users) {
-		return null;
+	public LoginResponse createUser(@FormParam("name") String name, 
+			@FormParam("email") String email,
+			@FormParam("password") String pass) {
+		if (SQLConnection.createUser(name, email, pass)) {
+			return new LoginResponse(new Error(), "Ok.", SQLConnection.getIduserFromEmail(email));
+		}
+		else {
+			System.out.println("Failed to create user.");
+			return new LoginResponse(new Error(), "Failed to create user.", null);
+		}
 	}
 
 	@Path("delete")
@@ -90,45 +92,37 @@ public class userResource {
 			return "User does not exist.";
 		}
 	}
-	
+
 	@Path("exists")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Boolean isUser(@FormParam("id") Integer id, @FormParam("email") String email) {
-//		try {
-//			if (!id.equals(null)) {
-//				return SQLConnection.isUserFromIduser(id.toString()).toString();
-//			}
-//			else {
-//				return SQLConnection.isUserFromEmail(email).toString();
-//			}
-//		} catch (Exception e) {
-//			
-//		}
-		return null;
-		//TODO What does getUsernameFromIduser give if user does not exist?
+		if (!id.equals(null)) {
+			return !getUser(id).equals(null);
+		} else {
+			return !SQLConnection.getIduserFromEmail(email).equals(null);
+		}
 	}
-	
+
 	@Path("getEvents/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Event> getEventsFromUser(@PathParam("id") Integer user_id) {
-//		List<Event> a = new ArrayList<Event>();
-//		a.add(new Event("Event1Name", 1, null, "Description 1.", 1));
-//		a.add(new Event("Event2Name", 2, null, "Description 2.", 1));
-//		return a;
-		
+		// List<Event> a = new ArrayList<Event>();
+		// a.add(new Event("Event1Name", 1, null, "Description 1.", 1));
+		// a.add(new Event("Event2Name", 2, null, "Description 2.", 1));
+		// return a;
+
 		if (isUser(user_id, null)) {
 			List<String> eventsListString = SQLConnection.getEventsFromIduser(user_id.toString());
 			List<Event> eventsList = new ArrayList<Event>();
-			
+
 			for (String thisEventId : eventsListString) {
 				eventsList.add(SQLConnection.getEventFromIdevent(thisEventId.toString()));
 			}
 			return eventsList;
-		}
-		else {
+		} else {
 			System.out.println("getEventsFromUser got a not existing User");
 			return null;
 		}
