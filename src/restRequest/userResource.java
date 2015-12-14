@@ -45,9 +45,9 @@ public class userResource {
 		String hash_db = SQLConnection.getHashToEmail(email);
 		if (hash_db != null) {
 //			Boolean isValid = Crypto.PasswordHash.validatePassword(pass, hash_db);
-//			System.out.println(email+","+pass);
+			System.out.println(email+","+pass);
 			Boolean isValid = pass.equals(hash_db);
-//			System.out.println(pass + ", " + hash_db + ", " + isValid);
+			System.out.println(pass + ", " + hash_db + ", " + isValid);
 			if (isValid) {
 				response.setStatus("Ok.");
 			}
@@ -92,7 +92,7 @@ public class userResource {
 	}
 	
 	@Path("exists")
-	@GET
+	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Boolean isUser(@FormParam("id") Integer id, @FormParam("email") String email) {
