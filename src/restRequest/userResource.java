@@ -7,7 +7,10 @@ import Crypto.PasswordHash;
 import java.security.CryptoPrimitive;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.Id;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -76,11 +79,43 @@ public class userResource {
 		System.out.println(id.toString());
 	}
 
-	@Path("get/{id}")
+	@Path("info/{id}")
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public String getUser(@PathParam("id") Integer id) {
 		System.out.println("Requested information about " + id);
-		return SQLConnection.getUsernameFromIduser("1").toString();
+		try {
+			return SQLConnection.getUsernameFromIduser("1").toString();
+		} catch (Exception e) {
+			return "User does not exist.";
+		}
+	}
+	
+	@Path("exists/{id}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Boolean isUser(@PathParam("id") Integer id) {
+		return SQLConnection.isUserFromIduser(id.toString()).toString();
+		//TODO What does getUsernameFromIduser give if user does not exist?
+	}
+	
+	@Path("getEvents/{id}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Event> getEventsFromUser(@PathParam("id") Integer user_id) {
+		if (isUser(user_id)) {
+			List<String> eventsListString = SQLConnection.showEventsFromUser(user_id.toString()).toString();
+			List<Event> eventsList = new ArrayList<Event>();
+			
+			for (String thisEventId : eventsListString) {
+				eventsList.add(SQLConnection.getEventFromEventId(thisEventId.toString()));
+			}
+			return eventsList;
+		}
+		else {
+			System.out.println("getEventsFromUser got a not existing User");
+			return null;
+		}
+
 	}
 }
