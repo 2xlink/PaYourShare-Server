@@ -82,9 +82,8 @@ public class SQLConnection {
   
   
   public static void createEvent(String name, String idcreator){
-	  String idevent="3";
-	  String test = UUID.randomUUID().toString();
-	  idevent = test;
+	  String idevent= UUID.randomUUID().toString();
+	  String ideventuser = UUID.randomUUID().toString();
 	  
 	  conn = getInstance();
 	 
@@ -105,7 +104,7 @@ public class SQLConnection {
 	        String sql2 = "INSERT INTO eventuser(ideventuser, idevent, iduser) " +
                     "VALUES(?, ?, ?)";
 	        PreparedStatement prepStatment2= conn.prepareStatement(sql2);
-	        prepStatment2.setString(1, "4");
+	        prepStatment2.setString(1, ideventuser);
 	        prepStatment2.setString(2, idevent);
 	        prepStatment2.setString(3, idcreator);
 	        prepStatment2.executeUpdate();
@@ -198,18 +197,25 @@ public class SQLConnection {
 		  try {
 			query = conn.createStatement();
 			
-			String sql ="Select iduser From eventuser Where idevent = " + idevent;
+			String sql ="Select iduser From eventuser Where idevent = " + "'" + idevent + "'";
 			ResultSet result = query.executeQuery(sql);
 			
+			while(result.next()){
+				liste.add(result.getString("iduser"));
+			}
 			
 		} catch (Exception e) {
 			
 		}
 	  }
-			 
 	  
+	 /*
+	  for(int i = 0; i< liste.size(); i++){
+		  System.out.println(liste.get(i));
+	  }
+	*/
 	  
-	  return null;
+	  return liste;
   }
   
   
