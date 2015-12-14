@@ -84,10 +84,10 @@ public class userResource {
 	@Path("info/{id}")
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public String getUser(@PathParam("id") Integer id) {
+	public String getUser(@PathParam("id") String id) {
 		System.out.println("Requested information about " + id);
 		try {
-			return SQLConnection.getUsernameFromIduser("1").toString();
+			return SQLConnection.getUsernameFromIduser(id).toString();
 		} catch (Exception e) {
 			return "User does not exist.";
 		}
@@ -97,7 +97,7 @@ public class userResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Boolean isUser(@FormParam("id") Integer id, @FormParam("email") String email) {
+	public Boolean isUser(@FormParam("id") String id, @FormParam("email") String email) {
 		if (!id.equals(null)) {
 			return !getUser(id).equals(null);
 		} else {
@@ -108,7 +108,7 @@ public class userResource {
 	@Path("getEvents/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Event> getEventsFromUser(@PathParam("id") Integer user_id) {
+	public List<Event> getEventsFromUser(@PathParam("id") String user_id) {
 		// List<Event> a = new ArrayList<Event>();
 		// a.add(new Event("Event1Name", 1, null, "Description 1.", 1));
 		// a.add(new Event("Event2Name", 2, null, "Description 2.", 1));
