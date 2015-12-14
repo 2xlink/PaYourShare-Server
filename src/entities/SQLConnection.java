@@ -157,8 +157,35 @@ public class SQLConnection {
 	  return true;	  
   }
   
-  public static String showEventsFromUser(String iduser){
-	  return null;
+  public static ArrayList<String> showEventsFromUser(String iduser){
+	  conn = getInstance();
+	  
+	  ArrayList <String> liste = new ArrayList<String>();
+	  
+	  if(conn != null){
+		  Statement query;
+		  try {
+			query = conn.createStatement();
+			  
+			String sql = "SELECT ev.idevent FROM user us "
+						+ "join eventuser eu on us.iduser = eu.iduser "
+						+ "join event ev on ev.idevent = eu.idevent "
+						+ "WHERE us.iduser = " + iduser;
+			ResultSet result = query.executeQuery(sql);
+			
+			while(result.next()){
+				  liste.add(result.getString("idevent"));
+			  }
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		  
+	  }
+	  
+	  System.out.println(liste.get(0));
+	  
+	  return liste;
   }
   
   public static String showUserFromEvent(String idevent){
