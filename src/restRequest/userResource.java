@@ -98,7 +98,7 @@ public class userResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Boolean isUser(@FormParam("id") String id, @FormParam("email") String email) {
-		if (!id.equals(null)) {
+		if (!(id == null)) {
 			return !getUser(id).equals(null);
 		} else {
 			return !SQLConnection.getIduserFromEmail(email).equals(null);
