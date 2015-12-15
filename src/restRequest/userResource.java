@@ -101,7 +101,7 @@ public class userResource {
 		if (!(id == null)) {
 			return !getUser(id).equals(null);
 		} else {
-			return !SQLConnection.getIduserFromEmail(email).equals(null);
+			return !(SQLConnection.getIduserFromEmail(email) == null);
 		}
 	}
 
