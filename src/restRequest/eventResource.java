@@ -47,12 +47,11 @@ public class eventResource {
 	@Produces(MediaType.APPLICATION_JSON)
 //	@Consumes(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public EventResponse createEventForm(@FormParam("name") String name, @FormParam("users") String users) {
+	public String createEventForm(@FormParam("name") String name, 
+			@FormParam("userId") String uid) {
 		// look up user
-		
-		Event event = new Event(name, "1", null, "Custom description.", "1");
-		Error error = new Error();
-		return new EventResponse(event, error);
+		SQLConnection.createEvent(name, uid);
+		return "Ok.";
 	}
 
 	
