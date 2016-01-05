@@ -180,7 +180,26 @@ public class SQLConnection {
   }
   
   public static boolean deleteUserFromEvent(String idevent, String iduser){
-	  return true;	  
+	  conn = getInstance();
+	  boolean check = false;
+	  if(conn != null){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "DELETE FROM eventuser " +
+	                    "WHERE iduser = '" + iduser + "'" +
+	                    " AND idevent = '" + idevent + "'";
+			  query.executeUpdate(sql);
+		       
+		      check = true; 
+		       
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }
+	  }
+	  
+	  return check;	  
   }
   
   public static ArrayList<String> getEventsFromIduser(String iduser){
@@ -416,4 +435,23 @@ public class SQLConnection {
   }
   
   
+  public static String getIdexpenseFromIdevent(String idevent){
+	  return null;
+  }
+  
+  public static boolean createExpense(Expense expense){
+	  return true;
+  }
+  
+  public static Expense getExpenseFromIdevent(String idevent){  
+	  return null;
+  }
+  
+  public static boolean updateExpense(Expense expense){
+	 return true; 
+  }
+  
+  public static boolean deleteExpense(Expense expense){
+	  return true;
+  }
 }
