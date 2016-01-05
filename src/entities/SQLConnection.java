@@ -1,5 +1,7 @@
 package entities;
 
+import entities.SQLNames;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,11 +15,11 @@ public class SQLConnection {
  
   private static Connection conn = null;
  
-  private static String dbHost = "localhost";
-  private static String dbPort = "3306";
-  private static String database = "payourshare";
-  private static String dbUser = "payourshare"; 
-  private static String dbPassword = "";
+  private static String dbHost = SQLNames.dbHost;
+  private static String dbPort = SQLNames.dbPort;
+  private static String database = SQLNames.database;
+  private static String dbUser = SQLNames.dbUser;
+  private static String dbPassword = SQLNames.dbPassword;
   
   private SQLConnection() {
 	  try {
