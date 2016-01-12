@@ -3,7 +3,10 @@ package restRequest;
 import entities.*;
 import entities.Error;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
@@ -19,8 +22,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 
-@Path("/event")
-public class eventResource {
+@Path("/expense")
+public class expenseResource {
 	// Allows to insert contextual objects into the class,
 	// e.g. ServletContext, Request, Response, UriInfo
 	@Context
@@ -28,36 +31,27 @@ public class eventResource {
 	@Context
 	Request request;
 
-	@GET
-	@Produces(MediaType.TEXT_HTML)
-	public String getTodosBrowser() {
-		return ("test");
-	}
-
 	@Path("create")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public String createEvent(@FormParam("name") String name, @FormParam("desc") String description, 
-			@FormParam("token") String token, @FormParam("users") String users, 
-			@FormParam("creatorId") String creatorId) {
-		//TODO: Look up id with token and compare against creatorId
-		String uid = null;
-		//TODO: If successful send true, else false
-		//String eventId = SQLConnection.createEvent(name, uid); //TODO: return event id in SQL connector please
-		//return eventId;
-		return null;
+	public String createExpense(@FormParam("token") String token, @FormParam("eventId") String eventId, 
+			@FormParam("amount") String amount, @FormParam("creatorId") String creatorId, @FormParam("name") String name,
+			@FormParam("type") String type, @FormParam("shares") String shares) { //TODO: String parsen oder gleich als map (JSON!!)
+		List<String> i = Arrays.asList(token.split("\\s*,\\s*"));
+		String expenseId = SQLConnection.createExpense(); //TODO: please return id, what parameters??
+		return expenseId; // return id if possible, else false
 	}
 	
 	@Path("update")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public String updateEvent(@FormParam("name") String name, @FormParam("desc") String description, 
-			@FormParam("token") String token, @FormParam("users") String users, 
-			@FormParam("creatorId") String creatorId, @FormParam("eventId") String eventId) {
-		//TODO: similar to create
-		//returns true/false
+	public String updateExpense(@FormParam("token") String token, @FormParam("eventId") String eventId, 
+			@FormParam("amount") String amount, @FormParam("creatorId") String creatorId, @FormParam("name") String name,
+			@FormParam("type") String type, @FormParam("shares") String shares //TODO: String parsen oder gleich als map (JSON!!)
+			, @FormParam("expenseId") String expenseId) { 
+		//similar to event create
 		return null;
 	}
 
@@ -77,6 +71,4 @@ public class eventResource {
 		System.out.println("Requested information about " + id);
 		return id.toString();
 	}
-	
-	
 }

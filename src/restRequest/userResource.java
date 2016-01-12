@@ -40,20 +40,32 @@ public class userResource {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public LoginResponse loginUser(@FormParam("email") String email, @FormParam("password") String pass)
 			throws NoSuchAlgorithmException, InvalidKeySpecException {
-		//TODO Maybe return a User item?
+		// TODO Maybe return a User item?
 		String userId = SQLConnection.getIduserFromEmail(email);
-		LoginResponse response = new LoginResponse(new Error(), "Invalid password or username.", userId);
+		LoginResponse response = new LoginResponse("false", userId);
 		String hash_db = SQLConnection.getHashToEmail(email);
 		if (hash_db != null) {
-//			Boolean isValid = Crypto.PasswordHash.validatePassword(pass, hash_db);
+			// Boolean isValid = Crypto.PasswordHash.validatePassword(pass,
+			// hash_db);
 			System.out.println(email + "," + pass);
 			Boolean isValid = pass.equals(hash_db);
 			System.out.println(pass + ", " + hash_db + ", " + isValid);
 			if (isValid) {
-				response.setStatus("Ok.");
+				response.setStatus("true");
 			}
 		}
+
 		return response;
+	}
+
+	@Path("register")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public LoginResponse registerUser(@FormParam("email") String email, @FormParam("password") String pass)
+			throws NoSuchAlgorithmException, InvalidKeySpecException, Exception {
+		// TODO: stuff here
+		throw new Exception();
 	}
 
 	@Path("create")
@@ -61,15 +73,13 @@ public class userResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	// @Consumes(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public LoginResponse createUser(@FormParam("name") String name, 
-			@FormParam("email") String email,
+	public LoginResponse createUser(@FormParam("name") String name, @FormParam("email") String email,
 			@FormParam("password") String pass) {
 		if (SQLConnection.createUser(name, email, pass)) {
-			return new LoginResponse(new Error(), "Ok.", SQLConnection.getIduserFromEmail(email));
-		}
-		else {
+			return new LoginResponse("true", SQLConnection.getIduserFromEmail(email));
+		} else {
 			System.out.println("Failed to create user.");
-			return new LoginResponse(new Error(), "Failed to create user.", null);
+			return new LoginResponse("Failed to create user.", null);
 		}
 	}
 
@@ -97,24 +107,26 @@ public class userResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Boolean isUser(@FormParam("id") String id, @FormParam("email") String email) {
-		if (!(id == null)) {
-			return !getUser(id).equals(null);
-		} else {
-			return !(SQLConnection.getIduserFromEmail(email) == null);
-		}
+	public String isUserFromEmail(@FormParam("email") String email) {
+		return !(SQLConnection.getIduserFromEmail(email) == null) ? 
+				SQLConnection.getIduserFromEmail(email) : "false";
+	}
+
+	private Boolean isUserFromId(String id) {
+		return !getUser(id).equals(null);
 	}
 
 	@Path("getEvents/{id}")
-	@GET
+	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Event> getEventsFromUser(@PathParam("id") String user_id) {
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public List<Event> getEventsFromUser(@PathParam("id") String user_id, @FormParam("token") String token) {
 		// List<Event> a = new ArrayList<Event>();
 		// a.add(new Event("Event1Name", 1, null, "Description 1.", 1));
 		// a.add(new Event("Event2Name", 2, null, "Description 2.", 1));
 		// return a;
 
-		if (isUser(user_id, null)) {
+		if (isUserFromId(user_id)) {
 			List<String> eventsListString = SQLConnection.getEventsFromIduser(user_id.toString());
 			List<Event> eventsList = new ArrayList<Event>();
 
@@ -126,6 +138,5 @@ public class userResource {
 			System.out.println("getEventsFromUser got a not existing User");
 			return null;
 		}
-
 	}
 }

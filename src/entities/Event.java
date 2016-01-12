@@ -8,18 +8,20 @@ public class Event {
 	private List<User> users;
 	private String description;
 	private String creatorId;
-	
-	public String getName() {
-		return name;
-	}
+	private List<Expense> expenses;
 	
 	public Event() {}
-	public Event(String name, String Id, List<User> users, String description, String creatorId) {
+	public Event(String name, String Id, List<User> users, String description, String creatorId, List<Expense> expenses) {
 		setName(name);
 		setId(Id);
 		setUsers(users);
 		setDescription(description);
 		setCreatorId(creatorId);
+		setExpenses(expenses);
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public void setName(String name) {
@@ -52,5 +54,11 @@ public class Event {
 
 	public void setCreatorId(String creatorId) {
 		this.creatorId = creatorId;
+	}
+	public List<Expense> getExpenses() {
+		return expenses;
+	}
+	public void setExpenses(List<Expense> expenses) {
+		this.expenses = expenses;
 	}
 }
