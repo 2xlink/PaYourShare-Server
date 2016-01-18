@@ -28,34 +28,37 @@ public class eventResource {
 	@Context
 	Request request;
 
-	@GET
-	@Produces(MediaType.TEXT_HTML)
-	public String getTodosBrowser() {
-		return ("test");
-	}
-
 	@Path("create")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public String createEvent(@FormParam("name") String name, @FormParam("desc") String description, 
-			@FormParam("token") String token, @FormParam("users") String users, 
+	public String createEvent(
+			@FormParam("token") String token, 
+			@FormParam("id") String eventId, 
+			@FormParam("name") String name, 
+			@FormParam("desc") String description,
+			@FormParam("users") List<User> users, 
 			@FormParam("creatorId") String creatorId) {
 		//TODO: Look up id with token and compare against creatorId
 		String uid = null;
 		//TODO: If successful send true, else false
 		//String eventId = SQLConnection.createEvent(name, uid); //TODO: return event id in SQL connector please
 		//return eventId;
-		return null;
+		return null; //TODO: Does this need to return a id or is true/false enough?
 	}
 	
 	@Path("update")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public String updateEvent(@FormParam("name") String name, @FormParam("desc") String description, 
-			@FormParam("token") String token, @FormParam("users") String users, 
-			@FormParam("creatorId") String creatorId, @FormParam("eventId") String eventId) {
+	public String updateEvent(
+			@FormParam("token") String token,
+			@FormParam("eventId") String eventId, 
+			@FormParam("name") String name, 
+			@FormParam("desc") String description, 
+			@FormParam("users") List<User> users, 
+			@FormParam("creatorId") String creatorId,
+			@FormParam("version") String version) {
 		//TODO: similar to create
 		//returns true/false
 		return null;

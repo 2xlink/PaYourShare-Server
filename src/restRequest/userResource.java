@@ -103,7 +103,7 @@ public class userResource {
 		}
 	}
 
-	@Path("exists")
+	@Path("exists") //TODO: This only takes an email, NOT email + id !
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -116,16 +116,12 @@ public class userResource {
 		return !getUser(id).equals(null);
 	}
 
-	@Path("getEvents/{id}")
+	@Path("getEvents/{id}") //TODO: id is not needed, can be derived by token
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public List<Event> getEventsFromUser(@PathParam("id") String user_id, @FormParam("token") String token) {
-		// List<Event> a = new ArrayList<Event>();
-		// a.add(new Event("Event1Name", 1, null, "Description 1.", 1));
-		// a.add(new Event("Event2Name", 2, null, "Description 2.", 1));
-		// return a;
-
+		//TODO: Use the token, Luke!
 		if (isUserFromId(user_id)) {
 			List<String> eventsListString = SQLConnection.getEventsFromIduser(user_id.toString());
 			List<Event> eventsList = new ArrayList<Event>();
