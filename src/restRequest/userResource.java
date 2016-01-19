@@ -75,7 +75,7 @@ public class userResource {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public LoginResponse createUser(@FormParam("name") String name, @FormParam("email") String email,
 			@FormParam("password") String pass) {
-		if (SQLConnection.createUser(name, email, pass)) {
+		if (SQLConnection.createUser(name, email, pass)) {   //createUser(name,email,password,id)
 			return new LoginResponse("true", SQLConnection.getIduserFromEmail(email));
 		} else {
 			System.out.println("Failed to create user.");
