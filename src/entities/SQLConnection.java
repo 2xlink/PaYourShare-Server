@@ -181,7 +181,7 @@ public class SQLConnection {
   public static boolean deleteUserFromEvent(String idevent, String iduser){
 	  conn = getInstance();
 	  boolean check = false;
-	  if(conn != null){
+	  if(conn != null && existUser(iduser)){
 		  Statement query;
 		  try{
 			  query = conn.createStatement();
@@ -433,6 +433,83 @@ public class SQLConnection {
 	  return check;
   }
   
+  public static boolean existUser(String iduser){
+	  boolean check = true;
+	  ArrayList<String>	liste = new ArrayList<String>();
+	  conn = getInstance();	  
+	  
+	  if(conn != null){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "Select iduser From user where iduser = " + "'" + iduser + "'";
+			  ResultSet result = query.executeQuery(sql);
+			  
+			  while(result.next()){
+				  liste.add(result.getString("iduser"));
+			  }
+			  
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }
+			 
+	  }
+	  if(liste.size() != 0) check = false;
+	  return check;
+  }
+  
+  public static boolean existExpense(String idexpense){
+	  boolean check = true;
+	  ArrayList<String>	liste = new ArrayList<String>();
+	  conn = getInstance();	  
+	  
+	  if(conn != null){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "Select idexpense From ausgaben where idexpense = " + "'" + idexpense + "'";
+			  ResultSet result = query.executeQuery(sql);
+			  
+			  while(result.next()){
+				  liste.add(result.getString("iduser"));
+			  }
+			  
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }
+			 
+	  }
+	  if(liste.size() != 0) check = false;
+	  return check;
+  }
+  
+  public static boolean existExpenseUser(String iduser, String idexpense){
+	  boolean check = true;
+	  ArrayList<String>	liste = new ArrayList<String>();
+	  conn = getInstance();	  
+	  
+	  if(conn != null){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "Select idexpenseuser From ausgabenuser where idexpense = " + "'" + idexpense + "'" + " and iduser = " + "'" + iduser + "'";
+			  ResultSet result = query.executeQuery(sql);
+			  
+			  while(result.next()){
+				  liste.add(result.getString("ideventuser"));
+			  }
+			  
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }
+			 
+	  }
+	  if(liste.size() != 0) check = false;
+	  return check;
+  }
   
   public static String getIdexpenseFromIdevent(String idevent){
 	  return null;
@@ -448,7 +525,7 @@ public class SQLConnection {
 	    {
 	      try {
 	 
-	        String sql = "INSERT INTO ausgaben(idbetrag, idevent, name, betrag, idcreator) " +
+	        String sql = "INSERT INTO ausgaben(idexpense, idevent, name, betrag, idcreator) " +
 	                     "VALUES(?, ?, ?, ?, ?)";
 	        PreparedStatement preparedStatement = conn.prepareStatement(sql);
 	        // Erstes Fragezeichen durch "firstName" Parameter ersetzen
@@ -477,8 +554,37 @@ public class SQLConnection {
 	  return true;
   }
   
-  public static Expense getExpenseFromIdevent(String idevent){  
-	  return null;
+  public static ArrayList<Expense> getExpenseFromIdevent(String idevent){  
+	  conn = getInstance();
+	  String creatorId = null;
+	  String amount = null;
+	  String name = null;
+	  String expenseId = null;
+	  String type = null;
+	  ArrayList <Expense> liste = new ArrayList<Expense>();
+	  if(conn != null){
+		  Statement query;
+		  try {
+			query = conn.createStatement();
+			
+			String sql = "SELECT * FROM ausgaben WHERE idevent = " + "'" + idevent + "'";
+			ResultSet resultsql = query.executeQuery(sql);
+			while(resultsql.next()){
+				//creatorId = resultsql.getString("idcreator");
+				//amount = resultsql.getString("betrag");
+				//name = resultsql.getString("name");
+				//expenseId = resultsql.getString("idexpense");
+				liste.add(new Expense(resultsql.getString("idcreator"),resultsql.getString("betrag"),resultsql.getString("name"),resultsql.getString("idexpense"),"0",idevent));
+			}
+			
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	  }
+	  
+	 // Expense expense = new Expense(creatorId,amount, name, expenseId, "0", idevent);
+	  return liste;
   }
   
   public static boolean updateExpense(Expense expense){
@@ -486,6 +592,49 @@ public class SQLConnection {
   }
   
   public static boolean deleteExpense(Expense expense){
-	  return true;
+	  conn = getInstance();
+	  boolean check = false;
+	  if(conn != null && existExpense(expense.getExpenseId())){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "DELETE FROM ausgaben " +
+	                    "WHERE idbetrag = '" + expense.getExpenseId() + "'";
+			  String sql2 = "DELETE FROM ausgabenuser " +
+	                    "Where idexpense = " + "'" + expense.getExpenseId() + "'";
+			  query.executeUpdate(sql);
+		       
+		      check = true; 
+		       
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }
+	  }
+	  
+	  return check;	  
+  }
+  
+  public static boolean deleteUserFromExpense(String idexpense, String iduser){
+	  conn = getInstance();
+	  boolean check = false;
+	  if(conn != null && existExpenseUser(iduser, idexpense)){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "DELETE FROM ausgabenuser " +
+	                    "WHERE iduser = '" + iduser + "'" +
+	                    " AND idexpense = '" + idexpense + "'";
+			  query.executeUpdate(sql);
+		       
+		      check = true; 
+		       
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }
+	  }
+	  
+	  return check;	
   }
 }
