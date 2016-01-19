@@ -31,41 +31,68 @@ public class eventResource {
 	@Path("create")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public String createEvent(simpleRequest req) {
-		//TODO: Look up id with token and compare against creatorId
-		String uid = null;
-		//String eventId = SQLConnection.createEvent(name, uid); //TODO: return event id in SQL connector please
-		//return eventId;
-		return null; //This returns true/false
+		String userId = SQLConnection.getTokenFromIduser(req.getId());
+		String eventId = req.getId(); //TODO: Maybe use eventId here to avoid confusion
+		
+		// do some checks ...
+		if (SQLConnection.getEventFromIdevent(eventId) != null) {
+			return "false";
+		}
+		if (userId != req.getCreatorId()) {
+			return "false";
+		}
+		
+		boolean noerrors = true;
+		// create the event and add users to it
+		noerrors = SQLConnection.createEvent(req.getName(), userId, eventId);
+		for (User thisUser : req.getUsers()) {
+			noerrors = noerrors && SQLConnection.addUserToEvent(thisUser.getEmail(), eventId);
+		}
+		
+		return noerrors? "true" : "false";
 	}
 	
 	@Path("update")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public String updateEvent(simpleRequest req) {
-		//TODO: similar to create
-		//returns true/false
-		return null;
+		String userId = SQLConnection.getTokenFromIduser(req.getId());
+		String eventId = req.getId(); //TODO: Maybe use eventId here to avoid confusion
+		
+		// do some checks ...
+		Event originalEvent = SQLConnection.getEventFromIdevent(eventId);
+		if (originalEvent == null
+				|| originalEvent.getCreatorId() != userId) {
+			return "false";
+		}
+		
+		Event event = new Event(req.getName(), req.getId(), req.getUsers(), req.getDesc(), req.getCreatorId(), req.getExpenses());
+		
+		boolean noerrors = true;
+		noerrors = SQLConnection.updateEvent(event);
+		
+		return noerrors? "true" : "false";
 	}
 
 	
-	@Path("delete")
-	@POST
-	@Produces(MediaType.TEXT_HTML)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public void deleteEvent(@FormParam("id") Integer id) {
-		System.out.println(id.toString());
-	}
+//	@Path("delete")
+//	@POST
+//	@Produces(MediaType.TEXT_HTML)
+//	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+//	public void deleteEvent(@FormParam("id") Integer id) {
+//		System.out.println(id.toString());
+//	}
 	
-	@Path("get/{id}")
-	@GET
-	@Produces(MediaType.TEXT_HTML)
-	public String getEvent(@PathParam("id") Integer id) {
-		System.out.println("Requested information about " + id);
-		return id.toString();
-	}
+//	@Path("get/{id}")
+//	@GET
+//	@Produces(MediaType.TEXT_HTML)
+//	public String getEvent(@PathParam("id") Integer id) {
+//		System.out.println("Requested information about " + id);
+//		return id.toString();
+//	}
 	
 	
 }

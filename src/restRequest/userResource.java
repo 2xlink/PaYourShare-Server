@@ -9,6 +9,7 @@ import java.security.CryptoPrimitive;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -72,8 +73,8 @@ public class userResource {
 		LoginResponse response = new LoginResponse("false", null);
 		
 		// do some checks
-		if (!(SQLConnection.getIduserFromEmail(email) == null) // email already exists
-				|| !(SQLConnection.getUsernameFromIduser(id) == null)) { // id already exists
+		if (SQLConnection.getIduserFromEmail(email) != null // email already exists
+				|| SQLConnection.getUsernameFromIduser(id) != null) { // id already exists
 			return response;
 		}
 		
@@ -118,48 +119,47 @@ public class userResource {
 //		System.out.println(id.toString());
 //	}
 
-	@Path("info/{id}")
-	@GET
-	@Produces(MediaType.TEXT_HTML)
-	public String getUser(@PathParam("id") String id) {
-		System.out.println("Requested information about " + id);
-		try {
-			return SQLConnection.getUsernameFromIduser(id).toString();
-		} catch (Exception e) {
-			return "User does not exist.";
-		}
-	}
-
-//	@Path("exists")
-//	@POST
-//	@Produces(MediaType.APPLICATION_JSON)
-//	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-//	public String isUserFromEmail(simpleRequest req) {
-//		return !(SQLConnection.getIduserFromEmail(email) == null) ? 
-//				SQLConnection.getIduserFromEmail(email) : "false";
-//	}
-//
-//	private Boolean isUserFromId(String id) {
-//		return !getUser(id).equals(null);
-//	}
-
-//	@Path("getEvents/{id}") //TODO: id is not needed, can be derived by token
-//	@POST
-//	@Produces(MediaType.APPLICATION_JSON)
-//	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-//	public List<Event> getEventsFromUser(simpleRequest req) {
-//		//TODO: Use the token, Luke!
-//		if (isUserFromId(user_id)) {
-//			List<String> eventsListString = SQLConnection.getEventsFromIduser(user_id.toString());
-//			List<Event> eventsList = new ArrayList<Event>();
-//
-//			for (String thisEventId : eventsListString) {
-//				eventsList.add(SQLConnection.getEventFromIdevent(thisEventId.toString()));
-//			}
-//			return eventsList;
-//		} else {
-//			System.out.println("getEventsFromUser got a not existing User");
-//			return null;
+//	@Path("info/{id}")
+//	@GET
+//	@Produces(MediaType.TEXT_HTML)
+//	public String getUser(@PathParam("id") String id) {
+//		System.out.println("Requested information about " + id);
+//		try {
+//			return SQLConnection.getUsernameFromIduser(id).toString();
+//		} catch (Exception e) {
+//			return "User does not exist.";
 //		}
 //	}
+
+	@Path("exists")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String isUserFromEmail(simpleRequest req) {
+		String email = req.getEmail();
+		return SQLConnection.getIduserFromEmail(email) != null ? 
+				SQLConnection.getIduserFromEmail(email) : "false";
+	}
+
+	private Boolean isUserFromId(String id) {
+		return SQLConnection.getUsernameFromIduser(id) != null;
+	}
+
+	@Path("getEvents")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<Event> getEventsFromUser(simpleRequest req) {
+		String userId = SQLConnection.getTokenFromIduser(req.getId());
+		if (userId == null) {
+			return new LinkedList<>();
+		}
+		List<String> eventsListString = SQLConnection.getEventsFromIduser(userId.toString()); // returns a list of EventIDs
+		List<Event> eventsList = new ArrayList<Event>();
+
+		for (String thisEventId : eventsListString) {
+			eventsList.add(SQLConnection.getEventFromIdevent(thisEventId.toString()));
+		}
+		return eventsList;
+	}
 }

@@ -31,39 +31,63 @@ public class expenseResource {
 	@Context
 	Request request;
 
-//	@Path("create")
-//	@POST
-//	@Produces(MediaType.APPLICATION_JSON)
-//	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-//	public String createExpense(simpleRequest req) {
-//		String expenseId = SQLConnection.createExpense(); //TODO: please return id, what parameters??
-//		return expenseId; // TODO: Conflict with: "return id if possible, else false"
-//	}
+	@Path("create")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String createExpense(simpleRequest req) {
+		String userId = SQLConnection.getTokenFromIduser(req.getId());
+		
+		if (userId != req.getCreatorId()) {
+			return "false";
+		}
+		// maybe also check here if the user is allowed to do this
+		
+		Expense expense = new Expense(req.getCreatorId(), req.getAmount(), req.getName(), req.getId(), req.getType(), req.getEventId());
+		expense.setShares(req.getShares());
+		
+		boolean noerrors;
+		noerrors = SQLConnection.createExpense(expense);
+
+		return noerrors? "true" : "false";
+	}
 	
 	@Path("update")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public String updateExpense(simpleRequest req) { //TODO: String parsen oder gleich als map (JSON!!) 
-		//similar to event create
-		return null;
-	}
+		String userId = SQLConnection.getTokenFromIduser(req.getId());
+		
+		if (userId != req.getCreatorId()) {
+			return "false";
+		}
+		// maybe also check here if the user is allowed to do this
+		
+		Expense expense = new Expense(req.getCreatorId(), req.getAmount(), req.getName(), req.getId(), req.getType(), req.getEventId());
+		expense.setShares(req.getShares());
+		
+		boolean noerrors;
+		noerrors = SQLConnection.createExpense(expense);
 
-	
-	@Path("delete")
-	@POST
-	@Produces(MediaType.TEXT_HTML)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public void deleteEvent(simpleRequest req) {
-		String id = req.getId();
-		System.out.println(id.toString());
+		return noerrors? "true" : "false";
 	}
-	
-	@Path("get/{id}")
-	@GET
-	@Produces(MediaType.TEXT_HTML)
-	public String getEvent(@PathParam("id") Integer id) {
-		System.out.println("Requested information about " + id);
-		return id.toString();
-	}
+//
+//	
+//	@Path("delete")
+//	@POST
+//	@Produces(MediaType.TEXT_HTML)
+//	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+//	public void deleteEvent(simpleRequest req) {
+//		String id = req.getId();
+//		System.out.println(id.toString());
+//	}
+//	
+//	@Path("get/{id}")
+//	@GET
+//	@Produces(MediaType.TEXT_HTML)
+//	public String getEvent(@PathParam("id") Integer id) {
+//		System.out.println("Requested information about " + id);
+//		return id.toString();
+//	}
 }

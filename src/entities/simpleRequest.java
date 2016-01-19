@@ -14,6 +14,7 @@ public class simpleRequest {
 	private List<User> users;
 	private String creatorId;
 	private String version;
+	private List<Expense> expenses;
 	
 	private String expenseId;
 	private String amount;
@@ -130,5 +131,13 @@ public class simpleRequest {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public List<Expense> getExpenses() {
+		return expenses;
+	}
+
+	public void setExpenses(List<Expense> expenses) {
+		this.expenses = expenses;
 	}
 }
