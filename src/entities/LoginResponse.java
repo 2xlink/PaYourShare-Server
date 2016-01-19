@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class LoginResponse {
 	private String status;
-	private String id;
+	private String id; //TODO: is this needed?
 	private String token;
 	
 	public LoginResponse() {}

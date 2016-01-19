@@ -31,14 +31,14 @@ public class expenseResource {
 	@Context
 	Request request;
 
-	@Path("create")
-	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public String createExpense(simpleRequest req) {
-		String expenseId = SQLConnection.createExpense(); //TODO: please return id, what parameters??
-		return expenseId; // TODO: Conflict with: "return id if possible, else false"
-	}
+//	@Path("create")
+//	@POST
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+//	public String createExpense(simpleRequest req) {
+//		String expenseId = SQLConnection.createExpense(); //TODO: please return id, what parameters??
+//		return expenseId; // TODO: Conflict with: "return id if possible, else false"
+//	}
 	
 	@Path("update")
 	@POST
