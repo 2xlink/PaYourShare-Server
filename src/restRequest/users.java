@@ -55,7 +55,7 @@ public class users {
 		//SQLConnection.getEventFromIdevent("5cc8597f-fce9-40e1-9935-c5836d1aa6f0");
 		//SQLConnection.getUserFromIdevent("1");
 		//SQLConnection.addUserToEvent("test3@test.de", "1");
-		Expense expense = new Expense("3","25","Test","t1","3");
+		Expense expense = new Expense();
 		SQLConnection.createExpense(expense);
 		//SQLConnection.deleteUserFromEvent("1","3");
 		
