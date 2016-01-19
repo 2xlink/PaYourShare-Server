@@ -9,9 +9,19 @@ public class Expense {
 	private String name;
 	private String expenseId;
 	private String type;
+	private String eventId;
 	private List<Share> shares;
 	
 	public Expense() {}
+	public Expense(String creatorId, String amount,String name,String expenseId,String type,String eventId){
+	this.creatorId = creatorId;
+	this.amount = amount;
+	this.name = name;
+	this.expenseId = expenseId;
+	this.type = type;
+	this.eventId = eventId;
+	}
+	
 
 	public String getCreatorId() {
 		return creatorId;
@@ -60,6 +70,17 @@ public class Expense {
 	public void setShares(List<Share> shares) {
 		this.shares = shares;
 	}
+
+
+	public String getEventId() {
+		return eventId;
+	}
+
+
+	public void setEventId(String eventId) {
+		this.eventId = eventId;
+	}
+	
 	
 	
 }

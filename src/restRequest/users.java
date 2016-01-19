@@ -5,6 +5,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import entities.Expense;
 import entities.SQLConnection;
 
 // Plain old Java Object it does not extend as class or implements 
@@ -54,7 +55,9 @@ public class users {
 		//SQLConnection.getEventFromIdevent("5cc8597f-fce9-40e1-9935-c5836d1aa6f0");
 		//SQLConnection.getUserFromIdevent("1");
 		//SQLConnection.addUserToEvent("test3@test.de", "1");
-		SQLConnection.deleteUserFromEvent("1","3");
+		Expense expense = new Expense();
+		SQLConnection.createExpense(expense);
+		//SQLConnection.deleteUserFromEvent("1","3");
 		
 		
 		return "Alice, Bob";
