@@ -440,6 +440,41 @@ public class SQLConnection {
   }
   
   public static boolean createExpense(Expense expense){
+	  String idexpense= UUID.randomUUID().toString();
+	  String idexpenseuser = UUID.randomUUID().toString();
+	  
+	  conn = getInstance();
+	 
+	  if(conn != null)
+	    {
+	      try {
+	 
+	        String sql = "INSERT INTO ausgaben(idbetrag, idevent, name, betrag, idcreator) " +
+	                     "VALUES(?, ?, ?, ?, ?)";
+	        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+	        // Erstes Fragezeichen durch "firstName" Parameter ersetzen
+	        preparedStatement.setString(1, idexpense);
+	        preparedStatement.setString(2, expense.getIdevent());
+	        preparedStatement.setString(3, expense.getName());
+	        preparedStatement.setString(4, expense.getAmount());
+	        preparedStatement.setString(5, expense.getIdcreator());
+	        // SQL ausf�hren.
+	        preparedStatement.executeUpdate();
+	        
+	        String sql2 = "INSERT INTO ausgabenuser(idausgabenuser, iduser, idexpense, betrag) " +
+                    "VALUES(?, ?, ?, ?)";
+	        PreparedStatement prepStatment2= conn.prepareStatement(sql2);
+	        prepStatment2.setString(1, idexpenseuser);
+	        prepStatment2.setString(2, expense.getIdcreator());
+	        prepStatment2.setString(3, idexpense);
+	        prepStatment2.setString(4, expense.getAmount());
+	        prepStatment2.executeUpdate();
+	        
+	 
+	      } catch (SQLException e) {
+	    	  e.printStackTrace();	        
+	      }
+	    }
 	  return true;
   }
   
