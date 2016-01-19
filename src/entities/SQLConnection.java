@@ -83,8 +83,9 @@ public class SQLConnection {
   
   
   
-  public static void createEvent(String name, String idcreator, String idevent){
+  public static boolean createEvent(String name, String idcreator, String idevent, String description){
 	  String ideventuser = UUID.randomUUID().toString();
+	  boolean check = false;
 	  //String idevent = UUID.randomUUID().toString();
 	  conn = getInstance();
 	 
@@ -93,12 +94,13 @@ public class SQLConnection {
 	      try {
 	 
 	        String sql = "INSERT INTO event(idevent, name, idmoderator) " +
-	                     "VALUES(?, ?, ?)";
+	                     "VALUES(?, ?, ?, ?)";
 	        PreparedStatement preparedStatement = conn.prepareStatement(sql);
 	        // Erstes Fragezeichen durch "firstName" Parameter ersetzen
 	        preparedStatement.setString(1, idevent);
 	        preparedStatement.setString(2, name);
-	        preparedStatement.setString(3, idcreator);
+	        preparedStatement.setString(3, description);
+	        preparedStatement.setString(4, idcreator);
 	        // SQL ausf�hren.
 	        preparedStatement.executeUpdate();
 	        
@@ -114,8 +116,9 @@ public class SQLConnection {
 	      } catch (SQLException e) {
 	    	  e.printStackTrace();	        
 	      }
+	      check = true;
 	    }
-	  
+	  return check;
   }
   
   public static String getHashToEmail(String email){
@@ -403,7 +406,7 @@ public class SQLConnection {
 		  }
 			 
 	  }
-	  
+	  if(event.getId() == null) event = null;
 	  return event;
   }
   
@@ -537,7 +540,7 @@ public class SQLConnection {
 	        // SQL ausf�hren.
 	        preparedStatement.executeUpdate();
 	        
-	        String sql2 = "INSERT INTO ausgabenuser(idausgabenuser, iduser, idexpense, betrag) " +
+	        String sql2 = "INSERT INTO ausgabenuser(idexpenseuser, iduser, idexpense, betrag) " +
                     "VALUES(?, ?, ?, ?)";
 	        PreparedStatement prepStatment2= conn.prepareStatement(sql2);
 	        prepStatment2.setString(1, idexpenseuser);
@@ -588,7 +591,14 @@ public class SQLConnection {
   }
   
   public static boolean updateExpense(Expense expense){
-	 return true; 
+	  conn = getInstance();
+	  boolean check = false;
+	  if(conn != null){
+		  Statement query;
+		  
+	  }
+	  
+	  return true; 
   }
   
   public static boolean deleteExpense(Expense expense){
