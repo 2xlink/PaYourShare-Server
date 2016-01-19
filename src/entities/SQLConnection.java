@@ -454,10 +454,10 @@ public class SQLConnection {
 	        PreparedStatement preparedStatement = conn.prepareStatement(sql);
 	        // Erstes Fragezeichen durch "firstName" Parameter ersetzen
 	        preparedStatement.setString(1, idexpense);
-	        preparedStatement.setString(2, expense.getIdevent());
+	        preparedStatement.setString(2, expense.getEventId());
 	        preparedStatement.setString(3, expense.getName());
 	        preparedStatement.setString(4, expense.getAmount());
-	        preparedStatement.setString(5, expense.getIdcreator());
+	        preparedStatement.setString(5, expense.getCreatorId());
 	        // SQL ausf�hren.
 	        preparedStatement.executeUpdate();
 	        
@@ -465,7 +465,7 @@ public class SQLConnection {
                     "VALUES(?, ?, ?, ?)";
 	        PreparedStatement prepStatment2= conn.prepareStatement(sql2);
 	        prepStatment2.setString(1, idexpenseuser);
-	        prepStatment2.setString(2, expense.getIdcreator());
+	        prepStatment2.setString(2, expense.getCreatorId());
 	        prepStatment2.setString(3, idexpense);
 	        prepStatment2.setString(4, expense.getAmount());
 	        prepStatment2.executeUpdate();
