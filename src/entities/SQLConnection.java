@@ -554,8 +554,37 @@ public class SQLConnection {
 	  return true;
   }
   
-  public static Expense getExpenseFromIdevent(String idevent){  
-	  return null;
+  public static ArrayList<Expense> getExpenseFromIdevent(String idevent){  
+	  conn = getInstance();
+	  String creatorId = null;
+	  String amount = null;
+	  String name = null;
+	  String expenseId = null;
+	  String type = null;
+	  ArrayList <Expense> liste = new ArrayList<Expense>();
+	  if(conn != null){
+		  Statement query;
+		  try {
+			query = conn.createStatement();
+			
+			String sql = "SELECT * FROM ausgaben WHERE idevent = " + "'" + idevent + "'";
+			ResultSet resultsql = query.executeQuery(sql);
+			while(resultsql.next()){
+				//creatorId = resultsql.getString("idcreator");
+				//amount = resultsql.getString("betrag");
+				//name = resultsql.getString("name");
+				//expenseId = resultsql.getString("idexpense");
+				liste.add(new Expense(resultsql.getString("idcreator"),resultsql.getString("betrag"),resultsql.getString("name"),resultsql.getString("idexpense"),"0",idevent));
+			}
+			
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	  }
+	  
+	 // Expense expense = new Expense(creatorId,amount, name, expenseId, "0", idevent);
+	  return liste;
   }
   
   public static boolean updateExpense(Expense expense){
