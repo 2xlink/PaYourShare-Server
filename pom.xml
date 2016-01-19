@@ -33,19 +33,4 @@
       </plugin>
     </plugins>
   </build>
-  <dependencies>
-	<dependency>
-	  <groupId>io.swagger</groupId>
-	  <artifactId>swagger-jersey2-jaxrs</artifactId>
-	</dependency>
-  </dependencies>
-  <dependencyManagement>
-  	<dependencies>
-  		<dependency>
-  			<groupId>io.swagger</groupId>
-  			<artifactId>swagger-jersey2-jaxrs</artifactId>
-  			<version>1.5.0</version>
-  		</dependency>
-  	</dependencies>
-  </dependencyManagement>
 </project>

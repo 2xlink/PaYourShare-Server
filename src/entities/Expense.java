@@ -1,29 +1,24 @@
 package entities;
 
+import java.util.List;
+
 public class Expense {
 
-	String idcreator;
-	String amount;
-	String name;
-	String idexpense;
-	String idevent;
+	private String creatorId;
+	private String amount;
+	private String name;
+	private String expenseId;
+	private String type;
+	private List<Share> shares;
 	
 	public Expense() {}
-	
-	public Expense(String idcreator, String amount, String name, String idexpense, String idevent){
-		this.idcreator = idcreator;
-		this.amount = amount;
-		this.name = name;
-		this.idexpense = idexpense;
-		this.idevent = idevent;
+
+	public String getCreatorId() {
+		return creatorId;
 	}
 
-	public String getIdcreator() {
-		return idcreator;
-	}
-
-	public void setIdcreator(String idcreator) {
-		this.idcreator = idcreator;
+	public void setCreatorId(String creatorId) {
+		this.creatorId = creatorId;
 	}
 
 	public String getAmount() {
@@ -42,23 +37,29 @@ public class Expense {
 		this.name = name;
 	}
 
-	public String getIdexpense() {
-		return idexpense;
+	public String getExpenseId() {
+		return expenseId;
 	}
 
-	public void setIdexpense(String idexpense) {
-		this.idexpense = idexpense;
+	public void setExpenseId(String expenseId) {
+		expenseId = expenseId;
 	}
 
-	public String getIdevent() {
-		return idevent;
+	public String getType() {
+		return type;
 	}
 
-	public void setIdevent(String idevent) {
-		this.idevent = idevent;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	
+	public List<Share> getShares() {
+		return shares;
+	}
+
+	public void setShares(List<Share> shares) {
+		this.shares = shares;
+	}
 	
 	
 	

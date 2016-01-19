@@ -3,7 +3,10 @@ package restRequest;
 import entities.*;
 import entities.Error;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
@@ -19,8 +22,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 
-@Path("/event")
-public class eventResource {
+@Path("/expense")
+public class expenseResource {
 	// Allows to insert contextual objects into the class,
 	// e.g. ServletContext, Request, Response, UriInfo
 	@Context
@@ -32,35 +35,36 @@ public class eventResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public String createEvent(
+	public String createExpense(
 			@FormParam("token") String token, 
-			@FormParam("id") String eventId, 
-			@FormParam("name") String name, 
-			@FormParam("desc") String description,
-			@FormParam("users") List<User> users, 
-			@FormParam("creatorId") String creatorId) {
-		//TODO: Look up id with token and compare against creatorId
-		String uid = null;
-		//TODO: If successful send true, else false
-		//String eventId = SQLConnection.createEvent(name, uid); //TODO: return event id in SQL connector please
-		//return eventId;
-		return null; //TODO: Does this need to return a id or is true/false enough?
+			@FormParam("id") String expenseId, 
+			@FormParam("id_event") String eventId, 
+			@FormParam("amount") String amount, 
+			@FormParam("creatorId") String creatorId, 
+			@FormParam("name") String name,
+			@FormParam("type") String type, 
+			@FormParam("version") String version, 
+			@FormParam("shares") List<Share> shares) { //TODO: String parsen oder gleich als map (JSON!!)
+		List<String> i = Arrays.asList(token.split("\\s*,\\s*"));
+		String expenseId = SQLConnection.createExpense(); //TODO: please return id, what parameters??
+		return expenseId; // TODO: Conflict with: "return id if possible, else false"
 	}
 	
 	@Path("update")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public String updateEvent(
-			@FormParam("token") String token,
-			@FormParam("eventId") String eventId, 
-			@FormParam("name") String name, 
-			@FormParam("desc") String description, 
-			@FormParam("users") List<User> users, 
-			@FormParam("creatorId") String creatorId,
-			@FormParam("version") String version) {
-		//TODO: similar to create
-		//returns true/false
+	public String updateExpense(
+			@FormParam("token") String token, 
+			@FormParam("id") String expenseId, 
+			@FormParam("id_event") String eventId, 
+			@FormParam("amount") String amount, 
+			@FormParam("creatorId") String creatorId, 
+			@FormParam("name") String name,
+			@FormParam("type") String type, 
+			@FormParam("version") String version, 
+			@FormParam("shares") List<Share> shares) { //TODO: String parsen oder gleich als map (JSON!!) 
+		//similar to event create
 		return null;
 	}
 
@@ -80,6 +84,4 @@ public class eventResource {
 		System.out.println("Requested information about " + id);
 		return id.toString();
 	}
-	
-	
 }

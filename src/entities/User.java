@@ -1,25 +1,15 @@
 package entities;
 
 public class User {
-	private String name;
 	private Integer id;
 	private String email;
 
 	public User() {
 	}
 	
-	public User(String name, Integer id, String email) {
-		setName(name);
+	public User(Integer id, String email) {
 		setId(id);
 		setEmail(email);
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public Integer getId() {

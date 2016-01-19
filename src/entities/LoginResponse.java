@@ -5,23 +5,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class LoginResponse {
 	private String status;
-	private Error error;
 	private String id;
 	private String token;
 	
 	public LoginResponse() {}
-	public LoginResponse(Error er, String status, String id) {
+	public LoginResponse(String status, String id) {
 		setStatus(status);
-		setError(er);
 		setId(id);
-	}
-
-	public Error getError() {
-		return error;
-	}
-
-	public void setError(Error error) {
-		this.error = error;
 	}
 	public String getStatus() {
 		return status;
