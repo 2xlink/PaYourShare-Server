@@ -52,7 +52,7 @@ public class Expense {
 	}
 
 	public void setExpenseId(String expenseId) {
-		expenseId = expenseId;
+		this.expenseId = expenseId;
 	}
 
 	public String getType() {
