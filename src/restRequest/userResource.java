@@ -3,12 +3,14 @@ package restRequest;
 import entities.*;
 import entities.Error;
 import Crypto.PasswordHash;
+import Crypto.TokenGenerator;
 
 import java.security.CryptoPrimitive;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.Id;
 import javax.servlet.http.HttpServletResponse;
@@ -40,7 +42,6 @@ public class userResource {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public LoginResponse loginUser(@FormParam("email") String email, @FormParam("password") String pass)
 			throws NoSuchAlgorithmException, InvalidKeySpecException {
-		// TODO Maybe return a User item?
 		String userId = SQLConnection.getIduserFromEmail(email);
 		LoginResponse response = new LoginResponse("false", userId);
 		String hash_db = SQLConnection.getHashToEmail(email);
@@ -54,18 +55,20 @@ public class userResource {
 				response.setStatus("true");
 			}
 		}
-
+		
+		String token = TokenGenerator.generate();
+		response.setToken(token);
 		return response;
 	}
 
 	@Path("register")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public LoginResponse registerUser(@FormParam("email") String email, @FormParam("password") String pass)
-			throws NoSuchAlgorithmException, InvalidKeySpecException, Exception {
+	@Consumes(MediaType.APPLICATION_JSON)
+	public LoginResponse registerUser(simpleRequest req) {
 		// TODO: stuff here
-		throw new Exception();
+		System.out.println(req.getPassword());
+		return null;
 	}
 
 	@Path("create")
@@ -103,11 +106,11 @@ public class userResource {
 		}
 	}
 
-	@Path("exists") //TODO: This only takes an email, NOT email + id !
+	@Path("exists")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public String isUserFromEmail(@FormParam("email") String email) {
+	public String isUserFromEmail(simpleRequest req) {
 		return !(SQLConnection.getIduserFromEmail(email) == null) ? 
 				SQLConnection.getIduserFromEmail(email) : "false";
 	}
@@ -120,7 +123,7 @@ public class userResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public List<Event> getEventsFromUser(@PathParam("id") String user_id, @FormParam("token") String token) {
+	public List<Event> getEventsFromUser(simpleRequest req) {
 		//TODO: Use the token, Luke!
 		if (isUserFromId(user_id)) {
 			List<String> eventsListString = SQLConnection.getEventsFromIduser(user_id.toString());

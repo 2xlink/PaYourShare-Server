@@ -35,17 +35,7 @@ public class expenseResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public String createExpense(
-			@FormParam("token") String token, 
-			@FormParam("id") String expenseId, 
-			@FormParam("id_event") String eventId, 
-			@FormParam("amount") String amount, 
-			@FormParam("creatorId") String creatorId, 
-			@FormParam("name") String name,
-			@FormParam("type") String type, 
-			@FormParam("version") String version, 
-			@FormParam("shares") List<Share> shares) { //TODO: String parsen oder gleich als map (JSON!!)
-		List<String> i = Arrays.asList(token.split("\\s*,\\s*"));
+	public String createExpense(simpleRequest req) {
 		String expenseId = SQLConnection.createExpense(); //TODO: please return id, what parameters??
 		return expenseId; // TODO: Conflict with: "return id if possible, else false"
 	}
@@ -54,16 +44,7 @@ public class expenseResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public String updateExpense(
-			@FormParam("token") String token, 
-			@FormParam("id") String expenseId, 
-			@FormParam("id_event") String eventId, 
-			@FormParam("amount") String amount, 
-			@FormParam("creatorId") String creatorId, 
-			@FormParam("name") String name,
-			@FormParam("type") String type, 
-			@FormParam("version") String version, 
-			@FormParam("shares") List<Share> shares) { //TODO: String parsen oder gleich als map (JSON!!) 
+	public String updateExpense(simpleRequest req) { //TODO: String parsen oder gleich als map (JSON!!) 
 		//similar to event create
 		return null;
 	}
@@ -73,7 +54,8 @@ public class expenseResource {
 	@POST
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public void deleteEvent(@FormParam("id") Integer id) {
+	public void deleteEvent(simpleRequest req) {
+		String id = req.getId();
 		System.out.println(id.toString());
 	}
 	
