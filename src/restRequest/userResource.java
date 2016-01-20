@@ -111,26 +111,6 @@ public class userResource {
 //		}
 //	}
 
-//	@Path("delete")
-//	@POST
-//	@Produces(MediaType.TEXT_HTML)
-//	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-//	public void deleteUser(@FormParam("id") Integer id) {
-//		System.out.println(id.toString());
-//	}
-
-//	@Path("info/{id}")
-//	@GET
-//	@Produces(MediaType.TEXT_HTML)
-//	public String getUser(@PathParam("id") String id) {
-//		System.out.println("Requested information about " + id);
-//		try {
-//			return SQLConnection.getUsernameFromIduser(id).toString();
-//		} catch (Exception e) {
-//			return "User does not exist.";
-//		}
-//	}
-
 	@Path("exists")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)

@@ -46,7 +46,7 @@ public class eventResource {
 		
 		boolean noerrors = true;
 		// create the event and add users to it
-		noerrors = SQLConnection.createEvent(req.getName(), userId, eventId);
+		noerrors = SQLConnection.createEvent(req.getName(), userId, eventId, req.getDesc());
 		for (User thisUser : req.getUsers()) {
 			noerrors = noerrors && SQLConnection.addUserToEvent(thisUser.getEmail(), eventId);
 		}
