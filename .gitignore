@@ -1,2 +1,4 @@
 /target/
 /build/
+target/classes/entities/SQLConnection.class
+target/classes/restRequest/users.class

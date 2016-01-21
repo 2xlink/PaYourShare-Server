@@ -18,7 +18,8 @@ public class SQLConnection {
   private static String dbHost = SQLNames.dbHost;
   private static String dbPort = SQLNames.dbPort;
   private static String database = SQLNames.database;
-  private static String dbUser = SQLNames.dbUser;
+  //private static String dbUser = SQLNames.dbUser;
+  private static String dbUser = "root";
   private static String dbPassword = SQLNames.dbPassword;
   
   private SQLConnection() {
@@ -27,7 +28,9 @@ public class SQLConnection {
       // F�r verschiedene ODBC-Datenbanken muss dieser Treiber
       // nur einmal geladen werden.
       Class.forName("com.mysql.jdbc.Driver");
-      
+      System.out.println(dbUser);
+      System.out.println(database);
+      System.out.println(dbHost);
       // Verbindung zur Datenbank herstellen
       conn = DriverManager.getConnection("jdbc:mysql://" + dbHost + ":"
           + dbPort + "/" + database + "?" + "user=" + dbUser + "&"
@@ -36,6 +39,7 @@ public class SQLConnection {
       System.out.println("Treiber nicht gefunden");
     } catch (SQLException e) {
       System.out.println("Connect nicht moeglich");
+      System.out.println(e);
     }
   }
  
@@ -115,6 +119,15 @@ public class SQLConnection {
 	 
 	      } catch (SQLException e) {
 	    	  e.printStackTrace();	        
+	      }finally{
+	    	  try {
+	    		if(conn != null){
+	    			conn.close();
+	    		}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	      }
 	      check = true;
 	    }
@@ -143,6 +156,15 @@ public class SQLConnection {
 	        
 	      } catch (SQLException e) {
 	        e.printStackTrace();
+	      }finally{
+	    	  try {
+	    		if(conn != null){
+	    			conn.close();
+	    		}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	      }
 	  	      
 	      //if(password == null) System.out.println("DEPP!!");
@@ -175,7 +197,16 @@ public class SQLConnection {
 		       
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }
+		  }finally{
+	    	  try {
+	    		if(conn != null){
+	    			conn.close();
+	    		}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	      }
 	  }
 		  
 	  return check;
@@ -198,7 +229,16 @@ public class SQLConnection {
 		       
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }
+		  }finally{
+    	  try {
+    		if(conn != null){
+    			conn.close();
+    		}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+      }
 	  }
 	  
 	  return check;	  
@@ -226,7 +266,16 @@ public class SQLConnection {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		}finally{
+	    	  try {
+	    		if(conn != null){
+	    			conn.close();
+	    		}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	      }
 		  
 	  }
 	  
@@ -251,8 +300,17 @@ public class SQLConnection {
 			}
 			
 		} catch (Exception e) {
-			
-		}
+			e.printStackTrace();
+		}finally{
+	    	  try {
+	    		if(conn != null){
+	    			conn.close();
+	    		}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	      }
 	  }
 	  
 	  
@@ -279,7 +337,16 @@ public class SQLConnection {
 			  
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }
+		  }finally{
+	    	  try {
+	    		if(conn != null){
+	    			conn.close();
+	    		}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	      }
 			 
 	  }
 	  
@@ -308,7 +375,16 @@ public class SQLConnection {
 			  
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }
+		  }finally{
+	    	  try {
+	    		if(conn != null){
+	    			conn.close();
+	    		}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	      }
 			 
 	  }
 		  
@@ -346,7 +422,16 @@ public class SQLConnection {
 			  check = true;
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }
+		  }finally{
+	    	  try {
+	    		if(conn != null){
+	    			conn.close();
+	    		}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	      }
 	  }
 	  
 	  return check;
@@ -372,7 +457,16 @@ public class SQLConnection {
 			  
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }
+		  }finally{
+	    	  try {
+	    		if(conn != null){
+	    			conn.close();
+	    		}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	      }
 			 
 	  }
 	  
@@ -403,7 +497,16 @@ public class SQLConnection {
 			  
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }
+		  }finally{
+	    	  try {
+	    		if(conn != null){
+	    			conn.close();
+	    		}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	      }
 			 
 	  }
 	  if(event.getId() == null) event = null;
@@ -429,7 +532,16 @@ public class SQLConnection {
 			  
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }
+		  }finally{
+	    	  try {
+	    		if(conn != null){
+	    			conn.close();
+	    		}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	      }
 			 
 	  }
 	  if(liste.size() != 0) check = false;
@@ -455,7 +567,16 @@ public class SQLConnection {
 			  
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }
+		  }finally{
+	    	  try {
+	    		if(conn != null){
+	    			conn.close();
+	    		}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	      }
 			 
 	  }
 	  if(liste.size() != 0) check = false;
@@ -481,7 +602,16 @@ public class SQLConnection {
 			  
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }
+		  }finally{
+	    	  try {
+	    		if(conn != null){
+	    			conn.close();
+	    		}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	      }
 			 
 	  }
 	  if(liste.size() != 0) check = false;
@@ -507,7 +637,16 @@ public class SQLConnection {
 			  
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }
+		  }finally{
+	    	  try {
+	    		if(conn != null){
+	    			conn.close();
+	    		}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	      }
 			 
 	  }
 	  if(liste.size() != 0) check = false;
@@ -549,9 +688,21 @@ public class SQLConnection {
 	        prepStatment2.setString(4, expense.getAmount());
 	        prepStatment2.executeUpdate();
 	        
+	        preparedStatement.close();
+	        prepStatment2.close();
+	        
 	 
 	      } catch (SQLException e) {
 	    	  e.printStackTrace();	        
+	      }finally{
+	    	  try {
+	    		if(conn != null){
+	    			conn.close();
+	    		}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	      }
 	    }
 	  return true;
@@ -583,7 +734,16 @@ public class SQLConnection {
 			
 		} catch (Exception e) {
 			// TODO: handle exception
-		}
+		}finally{
+	    	  try {
+	    		if(conn != null){
+	    			conn.close();
+	    		}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	      }
 	  }
 	  
 	 // Expense expense = new Expense(creatorId,amount, name, expenseId, "0", idevent);
@@ -595,6 +755,7 @@ public class SQLConnection {
 	  boolean check = false;
 	  if(conn != null){
 		  Statement query;
+		  
 		  
 	  }
 	  
@@ -619,7 +780,16 @@ public class SQLConnection {
 		       
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }
+		  }finally{
+	    	  try {
+	    		if(conn != null){
+	    			conn.close();
+	    		}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	      }
 	  }
 	  
 	  return check;	  
@@ -642,7 +812,16 @@ public class SQLConnection {
 		       
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }
+		  }finally{
+	    	  try {
+	    		if(conn != null){
+	    			conn.close();
+	    		}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	      }
 	  }
 	  
 	  return check;	
