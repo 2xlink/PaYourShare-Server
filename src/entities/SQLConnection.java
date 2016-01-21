@@ -18,8 +18,8 @@ public class SQLConnection {
   private static String dbHost = SQLNames.dbHost;
   private static String dbPort = SQLNames.dbPort;
   private static String database = SQLNames.database;
-  //private static String dbUser = SQLNames.dbUser;
-  private static String dbUser = "root";
+  private static String dbUser = SQLNames.dbUser;
+  //private static String dbUser = "root";
   private static String dbPassword = SQLNames.dbPassword;
   
   private SQLConnection() {
@@ -28,9 +28,6 @@ public class SQLConnection {
       // F�r verschiedene ODBC-Datenbanken muss dieser Treiber
       // nur einmal geladen werden.
       Class.forName("com.mysql.jdbc.Driver");
-      System.out.println(dbUser);
-      System.out.println(database);
-      System.out.println(dbHost);
       // Verbindung zur Datenbank herstellen
       conn = DriverManager.getConnection("jdbc:mysql://" + dbHost + ":"
           + dbPort + "/" + database + "?" + "user=" + dbUser + "&"
@@ -119,15 +116,6 @@ public class SQLConnection {
 	 
 	      } catch (SQLException e) {
 	    	  e.printStackTrace();	        
-	      }finally{
-	    	  try {
-	    		if(conn != null){
-	    			conn.close();
-	    		}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 	      }
 	      check = true;
 	    }
@@ -156,19 +144,7 @@ public class SQLConnection {
 	        
 	      } catch (SQLException e) {
 	        e.printStackTrace();
-	      }finally{
-	    	  try {
-	    		if(conn != null){
-	    			conn.close();
-	    		}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 	      }
-	  	      
-	      //if(password == null) System.out.println("DEPP!!");
-
 	  }
 	  
 	  return password;
@@ -197,16 +173,7 @@ public class SQLConnection {
 		       
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }finally{
-	    	  try {
-	    		if(conn != null){
-	    			conn.close();
-	    		}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	      }
+		  }
 	  }
 		  
 	  return check;
@@ -229,16 +196,7 @@ public class SQLConnection {
 		       
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }finally{
-    	  try {
-    		if(conn != null){
-    			conn.close();
-    		}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-      }
+		  }
 	  }
 	  
 	  return check;	  
@@ -266,17 +224,7 @@ public class SQLConnection {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally{
-	    	  try {
-	    		if(conn != null){
-	    			conn.close();
-	    		}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	      }
-		  
+		}  
 	  }
 	  
 	  return liste;
@@ -284,7 +232,6 @@ public class SQLConnection {
   
   public static ArrayList<String> getUserFromIdevent(String idevent){
 	  conn = getInstance();
-	  
 	  ArrayList<String> liste = new ArrayList<String>();
 	  
 	  if(conn != null){
@@ -301,16 +248,7 @@ public class SQLConnection {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally{
-	    	  try {
-	    		if(conn != null){
-	    			conn.close();
-	    		}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	      }
+		}
 	  }
 	  
 	  
@@ -337,17 +275,7 @@ public class SQLConnection {
 			  
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }finally{
-	    	  try {
-	    		if(conn != null){
-	    			conn.close();
-	    		}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	      }
-			 
+		  }	 
 	  }
 	  
 	  if(liste.size() == 0) return null;
@@ -375,17 +303,7 @@ public class SQLConnection {
 			  
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }finally{
-	    	  try {
-	    		if(conn != null){
-	    			conn.close();
-	    		}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	      }
-			 
+		  }	 
 	  }
 		  
 	  //System.out.println(liste.get(0));  
@@ -422,16 +340,7 @@ public class SQLConnection {
 			  check = true;
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }finally{
-	    	  try {
-	    		if(conn != null){
-	    			conn.close();
-	    		}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	      }
+		  }
 	  }
 	  
 	  return check;
@@ -457,17 +366,7 @@ public class SQLConnection {
 			  
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }finally{
-	    	  try {
-	    		if(conn != null){
-	    			conn.close();
-	    		}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	      }
-			 
+		  } 
 	  }
 	  
 	  if(liste.size() == 0) return null;
@@ -497,17 +396,7 @@ public class SQLConnection {
 			  
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }finally{
-	    	  try {
-	    		if(conn != null){
-	    			conn.close();
-	    		}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	      }
-			 
+		  }		 
 	  }
 	  if(event.getId() == null) event = null;
 	  return event;
@@ -532,17 +421,7 @@ public class SQLConnection {
 			  
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }finally{
-	    	  try {
-	    		if(conn != null){
-	    			conn.close();
-	    		}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	      }
-			 
+		  }		 
 	  }
 	  if(liste.size() != 0) check = false;
 	  return check;
@@ -567,17 +446,7 @@ public class SQLConnection {
 			  
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }finally{
-	    	  try {
-	    		if(conn != null){
-	    			conn.close();
-	    		}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	      }
-			 
+		  }		 
 	  }
 	  if(liste.size() != 0) check = false;
 	  return check;
@@ -597,24 +466,14 @@ public class SQLConnection {
 			  ResultSet result = query.executeQuery(sql);
 			  
 			  while(result.next()){
-				  liste.add(result.getString("iduser"));
+				  liste.add(result.getString("idexpense"));
 			  }
 			  
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }finally{
-	    	  try {
-	    		if(conn != null){
-	    			conn.close();
-	    		}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	      }
-			 
+		  }			 
 	  }
-	  if(liste.size() != 0) check = false;
+	  if(liste.size() != 1) check = false;
 	  return check;
   }
   
@@ -637,16 +496,7 @@ public class SQLConnection {
 			  
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }finally{
-	    	  try {
-	    		if(conn != null){
-	    			conn.close();
-	    		}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	      }
+		  }
 			 
 	  }
 	  if(liste.size() != 0) check = false;
@@ -694,15 +544,6 @@ public class SQLConnection {
 	 
 	      } catch (SQLException e) {
 	    	  e.printStackTrace();	        
-	      }finally{
-	    	  try {
-	    		if(conn != null){
-	    			conn.close();
-	    		}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 	      }
 	    }
 	  return true;
@@ -734,16 +575,7 @@ public class SQLConnection {
 			
 		} catch (Exception e) {
 			// TODO: handle exception
-		}finally{
-	    	  try {
-	    		if(conn != null){
-	    			conn.close();
-	    		}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	      }
+		}
 	  }
 	  
 	 // Expense expense = new Expense(creatorId,amount, name, expenseId, "0", idevent);
@@ -771,25 +603,16 @@ public class SQLConnection {
 			  query = conn.createStatement();
 			  
 			  String sql = "DELETE FROM ausgaben " +
-	                    "WHERE idbetrag = '" + expense.getExpenseId() + "'";
+	                    "WHERE idexpense = '" + expense.getExpenseId() + "'";
 			  String sql2 = "DELETE FROM ausgabenuser " +
 	                    "Where idexpense = " + "'" + expense.getExpenseId() + "'";
 			  query.executeUpdate(sql);
-		       
+		      query.executeUpdate(sql2);
 		      check = true; 
 		       
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }finally{
-	    	  try {
-	    		if(conn != null){
-	    			conn.close();
-	    		}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	      }
+		  }
 	  }
 	  
 	  return check;	  
@@ -812,16 +635,35 @@ public class SQLConnection {
 		       
 		  }catch(SQLException e){
 			  e.printStackTrace();
-		  }finally{
-	    	  try {
-	    		if(conn != null){
-	    			conn.close();
-	    		}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	      }
+		  }
+	  }
+	  
+	  return check;	
+  }
+  
+  public static boolean addUserToExpense(String idexpense, String iduser, String amount){
+	 String idexpenseuser = UUID.randomUUID().toString();
+	  conn = getInstance();
+	  boolean check = false;
+	  if(conn != null && existExpenseUser(iduser, idexpense)){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "INSERT INTO ausgabenuser(idexpenseuser, idexpense, iduser, betrag) " +
+	                    "VALUES(?, ?, ?, ?)";
+			  PreparedStatement prepStatement2= conn.prepareStatement(sql);
+		      prepStatement2.setString(1, idexpenseuser);
+		      prepStatement2.setString(2, idexpense);
+		      prepStatement2.setString(3, iduser);
+		      prepStatement2.setString(4, amount);
+		      prepStatement2.executeUpdate();
+		       
+		      check = true; 
+		       
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }
 	  }
 	  
 	  return check;	
