@@ -2,3 +2,8 @@
 /build/
 target/classes/entities/SQLConnection.class
 target/classes/restRequest/users.class
+target/classes/entities/SQLConnection.class
+target/classes/restRequest/userResource.class
+target/classes/entities/SQLNames.class
+target/classes/restRequest/eventResource.class
+target/classes/restRequest/users.class
