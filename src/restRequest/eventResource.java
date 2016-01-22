@@ -1,11 +1,12 @@
 package restRequest;
 
 import entities.*;
-import entities.Error;
 
 import java.util.List;
+import org.json.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.undo.StateEdit;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -32,46 +33,48 @@ public class eventResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String createEvent(simpleRequest req) {
+	public StatusResponse createEvent(simpleRequest req) throws JSONException {
 		System.out.println(req.getName());
 		for (User u : req.getUsers()) {
 			System.out.println(u.getEmail());
 		}
-		//String userId = SQLConnection.getTokenFromIduser(req.getId());
-		String userId = "";
+//		String token = SQLConnection.getToken(req.getId());
+//		TODO: String userId = SQLConnection.getIdFromToken();
+		
 		String eventId = req.getId(); //TODO: Maybe use eventId here to avoid confusion
 		
 		// do some checks ...
 		if (SQLConnection.getEventFromIdevent(eventId) != null) {
-			return "false";
-		}
-		if (userId != req.getCreatorId()) {
-			return "false";
+			System.out.println("EventId already exists!");
+			return new StatusResponse("false");
 		}
 		
 		boolean noerrors = true;
 		// create the event and add users to it
-		noerrors = SQLConnection.createEvent(req.getName(), userId, eventId, req.getDesc());
+		noerrors = SQLConnection.createEvent(req.getName(), req.getCreatorId(), eventId, req.getDesc());
 		for (User thisUser : req.getUsers()) {
 			noerrors = noerrors && SQLConnection.addUserToEvent(thisUser.getEmail(), eventId);
 		}
 		
-		return noerrors? "true" : "false";
+		System.out.println(noerrors);
+		
+		return noerrors? new StatusResponse("true") :
+			new StatusResponse("false");
 	}
 	
 	@Path("update")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String updateEvent(simpleRequest req) {
-		String userId = SQLConnection.getTokenFromIduser(req.getId());
+	public StatusResponse updateEvent(simpleRequest req) {
+		String userId = SQLConnection.getToken(req.getId());
 		String eventId = req.getId(); //TODO: Maybe use eventId here to avoid confusion
 		
 		// do some checks ...
 		Event originalEvent = SQLConnection.getEventFromIdevent(eventId);
 		if (originalEvent == null
 				|| originalEvent.getCreatorId() != userId) {
-			return "false";
+			return new StatusResponse("false");
 		}
 		
 		Event event = new Event(req.getName(), req.getId(), req.getUsers(), req.getDesc(), req.getCreatorId(), req.getExpenses());
@@ -79,7 +82,10 @@ public class eventResource {
 		boolean noerrors = true;
 		noerrors = SQLConnection.updateEvent(event);
 		
-		return noerrors? "true" : "false";
+		
+		
+		return noerrors? new StatusResponse("true") :
+			new StatusResponse("false");
 	}
 
 	

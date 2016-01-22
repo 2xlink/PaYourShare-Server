@@ -9,9 +9,10 @@ public class LoginResponse {
 	private String token;
 	
 	public LoginResponse() {}
-	public LoginResponse(String status, String id) {
+	public LoginResponse(String status, String id, String token) {
 		setStatus(status);
 		setId(id);
+		setToken(token);
 	}
 	public String getStatus() {
 		return status;

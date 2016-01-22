@@ -45,23 +45,22 @@ public class userResource {
 	public LoginResponse loginUser(simpleRequest req)
 			throws NoSuchAlgorithmException, InvalidKeySpecException {
 		String userId = SQLConnection.getIduserFromEmail(req.getEmail());
-		LoginResponse response = new LoginResponse("false", userId);
 		String hash_db = SQLConnection.getHashToEmail(req.getEmail());
 		
 		if (userId == null || hash_db == null) {
-			return response;
+			return new LoginResponse("false", null, null);
 		}
 		String userPassword = req.getPassword();
+		System.out.println(userPassword + hash_db);
 		Boolean isValid = Crypto.PasswordHash.validatePassword(userPassword, hash_db);
 		
-		if (isValid) {
-			response.setStatus("true");
+		if (!isValid) {
+			return new LoginResponse("false", null, null);
 		}
 		
 		String token = TokenGenerator.generate();
-		response.setToken(token);
-		//TODO: Set token in db
-		return response;
+		SQLConnection.setToken(userId, userPassword);
+		return new LoginResponse("true", userId, token);
 	}
 
 	@Path("register")
@@ -73,32 +72,27 @@ public class userResource {
 		String id = req.getId();
 		String email = req.getEmail();
 		String name = email;
-		String password = req.getPassword();
-		LoginResponse response = new LoginResponse("false", null);
+		String pass_plain = req.getPassword();
 		
 		// do some checks
 		if (SQLConnection.getIduserFromEmail(email) != null // email already exists
 				|| SQLConnection.getUsernameFromIduser(id) != null) { // id already exists
-			return response;
+			return new LoginResponse("false", null, null);
 		}
 		System.out.println("pw hashing step");
 		// hash the new password
-		String pass_hashed = Crypto.PasswordHash.createHash(password);
+		String pass_hashed = Crypto.PasswordHash.createHash(pass_plain);
 		
 		System.out.println("The password is " + pass_hashed);
 		// create the user in the db
-		if (!SQLConnection.createUser(name, email, password, id)) {
+		if (!SQLConnection.createUser(name, email, pass_hashed, id, pass_hashed)) {
 			System.out.println("Error creating the user with " + name + email + pass_hashed + id);
-			return response;
+			return new LoginResponse("false", null, null);
 		}
 		
-		response.setStatus("true");
 		String token = TokenGenerator.generate();
-		response.setToken(token);
-		//TODO: Set token in db
 		System.out.println("Registered user " + name + email + pass_hashed + id);
-		
-		return null;
+		return new LoginResponse("true", id, token);
 	}
 
 //	@Path("create")
@@ -141,14 +135,19 @@ public class userResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public GetEventsResponse getEventsFromUser(simpleRequest req) {
-		String userId = SQLConnection.getTokenFromIduser(req.getId());
-		if (userId == null) {
+		System.out.println("GetEvents called");
+		String token = SQLConnection.getToken(req.getId());
+		String userId = req.getId();
+		if (token != userId || userId == null) {
 			return new GetEventsResponse("false", null);
 		}
 		List<String> eventsListString = SQLConnection.getEventsFromIduser(userId.toString()); // returns a list of EventIDs
 		List<Event> eventsList = new ArrayList<Event>();
+		
+		System.out.println("a" + eventsListString);
 
 		for (String thisEventId : eventsListString) {
+			System.out.println(thisEventId);
 			eventsList.add(SQLConnection.getEventFromIdevent(thisEventId.toString()));
 		}
 		return new GetEventsResponse("true", eventsList);

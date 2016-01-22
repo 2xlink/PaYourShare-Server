@@ -36,14 +36,18 @@ public class expenseResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String createExpense(simpleRequest req) {
-		String userId = SQLConnection.getTokenFromIduser(req.getId());
+		String userId = SQLConnection.getToken(req.getId());
 		
 		if (userId != req.getCreatorId()) {
 			return "false";
 		}
 		// maybe also check here if the user is allowed to do this
 		
+		// create the new expense
 		Expense expense = new Expense(req.getCreatorId(), req.getAmount(), req.getName(), req.getId(), req.getType(), req.getEventId());
+		
+		
+		
 		expense.setShares(req.getShares());
 		
 		boolean noerrors;
@@ -56,8 +60,8 @@ public class expenseResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String updateExpense(simpleRequest req) { //TODO: String parsen oder gleich als map (JSON!!) 
-		String userId = SQLConnection.getTokenFromIduser(req.getId());
+	public String updateExpense(simpleRequest req) { 
+		String userId = SQLConnection.getToken(req.getId());
 		
 		if (userId != req.getCreatorId()) {
 			return "false";
