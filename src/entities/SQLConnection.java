@@ -742,7 +742,26 @@ public class SQLConnection {
 	return result;  
   }
   
-  
+  public static boolean deleteToken(String token){
+	  boolean check = false;
+	  conn = getInstance();
+	  
+	  if(conn != null){
+		  Statement query;
+		  
+		  try {
+			  query = conn.createStatement();
+			  
+			  String sql = "UPDATE userlogin SET token = 'NULL' WHERE token = " + "'" + token + "'";
+			  query.executeUpdate(sql);
+			  
+			  check = true;		  
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	  }
+	  return check;
+  }
   
   
 }
