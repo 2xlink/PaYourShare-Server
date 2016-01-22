@@ -194,8 +194,9 @@ public class SQLConnection {
 	  return liste;
   }
   
-  public static User getUserFromEvent(Event event){
+  public static ArrayList<User> getUserFromEvent(Event event){
 	  User user = new User();
+	  ArrayList<User> list;
 	  conn = getInstance();
 	  
 	  if(conn != null){
@@ -210,7 +211,9 @@ public class SQLConnection {
 			  ResultSet result = query.executeQuery(sql);
 			  
 			  while(result.next()){
-				  
+				  user.setId(result.getString(1));
+				  user.setEmail(result.getString(2));
+				  list.add(user);
 			  }
 			  
 		  }catch(SQLException e){
@@ -220,7 +223,7 @@ public class SQLConnection {
 	  }
 	  
 	  
-	  return user;
+	  return list;
   }
   
   public static boolean updateEvent(Event event){
@@ -241,7 +244,7 @@ public class SQLConnection {
 		           if(existUserEvent(user.getId(), event.getId()) == false){
 		        	   addUserToEvent(user.getEmail(), event.getId());
 		           }
-		           for(String user2 : getUserFromIdevent(event.getId())){
+		           for(User user2 : getUserFromEvent(event)){
 		        	   if(event.getUsers().contains(user));
 		           }
 		           
