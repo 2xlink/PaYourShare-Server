@@ -58,7 +58,7 @@ public class SQLConnection {
 	    {
 	      try {
 	 
-	        String sql = "INSERT INTO event(idevent, name, idmoderator) " +
+	        String sql = "INSERT INTO event(idevent, name, description,idmoderator) " +
 	                     "VALUES(?, ?, ?, ?)";
 	        PreparedStatement preparedStatement = conn.prepareStatement(sql);
 	        // Erstes Fragezeichen durch "firstName" Parameter ersetzen
@@ -194,6 +194,35 @@ public class SQLConnection {
 	  return liste;
   }
   
+  public static User getUserFromEvent(Event event){
+	  User user = new User();
+	  conn = getInstance();
+	  
+	  if(conn != null){
+		  Statement query;
+		  
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "Select iduser, name, email From user u "
+			  		 	+ "Join eventuser eu on u.iduser = eu.iduser"
+					  	+ "where idevent =" + "'" + event.getId() + "'";
+			  ResultSet result = query.executeQuery(sql);
+			  
+			  while(result.next()){
+				  
+			  }
+			  
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }
+		  
+	  }
+	  
+	  
+	  return user;
+  }
+  
   public static boolean updateEvent(Event event){
 	  boolean check = false;
 	  conn = getInstance();
@@ -207,6 +236,17 @@ public class SQLConnection {
 			String sql = "Update event SET name =" + "'" + event.getName() + "'" +
 	  				" ,description = " + "'" + event.getDescription() + "'" +
 	  				" Where idevent = " +  "'" + event.getId() + "'";
+			  
+			  for (User user : event.getUsers()){
+		           if(existUserEvent(user.getId(), event.getId()) == false){
+		        	   addUserToEvent(user.getEmail(), event.getId());
+		           }
+		           for(String user2 : getUserFromIdevent(event.getId())){
+		        	   if(event.getUsers().contains(user));
+		           }
+		           
+		           
+		        }
 			
 			query.executeUpdate(sql);
 			check = false;
@@ -580,12 +620,6 @@ public class SQLConnection {
 			  				" ,description = " + "'" + expense.getType() + "'" +
 			  				" ,idevent = " + "'" + expense.getEventId() + "'" + 
 			  				" Where idexpense = " +  "'" + expense.getExpenseId() + "'";
-			  
-			  for(int i=0; i < expense.getShares().size(); i++){
-				  expense.getShares().get(i).getMap().keySet().size();
-				  expense.getShares().get(i).getMap().values();
-				  System.out.println(expense.getShares().get(i).getMap().keySet().size());
-			  }
 			  int i=0;
 			  
 			  for (Entry<User, String> entry : expense.getShares().get(i).getMap().entrySet()){
