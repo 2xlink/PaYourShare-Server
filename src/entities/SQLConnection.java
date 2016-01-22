@@ -804,23 +804,24 @@ public class SQLConnection {
 		  try{
 			  query = conn.createStatement();
 			  
-			  String sql = "Select u.iduser, name, u.email From userlogin ul" 
-					  		+ " join user u on u.iduser = ul.iduser"
+			  String sql = "Select iduser From userlogin" 
 					  		+ " where token =" + "'" + token + "'";
 			  ResultSet result = query.executeQuery(sql);
 			  
 			  while(result.next()){
 				  user.setId(result.getString(1));
-				  user.setName(result.getString(2));
-				  user.setEmail(result.getString(3));
 			  }
+			  
+			  user = getUserFromIduser(user.getId());
 			  
 		  }catch(SQLException e){
 			  e.printStackTrace();
 		  }		 
 	  }
-	  System.out.println(user.getId());
 	  if(user.getId() == null) user = null;
+	  System.out.println(user.getName());
+	  System.out.println(user.getId());
+	  System.out.println(user.getEmail());
 	  return user;
   }
   

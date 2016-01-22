@@ -64,8 +64,8 @@ public class users {
 		//SQLConnection.getUserFromIdevent("1");
 		//SQLConnection.addUserToEvent("test3@test.de", "1");
 		//SQLConnection.deleteUserFromEvent("1","3");
-		//SQLConnection.getUserFromToken("token2");
-		SQLConnection.getUserFromIduser("3");
+		SQLConnection.getUserFromToken("token3");
+		//SQLConnection.getUserFromIduser("3");
 		Event event = new Event("Zug1","3",null,"platzhalter", "1", null);
 		User user = new User("2","test2@test.de");
 		User user2 = new User("3","test3@test.de");
