@@ -752,7 +752,7 @@ public class SQLConnection {
 		  try {
 			  query = conn.createStatement();
 			  
-			  String sql = "UPDATE userlogin SET token = 'NULL' WHERE token = " + "'" + token + "'";
+			  String sql = "UPDATE userlogin SET token = 'null' WHERE token = " + "'" + token + "'";
 			  query.executeUpdate(sql);
 			  
 			  check = true;		  
