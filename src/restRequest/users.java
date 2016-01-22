@@ -87,8 +87,8 @@ public class users {
 		//SQLConnection.deleteUserFromExpense("002", "3");
 		//SQLConnection.updateExpense(expense);
 		
-		SQLConnection.setToken("1", "Token1erfolg");
-		
+		//SQLConnection.setToken("1", "Token1erfolg");
+		SQLConnection.deleteToken("token2");
 		
 		return "Alice, Bob";
 	}
