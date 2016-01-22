@@ -19,7 +19,7 @@ public class simpleRequest {
 	private String expenseId;
 	private String amount;
 	private String type;
-	private List<Share> shares;
+	private List<ShareSimple> shares;
 	
 	
 	public simpleRequest() {}

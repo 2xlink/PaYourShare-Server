@@ -33,7 +33,12 @@ public class eventResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String createEvent(simpleRequest req) {
-		String userId = SQLConnection.getTokenFromIduser(req.getId());
+		System.out.println(req.getName());
+		for (User u : req.getUsers()) {
+			System.out.println(u.getEmail());
+		}
+		//String userId = SQLConnection.getTokenFromIduser(req.getId());
+		String userId = "";
 		String eventId = req.getId(); //TODO: Maybe use eventId here to avoid confusion
 		
 		// do some checks ...

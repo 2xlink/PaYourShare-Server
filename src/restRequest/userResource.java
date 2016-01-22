@@ -115,10 +115,16 @@ public class userResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String isUserFromEmail(simpleRequest req) {
+	public UserExistsResponse isUserFromEmail(simpleRequest req) {
 		String email = req.getEmail();
-		return SQLConnection.getIduserFromEmail(email) != null ? 
-				SQLConnection.getIduserFromEmail(email) : "false";
+		String userId = SQLConnection.getIduserFromEmail(email);
+		
+		if (userId != null) {
+			return new UserExistsResponse("true", userId);
+		}
+		else {
+			return new UserExistsResponse("false", null);
+		}
 	}
 
 	private Boolean isUserFromId(String id) {
@@ -129,10 +135,10 @@ public class userResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<Event> getEventsFromUser(simpleRequest req) {
+	public GetEventsResponse getEventsFromUser(simpleRequest req) {
 		String userId = SQLConnection.getTokenFromIduser(req.getId());
 		if (userId == null) {
-			return new LinkedList<>();
+			return new GetEventsResponse("false", null);
 		}
 		List<String> eventsListString = SQLConnection.getEventsFromIduser(userId.toString()); // returns a list of EventIDs
 		List<Event> eventsList = new ArrayList<Event>();
@@ -140,6 +146,6 @@ public class userResource {
 		for (String thisEventId : eventsListString) {
 			eventsList.add(SQLConnection.getEventFromIdevent(thisEventId.toString()));
 		}
-		return eventsList;
+		return new GetEventsResponse("true", eventsList);
 	}
 }

@@ -16,4 +16,8 @@ public class TokenGenerator {
 		System.out.println("Generated token: " + stringToken);
 	    return stringToken;
 	}
+	
+   public static void main(String[] args) {
+	   System.out.println(generate());
+   }
 }
