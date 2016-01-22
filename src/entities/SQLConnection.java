@@ -546,7 +546,7 @@ public class SQLConnection {
 	    {
 	      try {
 	 
-	        String sql = "INSERT INTO ausgaben(idexpense, idevent, name, descripion, betrag, idcreator) " +
+	        String sql = "INSERT INTO ausgaben(idexpense, idevent, name, description, betrag, idcreator) " +
 	                     "VALUES(?, ?, ?, ?, ?, ?)";
 	        PreparedStatement preparedStatement = conn.prepareStatement(sql);
 	        // Erstes Fragezeichen durch "firstName" Parameter ersetzen
