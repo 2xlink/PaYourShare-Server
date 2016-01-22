@@ -1,12 +1,20 @@
 package restRequest;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import entities.Event;
 import entities.Expense;
 import entities.SQLConnection;
+import entities.Share;
+import entities.User;
 
 // Plain old Java Object it does not extend as class or implements 
 // an interface
@@ -55,11 +63,31 @@ public class users {
 		//SQLConnection.getEventFromIdevent("5cc8597f-fce9-40e1-9935-c5836d1aa6f0");
 		//SQLConnection.getUserFromIdevent("1");
 		//SQLConnection.addUserToEvent("test3@test.de", "1");
-		Expense expense = new Expense("1", "50", "Test2", "002", "platzhalter", "1");
-		//SQLConnection.createExpense(expense);
-		SQLConnection.deleteExpense(expense);
-		//SQLConnection.addUserToExpense("002", "2", "10");
 		//SQLConnection.deleteUserFromEvent("1","3");
+		Event event = new Event("Musik1","1",null,"platzhalter", "1", null);
+		//SQLConnection.updateEvent(event);
+		
+		Expense expense = new Expense("2", "60", "Test2erfolgreich", "002", "platzhalter", "1");
+		/*
+		User user = new User(2,"test2@test.de");
+		User user2 = new User(1,"test1@test.de");
+		Map<User, String> map = new HashMap<>();
+		map.put(user, "50");
+		map.put(user2, "10");
+		Share share = new Share();
+		share.setMap(map);
+		List<Share> list = new LinkedList<Share>();
+		list.add(share);
+		expense.setShares(list);
+		*/
+		
+		//SQLConnection.createExpense(expense);
+		//SQLConnection.deleteExpense(expense);
+		//SQLConnection.addUserToExpense("002", "3", "676");
+		//SQLConnection.deleteUserFromExpense("002", "3");
+		//SQLConnection.updateExpense(expense);
+		
+		SQLConnection.setToken("1", "Token1erfolg");
 		
 		
 		return "Alice, Bob";

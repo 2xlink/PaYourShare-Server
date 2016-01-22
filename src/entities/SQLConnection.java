@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Map.Entry;
 import java.util.UUID;
 	 
 public class SQLConnection {
@@ -19,7 +20,6 @@ public class SQLConnection {
   private static String dbPort = SQLNames.dbPort;
   private static String database = SQLNames.database;
   private static String dbUser = SQLNames.dbUser;
-  //private static String dbUser = "root";
   private static String dbPassword = SQLNames.dbPassword;
   
   private SQLConnection() {
@@ -47,43 +47,7 @@ public class SQLConnection {
     return conn;
   }
  
-  /**
-   * Schreibt die Namensliste in die Konsole
-   * Nur zum testen
-   */
-  public static void printNameList()
-  {
-    conn = getInstance();
  
-    if(conn != null)
-    {
-      // Anfrage-Statement erzeugen.
-      Statement query;
-      try {
-        query = conn.createStatement();
- 
-        // Ergebnistabelle erzeugen und abholen.
-        String sql = "SELECT name FROM user ";
-        String sql2 = "Select us.name" +
-        			" From user us" +
-        			" join ausgabenuser au on au.iduser = us.iduser" +
-        			" join ausgaben ag on au.idbetrag = ag.idbetrag" +
-        			" Where ag.name = 'Ticket'";
-        ResultSet result = query.executeQuery(sql);
-
-        // Ergebniss�tze durchfahren.
-        while (result.next()) {
-          String name = result.getString("name"); // Alternativ: result.getString(1);
-          //System.out.println(name);
-        }
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-    }
-  }
-  
-  
-  
   public static boolean createEvent(String name, String idcreator, String idevent, String description){
 	  String ideventuser = UUID.randomUUID().toString();
 	  boolean check = false;
@@ -230,6 +194,32 @@ public class SQLConnection {
 	  return liste;
   }
   
+  public static boolean updateEvent(Event event){
+	  boolean check = false;
+	  conn = getInstance();
+	  
+	  if(conn != null){
+		 Statement query;
+		 
+		 try {
+			query = conn.createStatement();
+			
+			String sql = "Update event SET name =" + "'" + event.getName() + "'" +
+	  				" ,description = " + "'" + event.getDescription() + "'" +
+	  				" Where idevent = " +  "'" + event.getId() + "'";
+			
+			query.executeUpdate(sql);
+			check = false;
+			
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}	  
+	  }
+	  
+	  return check;
+  }
+  
   public static ArrayList<String> getUserFromIdevent(String idevent){
 	  conn = getInstance();
 	  ArrayList<String> liste = new ArrayList<String>();
@@ -311,7 +301,7 @@ public class SQLConnection {
   }
   
   
-  public static boolean createUser(String name, String email, String password, String iduser){
+  public static boolean createUser(String name, String email, String password, String iduser, String token){
 	  boolean check = false;
 	  conn = getInstance();
 	  //String iduser = UUID.randomUUID().toString();
@@ -329,12 +319,13 @@ public class SQLConnection {
 			  preparedStatement.setString(3, email);
 			  preparedStatement.executeUpdate();
 			  
-			  String sql2 = "INSERT INTO userlogin(iduser, password, email) " +
-	                     "VALUES(?, ?, ?)";
+			  String sql2 = "INSERT INTO userlogin(iduser, password, email, token) " +
+	                     "VALUES(?, ?, ?, ?)";
 			  PreparedStatement preparedStatement2 = conn.prepareStatement(sql2);
 			  preparedStatement2.setString(1, iduser);
 			  preparedStatement2.setString(2, password);
 			  preparedStatement2.setString(3, email);
+			  preparedStatement2.setString(4, token);
 			  preparedStatement2.executeUpdate();
 			  
 			  check = true;
@@ -391,7 +382,8 @@ public class SQLConnection {
 			  while(result.next()){
 				  event.setId(result.getString(1));
 				  event.setName(result.getString(2));
-				  event.setCreatorId(result.getString(3));
+				  event.setDescription(result.getString(3));
+				  event.setCreatorId(result.getString(4));	  
 			  }
 			  
 		  }catch(SQLException e){
@@ -503,10 +495,6 @@ public class SQLConnection {
 	  return check;
   }
   
-  public static String getIdexpenseFromIdevent(String idevent){
-	  return null;
-  }
-  
   public static boolean createExpense(Expense expense){
 	  //String idexpense= UUID.randomUUID().toString();
 	  String idexpenseuser = UUID.randomUUID().toString();
@@ -565,10 +553,6 @@ public class SQLConnection {
 			String sql = "SELECT * FROM ausgaben WHERE idevent = " + "'" + idevent + "'";
 			ResultSet resultsql = query.executeQuery(sql);
 			while(resultsql.next()){
-				//creatorId = resultsql.getString("idcreator");
-				//amount = resultsql.getString("betrag");
-				//name = resultsql.getString("name");
-				//expenseId = resultsql.getString("idexpense");
 				liste.add(new Expense(resultsql.getString("idcreator"),resultsql.getString("betrag"),resultsql.getString("name"),resultsql.getString("idexpense"),"0",idevent));
 			}
 			
@@ -588,10 +572,44 @@ public class SQLConnection {
 	  if(conn != null){
 		  Statement query;
 		  
-		  
-	  }
-	  
-	  return true; 
+		  try {
+			  query = conn.createStatement();
+			  
+			  String sql = "Update ausgaben SET name =" + "'" + expense.getName() + "'" +
+			  				" ,betrag = " + "'" + expense.getAmount() + "'" +
+			  				" ,description = " + "'" + expense.getType() + "'" +
+			  				" ,idevent = " + "'" + expense.getEventId() + "'" + 
+			  				" Where idexpense = " +  "'" + expense.getExpenseId() + "'";
+			  
+			  for(int i=0; i < expense.getShares().size(); i++){
+				  expense.getShares().get(i).getMap().keySet().size();
+				  expense.getShares().get(i).getMap().values();
+				  System.out.println(expense.getShares().get(i).getMap().keySet().size());
+			  }
+			  int i=0;
+			  
+			  for (Entry<User, String> entry : expense.getShares().get(i).getMap().entrySet()){
+		            i++;
+		            
+		            String sql2 = "Update ausgabenuser SET betrag = " + "'" + entry.getValue() + "'" +
+		            				" WHERE idexpense = " + "'" + expense.getExpenseId() +"'" +
+		            				"AND iduser = " + "'" + entry.getKey().getId() + "'";
+		            
+		            System.out.println(entry.getValue());
+		            query.executeUpdate(sql2);
+		            
+		        }
+			  
+			  
+			  query.executeUpdate(sql);
+			  check = true;			  			  
+			  
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}		  		  
+	  }	  
+	  return check; 
   }
   
   public static boolean deleteExpense(Expense expense){
@@ -668,4 +686,63 @@ public class SQLConnection {
 	  
 	  return check;	
   }
+  
+  
+  // TOKEN
+  
+  
+  public static boolean setToken(String iduser, String token){
+	  boolean check = false;
+	  
+	  conn = getInstance();
+	  
+	  if(conn != null){
+		  Statement query;
+		  
+		  try {
+			
+			  query = conn.createStatement();
+			  
+			  String sql = "Update userlogin SET token = " + "'" + token + "'" +
+					  		" WHERE iduser = " + "'" + iduser + "'";
+			  	  
+			  query.executeUpdate(sql);
+			  check = true;
+			  
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}  	  
+	  }  
+	  return check;
+  }
+  
+  public static String getToken(String iduser){
+	  String result = null;
+	  conn = getInstance();
+	  
+	  if(conn != null){
+		  Statement query;
+		  
+		  try {
+			query = conn.createStatement();
+			
+			String sql = "SELECT token FROM userlogin WHERE iduser = " + "'" + iduser + "'";
+			ResultSet resultset = query.executeQuery(sql);
+			
+			while(resultset.next()){
+				result = resultset.getString(0);
+			}
+		  
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	  }
+
+	return result;  
+  }
+  
+  
+  
+  
 }
