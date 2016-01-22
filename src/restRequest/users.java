@@ -64,13 +64,18 @@ public class users {
 		//SQLConnection.getUserFromIdevent("1");
 		//SQLConnection.addUserToEvent("test3@test.de", "1");
 		//SQLConnection.deleteUserFromEvent("1","3");
-		Event event = new Event("Musik1","1",null,"platzhalter", "1", null);
-		//SQLConnection.updateEvent(event);
+		Event event = new Event("Zug1","3",null,"platzhalter", "1", null);
+		User user = new User("2","test2@test.de");
+		User user2 = new User("3","test3@test.de");
+		List<User> list = new LinkedList<User>();
+		list.add(user);
+		list.add(user2);
+		event.setUsers(list);
+		
+		SQLConnection.updateEvent(event);
 		
 		Expense expense = new Expense("2", "60", "Test2erfolgreich", "002", "platzhalter", "1");
 		/*
-		User user = new User(2,"test2@test.de");
-		User user2 = new User(1,"test1@test.de");
 		Map<User, String> map = new HashMap<>();
 		map.put(user, "50");
 		map.put(user2, "10");
@@ -88,7 +93,7 @@ public class users {
 		//SQLConnection.updateExpense(expense);
 		
 		//SQLConnection.setToken("1", "Token1erfolg");
-		SQLConnection.deleteToken("token2");
+		//SQLConnection.deleteToken("token2");
 		
 		return "Alice, Bob";
 	}

@@ -139,7 +139,7 @@ public class SQLConnection {
 			  e.printStackTrace();
 		  }
 	  }
-		  
+	  System.out.println(check);
 	  return check;
   }
   
@@ -196,7 +196,7 @@ public class SQLConnection {
   
   public static ArrayList<User> getUserFromEvent(Event event){
 	  User user = new User();
-	  ArrayList<User> list;
+	  ArrayList<User> list = new ArrayList<User>();
 	  conn = getInstance();
 	  
 	  if(conn != null){
@@ -214,15 +214,13 @@ public class SQLConnection {
 				  user.setId(result.getString(1));
 				  user.setEmail(result.getString(2));
 				  list.add(user);
+				  System.out.println(user.getId());
 			  }
 			  
 		  }catch(SQLException e){
 			  e.printStackTrace();
 		  }
-		  
-	  }
-	  
-	  
+	  }  
 	  return list;
   }
   
@@ -245,10 +243,10 @@ public class SQLConnection {
 		        	   addUserToEvent(user.getEmail(), event.getId());
 		           }
 		           for(User user2 : getUserFromEvent(event)){
-		        	   if(event.getUsers().contains(user));
-		           }
-		           
-		           
+		        	   if(event.getUsers().contains(user2) == false){
+		        		   deleteUserFromEvent(event.getId(), user2.getId());
+		        	   }
+		           }		                      
 		        }
 			
 			query.executeUpdate(sql);
@@ -419,7 +417,7 @@ public class SQLConnection {
 		  try{
 			  query = conn.createStatement();
 			  
-			  String sql = "Select idevent, name, idmoderator From event where idevent =" + "'" + idevent + "'";
+			  String sql = "Select idevent, name, description,idmoderator From event where idevent =" + "'" + idevent + "'";
 			  ResultSet result = query.executeQuery(sql);
 			  
 			  while(result.next()){
