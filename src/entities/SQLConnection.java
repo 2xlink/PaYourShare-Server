@@ -234,10 +234,11 @@ public class SQLConnection {
 		 try {
 			query = conn.createStatement();
 			
-			String sql = "Update event SET name =" + "'" + event.getName() + "'" +
+			String sql = "UPDATE event SET name = " + "'" + event.getName() + "'" +
 	  				" ,description = " + "'" + event.getDescription() + "'" +
-	  				" Where idevent = " +  "'" + event.getId() + "'";
-			  
+	  				" WHERE idevent = " +  "'" + event.getId() + "'";
+			System.out.println(sql);
+			query.executeUpdate(sql);  
 			  for (User user : event.getUsers()){
 		           if(existUserEvent(user.getId(), event.getId()) == false){
 		        	   addUserToEvent(user.getEmail(), event.getId());
@@ -249,7 +250,7 @@ public class SQLConnection {
 		           }		                      
 		        }
 			
-			query.executeUpdate(sql);
+			
 			check = false;
 			
 		} catch (SQLException e) {
@@ -445,7 +446,7 @@ public class SQLConnection {
 		  try{
 			  query = conn.createStatement();
 			  
-			  String sql = "Select ideventuser From eventuser where idevent = " + "'" + idevent + "'" + " and iduser = " + "'" + iduser + "'";
+			  String sql = "Select ideventuser From eventuser WHERE idevent = " + "'" + idevent + "'" + " AND iduser = " + "'" + iduser + "'";
 			  ResultSet result = query.executeQuery(sql);
 			  
 			  while(result.next()){
@@ -497,7 +498,7 @@ public class SQLConnection {
 			  
 			  String sql = "Select idexpense From ausgaben where idexpense = " + "'" + idexpense + "'";
 			  ResultSet result = query.executeQuery(sql);
-			  
+			  System.out.println(sql);
 			  while(result.next()){
 				  liste.add(result.getString("idexpense"));
 			  }
@@ -580,11 +581,6 @@ public class SQLConnection {
   
   public static ArrayList<Expense> getExpenseFromIdevent(String idevent){  
 	  conn = getInstance();
-	  String creatorId = null;
-	  String amount = null;
-	  String name = null;
-	  String expenseId = null;
-	  String type = null;
 	  ArrayList <Expense> liste = new ArrayList<Expense>();
 	  if(conn != null){
 		  Statement query;
@@ -798,5 +794,63 @@ public class SQLConnection {
 	  return check;
   }
   
+  
+  public static User getUserFromToken(String token){
+	  User user = new User();	  
+	  conn = getInstance();	  
+	  
+	  if(conn != null){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "Select u.iduser, name, u.email From userlogin ul" 
+					  		+ " join user u on u.iduser = ul.iduser"
+					  		+ " where token =" + "'" + token + "'";
+			  ResultSet result = query.executeQuery(sql);
+			  
+			  while(result.next()){
+				  user.setId(result.getString(1));
+				  user.setName(result.getString(2));
+				  user.setEmail(result.getString(3));
+			  }
+			  
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }		 
+	  }
+	  System.out.println(user.getId());
+	  if(user.getId() == null) user = null;
+	  return user;
+  }
+  
+  public static User getUserFromIduser(String iduser){
+	  User user = new User();	  
+	  conn = getInstance();	  
+	  
+	  if(conn != null){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "Select iduser, name, email From user" 
+					  		+ " where iduser =" + "'" + iduser + "'";
+			  ResultSet result = query.executeQuery(sql);
+			  
+			  while(result.next()){
+				  user.setId(result.getString(1));
+				  user.setName(result.getString(2));
+				  user.setEmail(result.getString(3));
+			  }
+			  
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }		 
+	  }
+
+	  if(user.getId() == null) user = null;	  
+	  return user;
+	  
+  }
   
 }
