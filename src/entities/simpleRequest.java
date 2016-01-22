@@ -4,7 +4,7 @@ import java.util.List;
 
 public class simpleRequest {
 	private String email;
-	private String pass;
+	private String password;
 	private String name;
 	private String token;
 	private String id;
@@ -31,10 +31,10 @@ public class simpleRequest {
 		this.email = email;
 	}
 	public String getPassword() {
-		return pass;
+		return password;
 	}
 	public void setPassword(String pass) {
-		this.pass = pass;
+		this.password = pass;
 	}
 
 	public String getName() {
@@ -117,14 +117,6 @@ public class simpleRequest {
 		this.type = type;
 	}
 
-	public List<Share> getShares() {
-		return shares;
-	}
-
-	public void setShares(List<Share> shares) {
-		this.shares = shares;
-	}
-
 	public String getId() {
 		return id;
 	}
@@ -139,5 +131,13 @@ public class simpleRequest {
 
 	public void setExpenses(List<Expense> expenses) {
 		this.expenses = expenses;
+	}
+
+	public List<ShareSimple> getShares() {
+		return shares;
+	}
+
+	public void setShares(List<ShareSimple> shares) {
+		this.shares = shares;
 	}
 }

@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import javax.persistence.Id;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ReportAsSingleViolation;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -47,12 +48,14 @@ public class userResource {
 		LoginResponse response = new LoginResponse("false", userId);
 		String hash_db = SQLConnection.getHashToEmail(req.getEmail());
 		
-		if (hash_db != null) {
-			String userPassword = req.getPassword();
-			Boolean isValid = Crypto.PasswordHash.validatePassword(userPassword, hash_db);
-			if (isValid) {
-				response.setStatus("true");
-			}
+		if (userId == null || hash_db == null) {
+			return response;
+		}
+		String userPassword = req.getPassword();
+		Boolean isValid = Crypto.PasswordHash.validatePassword(userPassword, hash_db);
+		
+		if (isValid) {
+			response.setStatus("true");
 		}
 		
 		String token = TokenGenerator.generate();
@@ -66,9 +69,10 @@ public class userResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public LoginResponse registerUser(simpleRequest req) throws NoSuchAlgorithmException, InvalidKeySpecException {
+		System.out.println("RegisterUser was called");
 		String id = req.getId();
 		String email = req.getEmail();
-		String name = req.getName(); //TODO: Name? :D
+		String name = email;
 		String password = req.getPassword();
 		LoginResponse response = new LoginResponse("false", null);
 		
@@ -77,10 +81,11 @@ public class userResource {
 				|| SQLConnection.getUsernameFromIduser(id) != null) { // id already exists
 			return response;
 		}
-		
+		System.out.println("pw hashing step");
 		// hash the new password
 		String pass_hashed = Crypto.PasswordHash.createHash(password);
 		
+		System.out.println("The password is " + pass_hashed);
 		// create the user in the db
 		if (!SQLConnection.createUser(name, email, password, id)) {
 			System.out.println("Error creating the user with " + name + email + pass_hashed + id);
@@ -91,7 +96,7 @@ public class userResource {
 		String token = TokenGenerator.generate();
 		response.setToken(token);
 		//TODO: Set token in db
-		
+		System.out.println("Registered user " + name + email + pass_hashed + id);
 		
 		return null;
 	}
