@@ -124,7 +124,7 @@ public class SQLConnection {
 		  Statement query;
 		  try{
 			  query = conn.createStatement();
-			  
+
 			  String sql = "INSERT INTO eventuser(ideventuser, idevent, iduser) " +
 	                    "VALUES(?, ?, ?)";
 		        PreparedStatement prepStatment2= conn.prepareStatement(sql);
@@ -132,27 +132,27 @@ public class SQLConnection {
 		        prepStatment2.setString(2, idevent);
 		        prepStatment2.setString(3, iduser);
 		        prepStatment2.executeUpdate();
-		        
+
 		       check = true; 
 		       
 		  }catch(SQLException e){
 			  e.printStackTrace();
 		  }
 	  }
-	  System.out.println(check);
+
 	  return check;
   }
   
   public static boolean deleteUserFromEvent(String idevent, String iduser){
 	  conn = getInstance();
 	  boolean check = false;
+	  
 	  if(conn != null && existUser(iduser)){
 		  Statement query;
 		  try{
 			  query = conn.createStatement();
-			  
 			  String sql = "DELETE FROM eventuser " +
-	                    "WHERE iduser = '" + iduser + "'" +
+	                    " WHERE iduser = '" + iduser + "'" +
 	                    " AND idevent = '" + idevent + "'";
 			  query.executeUpdate(sql);
 		       
@@ -205,16 +205,16 @@ public class SQLConnection {
 		  try{
 			  query = conn.createStatement();
 			  
-			  String sql = "Select iduser, name, email From user u "
-			  		 	+ "Join eventuser eu on u.iduser = eu.iduser"
-					  	+ "where idevent =" + "'" + event.getId() + "'";
+			  String sql = "SELECT u.iduser, u.name, u.email From user u "
+			  		 	+ " JOIN eventuser eu on u.iduser = eu.iduser"
+					  	+ " WHERE eu.idevent = " + "'" + event.getId() + "'";
 			  ResultSet result = query.executeQuery(sql);
-			  
 			  while(result.next()){
 				  user.setId(result.getString(1));
-				  user.setEmail(result.getString(2));
+				  user.setName(result.getString(2));
+				  user.setEmail(result.getString(3));
+				  //list.add(new User(result.getString(1), result.getString(3)));
 				  list.add(user);
-				  System.out.println(user.getId());
 			  }
 			  
 		  }catch(SQLException e){
@@ -227,7 +227,7 @@ public class SQLConnection {
   public static boolean updateEvent(Event event){
 	  boolean check = false;
 	  conn = getInstance();
-	  
+	    
 	  if(conn != null){
 		 Statement query;
 		 
@@ -236,9 +236,8 @@ public class SQLConnection {
 			
 			String sql = "UPDATE event SET name = " + "'" + event.getName() + "'" +
 	  				" ,description = " + "'" + event.getDescription() + "'" +
-	  				" WHERE idevent = " +  "'" + event.getId() + "'";
-			System.out.println(sql);
-			query.executeUpdate(sql);  
+	  				" WHERE idevent = " +  "'" + event.getId() + "'";		
+			query.executeUpdate(sql);
 			  for (User user : event.getUsers()){
 		           if(existUserEvent(user.getId(), event.getId()) == false){
 		        	   addUserToEvent(user.getEmail(), event.getId());
@@ -247,6 +246,7 @@ public class SQLConnection {
 		        	   if(event.getUsers().contains(user2) == false){
 		        		   deleteUserFromEvent(event.getId(), user2.getId());
 		        	   }
+		        	   
 		           }		                      
 		        }
 			
@@ -270,7 +270,7 @@ public class SQLConnection {
 		  Statement query;
 		  try {
 			query = conn.createStatement();
-			
+			System.out.println("test1");
 			String sql ="Select iduser From eventuser Where idevent = " + "'" + idevent + "'";
 			ResultSet result = query.executeQuery(sql);
 			
@@ -282,7 +282,7 @@ public class SQLConnection {
 			e.printStackTrace();
 		}
 	  }
-	  
+
 	  
 	  return liste;
   }
@@ -445,10 +445,9 @@ public class SQLConnection {
 		  Statement query;
 		  try{
 			  query = conn.createStatement();
-			  
 			  String sql = "Select ideventuser From eventuser WHERE idevent = " + "'" + idevent + "'" + " AND iduser = " + "'" + iduser + "'";
 			  ResultSet result = query.executeQuery(sql);
-			  
+
 			  while(result.next()){
 				  liste.add(result.getString("ideventuser"));
 			  }
@@ -547,15 +546,16 @@ public class SQLConnection {
 	    {
 	      try {
 	 
-	        String sql = "INSERT INTO ausgaben(idexpense, idevent, name, betrag, idcreator) " +
-	                     "VALUES(?, ?, ?, ?, ?)";
+	        String sql = "INSERT INTO ausgaben(idexpense, idevent, name, descripion, betrag, idcreator) " +
+	                     "VALUES(?, ?, ?, ?, ?, ?)";
 	        PreparedStatement preparedStatement = conn.prepareStatement(sql);
 	        // Erstes Fragezeichen durch "firstName" Parameter ersetzen
 	        preparedStatement.setString(1, expense.getExpenseId());
 	        preparedStatement.setString(2, expense.getEventId());
 	        preparedStatement.setString(3, expense.getName());
-	        preparedStatement.setString(4, expense.getAmount());
-	        preparedStatement.setString(5, expense.getCreatorId());
+	        preparedStatement.setString(4, expense.getType());
+	        preparedStatement.setString(5, expense.getAmount());
+	        preparedStatement.setString(6, expense.getCreatorId());
 	        // SQL ausf�hren.
 	        preparedStatement.executeUpdate();
 	        
@@ -819,9 +819,6 @@ public class SQLConnection {
 		  }		 
 	  }
 	  if(user.getId() == null) user = null;
-	  System.out.println(user.getName());
-	  System.out.println(user.getId());
-	  System.out.println(user.getEmail());
 	  return user;
   }
   
