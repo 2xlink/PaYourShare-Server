@@ -829,9 +829,9 @@ public class SQLConnection {
   }
   
   public static User getUserFromToken(String token){
-	  User user = new User();	  
+	  User user = new User();
+	  boolean check = false;
 	  conn = getInstance();	  
-	  
 	  if(conn != null && existTotoken(token)){
 		  Statement query;
 		  try{
@@ -846,12 +846,12 @@ public class SQLConnection {
 			  }
 			  
 			  user = getUserFromIduser(user.getId());
-			  
+			  check = true;
 		  }catch(SQLException e){
 			  e.printStackTrace();
 		  }		 
 	  }
-	  if(user.getId() == null) user = null;
+	  if(check == false) user = null;
 	  return user;
   }
   

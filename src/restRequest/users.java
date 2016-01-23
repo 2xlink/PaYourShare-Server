@@ -86,7 +86,6 @@ public class users {
 		list.add(share);
 		expense.setShares(list);
 		*/
-		
 		//SQLConnection.createExpense(expense);
 		//SQLConnection.deleteExpense(expense);
 		//SQLConnection.addUserToExpense("002", "3", "676");
@@ -95,6 +94,7 @@ public class users {
 		
 		//SQLConnection.setToken("1", "Token1erfolg");
 		//SQLConnection.deleteToken("token2");
+		//SQLConnection.getUserFromToken("token3");
 		
 		return "Alice, Bob";
 	}
