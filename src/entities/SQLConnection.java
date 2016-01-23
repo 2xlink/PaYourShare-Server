@@ -803,12 +803,36 @@ public class SQLConnection {
 	  return check;
   }
   
+  private static boolean existTotoken(String token){
+	  boolean check = false;
+	  conn = getInstance();
+	  String iduser = null;
+	  
+	  if(conn != null){
+		  Statement query;
+		  
+		  try {
+			  query = conn.createStatement();
+			  
+			  String sql = "SELECT iduser FROM userlogin WHERE token = " + "'" + token + "'";
+			  ResultSet result = query.executeQuery(sql);
+			  
+			  while(result.next()){
+				  iduser = result.getString("iduser");
+			  }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+	  }
+	  if(iduser != null) check = true;
+	  return check;
+  }
   
   public static User getUserFromToken(String token){
 	  User user = new User();	  
 	  conn = getInstance();	  
 	  
-	  if(conn != null){
+	  if(conn != null && existTotoken(token)){
 		  Statement query;
 		  try{
 			  query = conn.createStatement();

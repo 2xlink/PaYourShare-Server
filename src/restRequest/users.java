@@ -73,7 +73,7 @@ public class users {
 		list.add(user);
 		list.add(user2);
 		event.setUsers(list);
-		SQLConnection.updateEvent(event);
+		//SQLConnection.updateEvent(event);
 		 
 		Expense expense = new Expense("2", "60", "Test2erfolgreich", "002", "platzhalter", "1");
 		/*
