@@ -67,14 +67,14 @@ public class users {
 		//SQLConnection.getUserFromToken("token3");
 		//SQLConnection.getUserFromIduser("3");
 		Event event = new Event("Zug1","2",null,"platzhalter", "1", null);
-		User user = new User("2","test2@test.de");
+		User user = new User("1","test1@test.de");
 		User user2 = new User("3","test3@test.de");
 		List<User> list = new LinkedList<User>();
 		list.add(user);
 		list.add(user2);
 		event.setUsers(list);
 		SQLConnection.updateEvent(event);
-		
+		 
 		Expense expense = new Expense("2", "60", "Test2erfolgreich", "002", "platzhalter", "1");
 		/*
 		Map<User, String> map = new HashMap<>();

@@ -11,6 +11,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 import java.util.UUID;
+
+import javax.swing.plaf.synth.SynthSpinnerUI;
 	 
 public class SQLConnection {
  
@@ -119,7 +121,9 @@ public class SQLConnection {
 	  boolean check = false;
 	  String iduser = getIduserFromEmail(email);
 	  String ideventuser = UUID.randomUUID().toString();
-	  
+	  System.out.println("Iduser: " + iduser);
+	  System.out.println("Email: " + email);
+	  System.out.println("ExistUser: " + existUserEvent(iduser, ideventuser));
 	  if(conn != null && existUserEvent(iduser, idevent)){
 		  Statement query;
 		  try{
@@ -146,8 +150,7 @@ public class SQLConnection {
   public static boolean deleteUserFromEvent(String idevent, String iduser){
 	  conn = getInstance();
 	  boolean check = false;
-	  
-	  if(conn != null && existUser(iduser)){
+	  if(conn != null && (existUser(iduser) == false)){
 		  Statement query;
 		  try{
 			  query = conn.createStatement();
@@ -210,11 +213,11 @@ public class SQLConnection {
 					  	+ " WHERE eu.idevent = " + "'" + event.getId() + "'";
 			  ResultSet result = query.executeQuery(sql);
 			  while(result.next()){
-				  user.setId(result.getString(1));
-				  user.setName(result.getString(2));
-				  user.setEmail(result.getString(3));
-				  //list.add(new User(result.getString(1), result.getString(3)));
-				  list.add(user);
+				  //user.setId(result.getString(1));
+				  //user.setName(result.getString(2));
+				  //user.setEmail(result.getString(3));
+				  list.add(new User(result.getString(1), result.getString(3)));
+				  //list.add(user);
 			  }
 			  
 		  }catch(SQLException e){
@@ -238,19 +241,27 @@ public class SQLConnection {
 	  				" ,description = " + "'" + event.getDescription() + "'" +
 	  				" WHERE idevent = " +  "'" + event.getId() + "'";		
 			query.executeUpdate(sql);
+			  
+			
+			  //Add User to server
 			  for (User user : event.getUsers()){
-		           if(existUserEvent(user.getId(), event.getId()) == false){
+		           if(existUserEvent(user.getId(), event.getId())){
 		        	   addUserToEvent(user.getEmail(), event.getId());
 		           }
-		           for(User user2 : getUserFromEvent(event)){
-		        	   if(event.getUsers().contains(user2) == false){
-		        		   deleteUserFromEvent(event.getId(), user2.getId());
-		        	   }
-		        	   
-		           }		                      
-		        }
-			
-			
+		      }
+			  
+			  //Delete User from Server
+			  for(String iduser : getUserFromIdevent(event.getId())){
+				  boolean contains = false;
+				  for(int i=0; i<event.getUsers().size(); i++){
+					  if(iduser.equals(event.getUsers().get(i).getId())){
+						  contains = true;
+					  }
+				  }
+				  if(contains == false){
+					  deleteUserFromEvent(event.getId(), iduser);
+				  }
+			  }
 			check = false;
 			
 		} catch (SQLException e) {
@@ -270,7 +281,6 @@ public class SQLConnection {
 		  Statement query;
 		  try {
 			query = conn.createStatement();
-			System.out.println("test1");
 			String sql ="Select iduser From eventuser Where idevent = " + "'" + idevent + "'";
 			ResultSet result = query.executeQuery(sql);
 			
@@ -447,7 +457,6 @@ public class SQLConnection {
 			  query = conn.createStatement();
 			  String sql = "Select ideventuser From eventuser WHERE idevent = " + "'" + idevent + "'" + " AND iduser = " + "'" + iduser + "'";
 			  ResultSet result = query.executeQuery(sql);
-
 			  while(result.next()){
 				  liste.add(result.getString("ideventuser"));
 			  }
