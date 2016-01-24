@@ -4,20 +4,20 @@ import java.security.SecureRandom;
 
 public class TokenGenerator {
 	public static String generate() {
-	    SecureRandom random = new SecureRandom();
-	    byte bytes[] = new byte[20];
-	    random.nextBytes(bytes);
-	    
+		SecureRandom random = new SecureRandom();
+		byte bytes[] = new byte[20];
+		random.nextBytes(bytes);
+
 		String stringToken = "";
-		for(byte b: bytes) { 
-			 stringToken += b;
-			} 
-		
+		for (byte b : bytes) {
+			stringToken += b;
+		}
+
 		System.out.println("Generated token: " + stringToken);
-	    return stringToken;
+		return stringToken;
 	}
-	
-   public static void main(String[] args) {
-	   System.out.println(generate());
-   }
+
+	public static void main(String[] args) {
+		System.out.println(generate());
+	}
 }

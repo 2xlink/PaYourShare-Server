@@ -2,19 +2,12 @@ package restRequest;
 
 import entities.*;
 
-import java.util.List;
 import org.json.*;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.swing.undo.StateEdit;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
@@ -35,9 +28,9 @@ public class eventResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public StatusResponse createEvent(simpleRequest req) throws JSONException {
 		System.out.println(req.getName());
-		for (User u : req.getUsers()) {
-			System.out.println(u.getEmail());
-		}
+//		for (User u : req.getUsers()) {
+//			System.out.println(u.getEmail());
+//		}
 		User user = SQLConnection.getUserFromToken(req.getToken());
 		if (user == null) {
 			System.out.println("The user does not exist");
@@ -73,7 +66,6 @@ public class eventResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public StatusResponse updateEvent(simpleRequest req) {
 		System.out.println("UpdateEvent called.");
-		String token = req.getToken();
 		String eventId = req.getId(); 
 		User user = SQLConnection.getUserFromToken(req.getToken());
 		if (user == null) {

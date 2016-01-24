@@ -1,29 +1,16 @@
 package restRequest;
 
 import entities.*;
-import entities.Error;
-import Crypto.PasswordHash;
 import Crypto.TokenGenerator;
 
-import java.security.CryptoPrimitive;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
-
-import javax.persistence.Id;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ReportAsSingleViolation;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
@@ -96,21 +83,6 @@ public class userResource {
 		return new LoginResponse("true", id, token);
 	}
 
-//	@Path("create")
-//	@POST
-//	@Produces(MediaType.APPLICATION_JSON)
-//	// @Consumes(MediaType.APPLICATION_JSON)
-//	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-//	public LoginResponse createUser(@FormParam("name") String name, @FormParam("email") String email,
-//			@FormParam("password") String pass) {
-//		if (SQLConnection.createUser(name, email, pass)) {   //createUser(name,email,password,id)
-//			return new LoginResponse("true", SQLConnection.getIduserFromEmail(email));
-//		} else {
-//			System.out.println("Failed to create user.");
-//			return new LoginResponse("Failed to create user.", null);
-//		}
-//	}
-
 	@Path("exists")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
@@ -127,6 +99,7 @@ public class userResource {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private Boolean isUserFromId(String id) {
 		return SQLConnection.getUsernameFromIduser(id) != null;
 	}
@@ -144,14 +117,31 @@ public class userResource {
 		}
 		String userId = user.getId();
 		List<String> eventsListString = SQLConnection.getEventsFromIduser(userId.toString()); // returns a list of EventIDs
-		List<Event> eventsList = new ArrayList<Event>();
+		List<Event> eventList = new ArrayList<Event>();
 		
 		System.out.println("eventsList: " + eventsListString);
 
 		for (String thisEventId : eventsListString) {
 			System.out.println(thisEventId);
-			eventsList.add(SQLConnection.getEventFromIdevent(thisEventId.toString()));
+			Event thisEvent = SQLConnection.getEventFromIdevent(thisEventId.toString());
+			// due to inconsistencies we need to add the users seperately
+			thisEvent.setUsers(SQLConnection.getUserFromEvent(thisEvent));
+			eventList.add(thisEvent);
 		}
-		return new EventListResponse("true", eventsList);
+		return new EventListResponse("true", eventList);
 	}
+	
+//	@Path("info")
+//	@POST
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public UserInfoResponse getInfoFromUser(simpleRequest req) {
+//		System.out.println("GetInfo called");
+//		String token = req.getToken();
+//		User user = SQLConnection.getUserFromToken(token);
+//		if (user == null) {
+//			return new UserInfoResponse("false", null);
+//		}
+//		
+//	}
 }

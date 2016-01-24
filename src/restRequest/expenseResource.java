@@ -1,23 +1,15 @@
 package restRequest;
 
 import entities.*;
-import entities.Error;
-
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
@@ -46,6 +38,7 @@ public class expenseResource {
         String userId = user.getId();
         String creatorId = userId;
         // maybe also check here if the user is allowed to do this
+        // for example if he is in the event where the expense is created
         
         // create the new expense
         System.out.println(creatorId+ req.getAmount()+ req.getName()+ req.getId()+ req.getType()+ req.getEventId());
@@ -101,7 +94,7 @@ public class expenseResource {
         Expense expense = new Expense(creatorId, req.getAmount(), req.getName(), req.getId(), req.getType(), req.getEventId(), shares);
         
         boolean noerrors;
-        noerrors = SQLConnection.createExpense(expense);
+        noerrors = SQLConnection.updateExpense(expense);
 
         return noerrors? new StatusResponse("true") : new StatusResponse("false");
     }

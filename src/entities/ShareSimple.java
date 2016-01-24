@@ -1,7 +1,7 @@
 package entities;
 
 public class ShareSimple {
-	private String id;
+	private String id; // this is the id of the corresponding user
 	private String share;
 	
 	public ShareSimple() {}
