@@ -59,7 +59,7 @@ public class userResource {
 		}
 		
 		String token = TokenGenerator.generate();
-		SQLConnection.setToken(userId, userPassword);
+		SQLConnection.setToken(userId, token);
 		return new LoginResponse("true", userId, token);
 	}
 
@@ -84,13 +84,14 @@ public class userResource {
 		String pass_hashed = Crypto.PasswordHash.createHash(pass_plain);
 		
 		System.out.println("The password is " + pass_hashed);
+		String token = TokenGenerator.generate();
 		// create the user in the db
-		if (!SQLConnection.createUser(name, email, pass_hashed, id, pass_hashed)) {
+		if (!SQLConnection.createUser(name, email, pass_hashed, id, token)) {
 			System.out.println("Error creating the user with " + name + email + pass_hashed + id);
 			return new LoginResponse("false", null, null);
 		}
 		
-		String token = TokenGenerator.generate();
+		
 		System.out.println("Registered user " + name + email + pass_hashed + id);
 		return new LoginResponse("true", id, token);
 	}
@@ -134,22 +135,23 @@ public class userResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public GetEventsResponse getEventsFromUser(simpleRequest req) {
+	public EventListResponse getEventsFromUser(simpleRequest req) {
 		System.out.println("GetEvents called");
-		String token = SQLConnection.getToken(req.getId());
-		String userId = req.getId();
-		if (token != userId || userId == null) {
-			return new GetEventsResponse("false", null);
+		String token = req.getToken();
+		User user = SQLConnection.getUserFromToken(token);
+		if (user == null) {
+			return new EventListResponse("false", null);
 		}
+		String userId = user.getId();
 		List<String> eventsListString = SQLConnection.getEventsFromIduser(userId.toString()); // returns a list of EventIDs
 		List<Event> eventsList = new ArrayList<Event>();
 		
-		System.out.println("a" + eventsListString);
+		System.out.println("eventsList: " + eventsListString);
 
 		for (String thisEventId : eventsListString) {
 			System.out.println(thisEventId);
 			eventsList.add(SQLConnection.getEventFromIdevent(thisEventId.toString()));
 		}
-		return new GetEventsResponse("true", eventsList);
+		return new EventListResponse("true", eventsList);
 	}
 }

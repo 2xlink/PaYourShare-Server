@@ -6,8 +6,8 @@ import java.util.Map;
 public class Share {
 	private Map<User, String> map = new HashMap<>();
 	
-	public Share(){
-		
+	public Share(Map<User, String> map){
+		setMap(map);
 	}
 
 	public Map<User, String> getMap() {

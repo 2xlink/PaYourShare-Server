@@ -2,11 +2,11 @@ package entities;
 
 import java.util.List;
 
-public class GetEventsResponse {
+public class EventListResponse {
 	private String status;
 	private List<Event> eventList;
 	
-	public GetEventsResponse(String status, List<Event> eventList) {
+	public EventListResponse(String status, List<Event> eventList) {
 		setStatus(status);
 		setEventList(eventList);
 	}

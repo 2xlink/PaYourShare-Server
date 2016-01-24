@@ -38,10 +38,13 @@ public class eventResource {
 		for (User u : req.getUsers()) {
 			System.out.println(u.getEmail());
 		}
-//		String token = SQLConnection.getToken(req.getId());
-//		TODO: String userId = SQLConnection.getIdFromToken();
-		
-		String eventId = req.getId(); //TODO: Maybe use eventId here to avoid confusion
+		User user = SQLConnection.getUserFromToken(req.getToken());
+		if (user == null) {
+			System.out.println("The user does not exist");
+			return new StatusResponse("false");
+		}
+		String creatorId = user.getId();
+		String eventId = req.getId(); 
 		
 		// do some checks ...
 		if (SQLConnection.getEventFromIdevent(eventId) != null) {
@@ -51,8 +54,10 @@ public class eventResource {
 		
 		boolean noerrors = true;
 		// create the event and add users to it
-		noerrors = SQLConnection.createEvent(req.getName(), req.getCreatorId(), eventId, req.getDesc());
+		noerrors = SQLConnection.createEvent(req.getName(), creatorId, eventId, req.getDesc());
 		for (User thisUser : req.getUsers()) {
+			// do not try to add the creator to the event, as he is already in it
+			if (thisUser.getId().equals(req.getCreatorId())) { continue; }
 			noerrors = noerrors && SQLConnection.addUserToEvent(thisUser.getEmail(), eventId);
 		}
 		
@@ -67,22 +72,33 @@ public class eventResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public StatusResponse updateEvent(simpleRequest req) {
-		String userId = SQLConnection.getToken(req.getId());
-		String eventId = req.getId(); //TODO: Maybe use eventId here to avoid confusion
+		System.out.println("UpdateEvent called.");
+		String token = req.getToken();
+		String eventId = req.getId(); 
+		User user = SQLConnection.getUserFromToken(req.getToken());
+		if (user == null) {
+			System.out.println("The user does not exist");
+			return new StatusResponse("false");
+		}
+		String userId = user.getId();
 		
 		// do some checks ...
 		Event originalEvent = SQLConnection.getEventFromIdevent(eventId);
-		if (originalEvent == null
-				|| originalEvent.getCreatorId() != userId) {
+		if (originalEvent == null || userId == null) {
+			System.out.println("1 " + originalEvent + userId);
+			return new StatusResponse("false");
+		}
+		if (!userId.equals(originalEvent.getCreatorId())) {
+			System.out.println("2 " + userId + originalEvent.getCreatorId());
 			return new StatusResponse("false");
 		}
 		
 		Event event = new Event(req.getName(), req.getId(), req.getUsers(), req.getDesc(), req.getCreatorId(), req.getExpenses());
 		
 		boolean noerrors = true;
+		System.out.println("Trying to write event to database");
 		noerrors = SQLConnection.updateEvent(event);
-		
-		
+		System.out.println(noerrors);
 		
 		return noerrors? new StatusResponse("true") :
 			new StatusResponse("false");
