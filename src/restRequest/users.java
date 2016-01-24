@@ -68,29 +68,31 @@ public class users {
 		//SQLConnection.getUserFromIduser("3");
 		Event event = new Event("Zug1","2",null,"platzhalter", "1", null);
 		User user = new User("1","test1@test.de");
-		User user2 = new User("3","test3@test.de");
+		User user2 = new User("2","test2@test.de");
 		List<User> list = new LinkedList<User>();
 		list.add(user);
 		list.add(user2);
 		event.setUsers(list);
 		//SQLConnection.updateEvent(event);
 		 
-		Expense expense = new Expense("2", "60", "Test2erfolgreich", "002", "platzhalter", "1");
-		/*
+		Expense expense = new Expense("2", "60", "Test2erfolgreich", "002", "platzhalter", "1", null);
+		
 		Map<User, String> map = new HashMap<>();
 		map.put(user, "50");
 		map.put(user2, "10");
 		Share share = new Share();
 		share.setMap(map);
-		List<Share> list = new LinkedList<Share>();
-		list.add(share);
-		expense.setShares(list);
-		*/
+		List<Share> list2 = new LinkedList<Share>();
+		list2.add(share);
+		expense.setShares(list2);
+		
 		//SQLConnection.createExpense(expense);
 		//SQLConnection.deleteExpense(expense);
 		//SQLConnection.addUserToExpense("002", "3", "676");
 		//SQLConnection.deleteUserFromExpense("002", "3");
 		//SQLConnection.updateExpense(expense);
+		SQLConnection.getExpenseFromIdevent("2");
+		
 		
 		//SQLConnection.setToken("1", "Token1erfolg");
 		//SQLConnection.deleteToken("token2");
