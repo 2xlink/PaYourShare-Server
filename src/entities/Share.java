@@ -9,6 +9,9 @@ public class Share {
 	public Share(Map<User, String> map){
 		setMap(map);
 	}
+	public Share(Map<User, String> map){
+		this.map = map;
+	}
 
 	public Map<User, String> getMap() {
 		return map;

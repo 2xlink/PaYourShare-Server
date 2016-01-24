@@ -13,13 +13,14 @@ public class Expense {
 	private List<Share> shares;
 	
 	public Expense() {}
-	public Expense(String creatorId, String amount,String name,String expenseId,String type,String eventId){
+	public Expense(String creatorId, String amount,String name,String expenseId,String type,String eventId, List<Share> shares){
 	this.creatorId = creatorId;
 	this.amount = amount;
 	this.name = name;
 	this.expenseId = expenseId;
 	this.type = type;
 	this.eventId = eventId;
+	this.shares = shares;
 	}
 	
 
