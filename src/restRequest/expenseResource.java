@@ -49,7 +49,6 @@ public class expenseResource {
         
         // create the new expense
         System.out.println(creatorId+ req.getAmount()+ req.getName()+ req.getId()+ req.getType()+ req.getEventId());
-        Expense expense = new Expense(creatorId, req.getAmount(), req.getName(), req.getId(), req.getType(), req.getEventId());
         
         System.out.println("Adding shares");
         List<Share> shares = new LinkedList<>();
@@ -60,7 +59,7 @@ public class expenseResource {
                     thisshare.getShare());
             shares.add(new Share(thismap));
         }
-        expense.setShares(shares);
+        Expense expense = new Expense(creatorId, req.getAmount(), req.getName(), req.getId(), req.getType(), req.getEventId(), shares);
         
         boolean noerrors = true;
         try {
@@ -90,8 +89,6 @@ public class expenseResource {
         String creatorId = userId;
         // maybe also check here if the user is allowed to do this
         
-        Expense expense = new Expense(creatorId, req.getAmount(), req.getName(), req.getId(), req.getType(), req.getEventId());
-        
         System.out.println("Adding shares");
         List<Share> shares = new LinkedList<>();
         for (ShareSimple thisshare : req.getShares()) {
@@ -101,7 +98,7 @@ public class expenseResource {
                     thisshare.getShare());
             shares.add(new Share(thismap));
         }
-        expense.setShares(shares);
+        Expense expense = new Expense(creatorId, req.getAmount(), req.getName(), req.getId(), req.getType(), req.getEventId(), shares);
         
         boolean noerrors;
         noerrors = SQLConnection.createExpense(expense);
