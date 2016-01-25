@@ -266,13 +266,43 @@ public class SQLConnection {
 					  deleteUserFromEvent(event.getId(), iduser);
 				  }
 			  }
-			check = false;
+			check = true;
 			
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}	  
 	  }
+	  
+	  return check;
+  }
+  
+  private static boolean deleteEvent(Event event){
+	  boolean check = false;
+	  conn = getInstance();
+	  
+	  if(conn != null){
+		  Statement query;
+		  
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "DELETE FROM event WHERE idevent= " + "'" + event.getId() + "'";
+			  String sql2 = "DELETE FROM eventuser WHERE idevent = " + "'" + event.getId() + "'";
+			  
+			  query.executeUpdate(sql);
+			  query.executeUpdate(sql2);
+			  
+			  
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }
+		  
+		  for(int i=0; i<event.getExpenses().size(); i++){
+		  	deleteExpense(event.getExpenses().get(i));
+		  }
+	  }
+	  
 	  
 	  return check;
   }
@@ -450,7 +480,7 @@ public class SQLConnection {
 	  return event;
   }
   
-  public static boolean existUserEvent(String iduser, String idevent){
+  private static boolean existUserEvent(String iduser, String idevent){
 	  boolean check = true;
 	  ArrayList<String>	liste = new ArrayList<String>();
 	  conn = getInstance();	  
@@ -473,7 +503,7 @@ public class SQLConnection {
 	  return check;
   }
   
-  public static boolean existUser(String iduser){
+  private static boolean existUser(String iduser){
 	  boolean check = true;
 	  ArrayList<String>	liste = new ArrayList<String>();
 	  conn = getInstance();	  
@@ -498,7 +528,7 @@ public class SQLConnection {
 	  return check;
   }
   
-  public static boolean existExpense(String idexpense){
+  private static boolean existExpense(String idexpense){
 	  boolean check = true;
 	  ArrayList<String>	liste = new ArrayList<String>();
 	  conn = getInstance();	  
@@ -523,7 +553,7 @@ public class SQLConnection {
 	  return check;
   }
   
-  public static boolean existExpenseUser(String iduser, String idexpense){
+  private static boolean existExpenseUser(String iduser, String idexpense){
 	  boolean check = true;
 	  ArrayList<String>	liste = new ArrayList<String>();
 	  conn = getInstance();	  
@@ -552,6 +582,7 @@ public class SQLConnection {
   public static boolean createExpense(Expense expense){
 	  //String idexpense= UUID.randomUUID().toString();
 	  String idexpenseuser = UUID.randomUUID().toString();
+	  boolean check = false;
 	  
 	  conn = getInstance();
 	 
@@ -582,12 +613,13 @@ public class SQLConnection {
 	        preparedStatement.close();
 	        prepStatment2.close();
 	        
+	        check = true;
 	 
 	      } catch (SQLException e) {
 	    	  e.printStackTrace();	        
 	      }
 	    }
-	  return true;
+	  return check;
   }
   
   public static ArrayList<Expense> getExpenseFromIdevent(String idevent){  
@@ -615,13 +647,6 @@ public class SQLConnection {
 	  for(int i=0; i<liste.size(); i++){
 		  System.out.println("Expense: " + liste.get(i).getName());
 		  System.out.println("Expenseuser:");
-		  int t=0;
-		  for(Entry<User,String> entry : liste.get(i).getShares().get(t).getMap().entrySet()){
-			  
-			 // System.out.println("User: " + entry.getKey().getId());
-			 // System.out.println(t);
-			  t++;
-		  }
 		  for(int z=0; z<liste.get(i).getShares().size(); z++){
 			  
 			  for(Entry<User,String> entry : liste.get(i).getShares().get(z).getMap().entrySet()){
