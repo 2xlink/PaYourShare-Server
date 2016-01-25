@@ -644,15 +644,12 @@ public class SQLConnection {
 	  /*
 	  for(int i=0; i<liste.size(); i++){
 		  System.out.println("Expense: " + liste.get(i).getName());
-		  System.out.println("Expenseuser:");
-		  for(int z=0; z<liste.get(i).getShares().size(); z++){
-			  
-			  for(Entry<User,String> entry : liste.get(i).getShares().get(z).getMap().entrySet()){
-				  System.out.println("User: " + entry.getKey().getId());
-			  }			  
-		  }	  
-	  }
-	  */	  
+		  System.out.println("Expenseuser:");  
+			  for(ShareSimple share : liste.get(i).getShares()){
+				  System.out.println("User: " + share.getId());
+			  }			    
+	  }	
+	  */  
 	  return liste;
   }
   
@@ -672,12 +669,12 @@ public class SQLConnection {
 			  				" Where idexpense = " +  "'" + expense.getExpenseId() + "'";
 			  int i=0;
 			  
-			  for (Entry<User, String> entry : expense.getShares().get(i).getMap().entrySet()){
+			  for (ShareSimple share  : expense.getShares()){
 		            i++;
 		            
-		            String sql2 = "Update ausgabenuser SET betrag = " + "'" + entry.getValue() + "'" +
+		            String sql2 = "Update ausgabenuser SET betrag = " + "'" + share.getShare()+ "'" +
 		            				" WHERE idexpense = " + "'" + expense.getExpenseId() +"'" +
-		            				"AND iduser = " + "'" + entry.getKey().getId() + "'";
+		            				"AND iduser = " + "'" + share.getId() + "'";
 		            query.executeUpdate(sql2);
 		            
 		        }
@@ -718,10 +715,10 @@ public class SQLConnection {
 	  return check;	  
   }
   
-  public static List<Share> getShareFromIdexpense(String idexpense){
+  public static List<ShareSimple> getShareFromIdexpense(String idexpense){
 	  //User user;
 	  ArrayList<User> list = new ArrayList<User>();
-	  List<Share> list2 = new LinkedList<Share>();
+	  List<ShareSimple> list2 = new LinkedList<ShareSimple>();
 	  conn = getInstance();
 	  
 	  if(conn != null){
@@ -737,9 +734,9 @@ public class SQLConnection {
 				  //list.add(new User(result.getString(1), result.getString(3)));
 				  
 				  
-				  Map<User,String>map = new HashMap<User,String>();
-				  map.put(new User(result.getString(1), result.getString(3)), result.getString(4));
-				  list2.add(new Share(map));
+				  //Map<User,String>map = new HashMap<User,String>();
+				  //map.put(new User(result.getString(1), result.getString(3)), result.getString(4));
+				  list2.add(new ShareSimple(result.getString(1), result.getString(4)));
 				  //list2.add(new Share(new User(result.getString(1), result.getString(3)), result.getString(4)));
 				  
 			  }

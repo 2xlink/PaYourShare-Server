@@ -14,6 +14,7 @@ import entities.Event;
 import entities.Expense;
 import entities.SQLConnection;
 import entities.Share;
+import entities.ShareSimple;
 import entities.User;
 
 // Plain old Java Object it does not extend as class or implements 
@@ -76,14 +77,20 @@ public class users {
 		//SQLConnection.updateEvent(event);
 		 
 		Expense expense = new Expense("2", "60", "Test2erfolgreich", "002", "platzhalter", "1", null);
-		
+		/*
 		Map<User, String> map = new HashMap<>();
 		map.put(user, "50");
 		map.put(user2, "10");
 		Share share = new Share();
 		share.setMap(map);
 		List<Share> list2 = new LinkedList<Share>();
+		*/
+		ShareSimple share = new ShareSimple("1","50");
+		ShareSimple share2 = new ShareSimple("2","10");
+		
+		List<ShareSimple> list2 = new LinkedList<ShareSimple>();
 		list2.add(share);
+		list2.add(share2);
 		expense.setShares(list2);
 		
 		//SQLConnection.createExpense(expense);
