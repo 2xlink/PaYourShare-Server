@@ -24,12 +24,22 @@ public class expenseResource {
     @Context
     Request request;
 
+    private boolean isUserInEvent(User user, Event event) {
+    	return SQLConnection.getUserFromEvent(event).contains(user);
+    }
+    
     @Path("create")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public StatusResponse createExpense(simpleRequest req) {
         System.out.println("ExpenseCreate called.");
+        if 	   (req.getToken() == null || req.getAmount() == null || 
+        		req.getName() == null || req.getId() == null || 
+        		req.getType() == null || req.getEventId() == null) {
+        	System.out.println("CreateExpense called without providing all parameters.");
+        	return new StatusResponse("false");
+        }
         User user = SQLConnection.getUserFromToken(req.getToken());
         if (user == null) {
             return new StatusResponse("false");
@@ -37,8 +47,11 @@ public class expenseResource {
         
         String userId = user.getId();
         String creatorId = userId;
-        // maybe also check here if the user is allowed to do this
-        // for example if he is in the event where the expense is created
+        Event event = SQLConnection.getEventFromIdevent(req.getEventId());
+        if (!isUserInEvent(user, event)) {
+        	System.out.println("User is not in event.");
+        	return new StatusResponse("false");
+		}
         
         // create the new expense
         System.out.println(creatorId+ req.getAmount()+ req.getName()+ req.getId()+ req.getType()+ req.getEventId());
@@ -72,15 +85,24 @@ public class expenseResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public StatusResponse updateExpense(simpleRequest req) { 
     	System.out.println("updateExpense called.");
+        if 	   (req.getToken() == null || req.getAmount() == null || 
+        		req.getName() == null || req.getId() == null || 
+        		req.getType() == null || req.getEventId() == null) {
+        	System.out.println("UpdateExpense called without providing all parameters.");
+        	return new StatusResponse("false");
+        }
         User user = SQLConnection.getUserFromToken(req.getToken());
         if (user == null) {
-        	System.out.println("Token is not valid " + req.getToken());
-            return new StatusResponse("false"); 
+            return new StatusResponse("false");
         }
         
         String userId = user.getId();
         String creatorId = userId;
-        // maybe also check here if the user is allowed to do this
+        Event event = SQLConnection.getEventFromIdevent(req.getEventId());
+        if (!isUserInEvent(user, event)) {
+        	System.out.println("User is not in event.");
+        	return new StatusResponse("false");
+		}
         
         System.out.println("Adding shares");
         List<Share> shares = new LinkedList<>();
