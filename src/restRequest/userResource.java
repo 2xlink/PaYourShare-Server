@@ -124,8 +124,9 @@ public class userResource {
 		for (String thisEventId : eventsListString) {
 			System.out.println(thisEventId);
 			Event thisEvent = SQLConnection.getEventFromIdevent(thisEventId.toString());
-			// due to inconsistencies we need to add the users seperately
+			// due to inconsistencies we need to add the users and expenses seperately
 			thisEvent.setUsers(SQLConnection.getUserFromEvent(thisEvent));
+			thisEvent.setExpenses(SQLConnection.getExpenseFromIdevent(thisEventId));
 			eventList.add(thisEvent);
 		}
 		return new EventListResponse("true", eventList);

@@ -86,9 +86,10 @@ public class eventResource {
 		}
 		
 		Event event = new Event(req.getName(), req.getId(), req.getUsers(), req.getDesc(), req.getCreatorId(), req.getExpenses());
+		event.setExpenses(SQLConnection.getExpenseFromIdevent(eventId));
 		
 		boolean noerrors = true;
-		System.out.println("Trying to write event to database");
+		System.out.println("Trying to write event to database.");
 		noerrors = SQLConnection.updateEvent(event);
 		System.out.println(noerrors);
 		

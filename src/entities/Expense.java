@@ -10,10 +10,11 @@ public class Expense {
 	private String expenseId;
 	private String type;
 	private String eventId;
-	private List<Share> shares;
+	private List<ShareSimple> shares;
 	
 	public Expense() {}
-	public Expense(String creatorId, String amount,String name,String expenseId,String type,String eventId, List<Share> shares){
+	public Expense(String creatorId, String amount,String name,
+			String expenseId,String type,String eventId, List<ShareSimple> shares){
 	this.creatorId = creatorId;
 	this.amount = amount;
 	this.name = name;
@@ -64,11 +65,11 @@ public class Expense {
 		this.type = type;
 	}
 
-	public List<Share> getShares() {
+	public List<ShareSimple> getShares() {
 		return shares;
 	}
 
-	public void setShares(List<Share> shares) {
+	public void setShares(List<ShareSimple> shares) {
 		this.shares = shares;
 	}
 

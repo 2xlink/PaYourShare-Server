@@ -11,6 +11,7 @@ public class User {
 	public User(String id, String email) {
 		setId(id);
 		setEmail(email);
+		setName(email);
 	}
 
 	public String getId() {

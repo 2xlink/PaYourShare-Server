@@ -25,7 +25,14 @@ public class expenseResource {
     Request request;
 
     private boolean isUserInEvent(User user, Event event) {
-    	return SQLConnection.getUserFromEvent(event).contains(user);
+    	boolean check = false;
+    	List<User> eventUsers = SQLConnection.getUserFromEvent(event);
+    	System.out.println("Checking if " + user + " is in event.");
+    	for (User thisUser : eventUsers) {
+    		System.out.println("For " + thisUser);
+			check = check || thisUser.getId().equals(user.getId());
+		}
+    	return check;
     }
     
     @Path("create")
