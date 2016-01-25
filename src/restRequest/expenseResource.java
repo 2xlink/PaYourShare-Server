@@ -63,16 +63,16 @@ public class expenseResource {
         // create the new expense
         System.out.println(creatorId+ req.getAmount()+ req.getName()+ req.getId()+ req.getType()+ req.getEventId());
         
-        System.out.println("Adding shares");
-        List<Share> shares = new LinkedList<>();
-        for (ShareSimple thisshare : req.getShares()) {
-            System.out.println("Share for " + thisshare.getId());
-            Map<User, String> thismap = new HashMap<>();
-            thismap.put(SQLConnection.getUserFromIduser(thisshare.getId()), 
-                    thisshare.getShare());
-            shares.add(new Share(thismap));
-        }
-        Expense expense = new Expense(creatorId, req.getAmount(), req.getName(), req.getId(), req.getType(), req.getEventId(), shares);
+//        System.out.println("Adding shares");
+//        List<Share> shares = new LinkedList<>();
+//        for (ShareSimple thisshare : req.getShares()) {
+//            System.out.println("Share for " + thisshare.getId());
+//            Map<User, String> thismap = new HashMap<>();
+//            thismap.put(SQLConnection.getUserFromIduser(thisshare.getId()), 
+//                    thisshare.getShare());
+//            shares.add(new Share(thismap));
+//        }
+        Expense expense = new Expense(creatorId, req.getAmount(), req.getName(), req.getId(), req.getType(), req.getEventId(), req.getShares());
         
         boolean noerrors = true;
         try {
@@ -111,16 +111,16 @@ public class expenseResource {
         	return new StatusResponse("false");
 		}
         
-        System.out.println("Adding shares");
-        List<Share> shares = new LinkedList<>();
-        for (ShareSimple thisshare : req.getShares()) {
-            System.out.println("Share for " + thisshare.getId());
-            Map<User, String> thismap = new HashMap<>();
-            thismap.put(SQLConnection.getUserFromIduser(thisshare.getId()), 
-                    thisshare.getShare());
-            shares.add(new Share(thismap));
-        }
-        Expense expense = new Expense(creatorId, req.getAmount(), req.getName(), req.getId(), req.getType(), req.getEventId(), shares);
+//        System.out.println("Adding shares");
+//        List<Share> shares = new LinkedList<>();
+//        for (ShareSimple thisshare : req.getShares()) {
+//            System.out.println("Share for " + thisshare.getId());
+//            Map<User, String> thismap = new HashMap<>();
+//            thismap.put(SQLConnection.getUserFromIduser(thisshare.getId()), 
+//                    thisshare.getShare());
+//            shares.add(new Share(thismap));
+//        }
+        Expense expense = new Expense(creatorId, req.getAmount(), req.getName(), req.getId(), req.getType(), req.getEventId(), req.getShares());
         
         boolean noerrors;
         noerrors = SQLConnection.updateExpense(expense);

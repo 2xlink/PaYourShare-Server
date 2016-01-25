@@ -13,6 +13,21 @@ public class User {
 		setEmail(email);
 		setName(email);
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+//	    if (obj == null) {
+//	        return false;
+//	    }
+//	    if (getClass() != obj.getClass()) {
+//	        return false;
+//	    }
+	    final User other = (User) obj;
+	    if (!this.getId().equals(other.getId())) {
+	        return false;
+	    }
+	    return true;
+	}
 
 	public String getId() {
 		return id;

@@ -4,6 +4,9 @@ import entities.*;
 
 import org.json.*;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -82,6 +85,38 @@ public class eventResource {
 		}
 		if (!userId.equals(originalEvent.getCreatorId())) {
 			System.out.println("2 " + userId + originalEvent.getCreatorId());
+			return new StatusResponse("false");
+		}
+		List<User> newUsers = req.getUsers();
+		List<User> oldUsers = SQLConnection.getUserFromEvent(originalEvent);
+		System.out.println("old");
+		for (User user2 : oldUsers) {
+			System.out.println(user2.getEmail() + user2.getId() + user2.getName());
+		}
+		System.out.println("new");
+		for (User user2 : newUsers) {
+			System.out.println(user2.getEmail() + user2.getId() + user2.getName());
+		}
+		oldUsers.removeAll(newUsers);
+		System.out.println("cleaned");
+		for (User user2 : oldUsers) {
+			System.out.println(user2.getEmail() + user2.getId() + user2.getName());
+		}
+//		System.out.println(oldUsers.get(0).equals(newUsers.get(0)));
+		boolean modified = false;
+		for (User thisUser : oldUsers) { // we check for every user that was deleted ...
+			List<Expense> eventExpenses = SQLConnection.getExpenseFromIdevent(eventId);
+			for (Expense thisExpense : eventExpenses) { // in every expense of this event
+				List<ShareSimple> expenseShares = thisExpense.getShares();
+				for (ShareSimple thisShare : expenseShares) { // and every share in every expense
+					if (thisShare.getId().equals(thisUser.getId())) { // whether this share is the user's
+						modified = modified || thisShare.getShare() != "0"; // and then set modified to true if his share is not zero
+					}
+				}
+			}
+		}
+		if (modified) {
+			System.out.println("Wanted to remove a user who still has shares.");
 			return new StatusResponse("false");
 		}
 		
