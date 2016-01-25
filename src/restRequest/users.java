@@ -78,6 +78,7 @@ public class users {
 		event.setUsers(list); 
 		Expense expense = new Expense("1", "60", "Tickets", "1", "platzhalter", "2", null);
 		Expense expense2 = new Expense("1", "10", "Popcorn", "2", "platzhalter", "2", null);
+		//Expense expense3 = new Expense("2", "2", "Doof", "9", "platzhalter", "2", null);
 		/*
 		Map<User, String> map = new HashMap<>();
 		map.put(user, "50");
@@ -91,20 +92,25 @@ public class users {
 		ShareSimple share2 = new ShareSimple("2","30");
 		ShareSimple share3 = new ShareSimple("1","5");
 		ShareSimple share4 = new ShareSimple("3","5");
+		ShareSimple share5 = new ShareSimple("2", "2");
 		
 		List<ShareSimple> list2 = new LinkedList<ShareSimple>();
 		List<ShareSimple> list21 = new LinkedList<ShareSimple>();
+		List<ShareSimple> list22 = new LinkedList<ShareSimple>();
 		list2.add(share);
 		//list2.add(share2);
 		list21.add(share3);
 		//list21.add(share4);
+		list22.add(share5);
 		expense.setShares(list2);
 		expense2.setShares(list21);
+		//expense3.setShares(list22);
+		
 		
 		List<Expense> list3 = new LinkedList<Expense>();
 		list3.add(expense);
 		list3.add(expense2);
-		
+		//list3.add(expense3);
 		event.setExpenses(list3);
 		
 		//SQLConnection.updateEvent(event);

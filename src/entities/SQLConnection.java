@@ -293,6 +293,25 @@ public class SQLConnection {
 					  }
 				  }
 			  }
+			  //Add Expense to Event
+			  for(Expense expense : event.getExpenses()){
+				  if(!existExpenseEvent(expense.getExpenseId(), expense.getEventId())){
+					  createExpense(expense);
+				  }
+			  }
+			  //Delete Expense to Event
+			  for(Expense expense : getExpenseFromIdevent(event.getId())){
+				  boolean contains = false;
+				  for(Expense expenseapp : event.getExpenses()){
+					  if(expense.getExpenseId().equals(expenseapp.getExpenseId())){
+						  contains = true;
+					  }
+				  }
+				  if(!contains){
+					  deleteExpense(expense);
+				  }
+			  }
+			  
 			  
 			check = true;
 			
@@ -567,7 +586,31 @@ public class SQLConnection {
 			  
 			  String sql = "Select idexpense From ausgaben where idexpense = " + "'" + idexpense + "'";
 			  ResultSet result = query.executeQuery(sql);
-			  System.out.println(sql);
+			  while(result.next()){
+				  liste.add(result.getString("idexpense"));
+			  }
+			  
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }			 
+	  }
+	  if(liste.size() != 1) check = false;
+	  return check;
+  }
+  
+  private static boolean existExpenseEvent(String idexpense, String idevent){
+	  boolean check = true;
+	  ArrayList<String>	liste = new ArrayList<String>();
+	  conn = getInstance();	  
+	  
+	  if(conn != null){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "Select idexpense From ausgaben where idexpense = " + "'" + idexpense + "'"
+					  		+ " AND idevent = "	+ "'" + idevent + "'";
+			  ResultSet result = query.executeQuery(sql);
 			  while(result.next()){
 				  liste.add(result.getString("idexpense"));
 			  }
