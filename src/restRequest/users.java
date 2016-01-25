@@ -70,13 +70,14 @@ public class users {
 		Event event = new Event("Zug1","2",null,"platzhalter", "1", null);
 		User user = new User("1","test1@test.de");
 		User user2 = new User("2","test2@test.de");
+		User user3 = new User("3","test3@test.de");
 		List<User> list = new LinkedList<User>();
 		list.add(user);
 		list.add(user2);
-		event.setUsers(list);
-		//SQLConnection.updateEvent(event);
-		 
-		Expense expense = new Expense("2", "60", "Test2erfolgreich", "002", "platzhalter", "1", null);
+		list.add(user3);
+		event.setUsers(list); 
+		Expense expense = new Expense("1", "60", "Tickets", "1", "platzhalter", "2", null);
+		Expense expense2 = new Expense("1", "10", "Popcorn", "2", "platzhalter", "2", null);
 		/*
 		Map<User, String> map = new HashMap<>();
 		map.put(user, "50");
@@ -85,20 +86,33 @@ public class users {
 		share.setMap(map);
 		List<Share> list2 = new LinkedList<Share>();
 		*/
-		ShareSimple share = new ShareSimple("1","50");
-		ShareSimple share2 = new ShareSimple("2","10");
+		ShareSimple share = new ShareSimple("1","30");
+		ShareSimple share2 = new ShareSimple("2","30");
+		ShareSimple share3 = new ShareSimple("1","5");
+		ShareSimple share4 = new ShareSimple("3","5");
 		
 		List<ShareSimple> list2 = new LinkedList<ShareSimple>();
+		List<ShareSimple> list21 = new LinkedList<ShareSimple>();
 		list2.add(share);
 		list2.add(share2);
+		list21.add(share3);
+		list21.add(share4);
 		expense.setShares(list2);
+		expense2.setShares(list21);
 		
+		List<Expense> list3 = new LinkedList<Expense>();
+		list3.add(expense);
+		list3.add(expense2);
+		
+		event.setExpenses(list3);
+		
+		SQLConnection.updateEvent(event);
 		//SQLConnection.createExpense(expense);
 		//SQLConnection.deleteExpense(expense);
 		//SQLConnection.addUserToExpense("002", "3", "676");
 		//SQLConnection.deleteUserFromExpense("002", "3");
 		//SQLConnection.updateExpense(expense);
-		SQLConnection.getExpenseFromIdevent("2");
+		//SQLConnection.getExpenseFromIdevent("2");
 		
 		
 		//SQLConnection.setToken("1", "Token1erfolg");

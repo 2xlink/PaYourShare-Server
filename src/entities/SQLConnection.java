@@ -251,6 +251,14 @@ public class SQLConnection {
 			  for (User user : event.getUsers()){
 		           if(existUserEvent(user.getId(), event.getId())){
 		        	   addUserToEvent(user.getEmail(), event.getId());
+		        	   for(Expense expense : event.getExpenses()){
+		        		   	for(ShareSimple share : expense.getShares()){
+		        		   		System.out.println("test1");
+		        		   		if(existExpenseUser(user.getId(), expense.getExpenseId()))
+		        		   			System.out.println(user.getId());
+		        		   			addUserToExpense(expense.getExpenseId(), user.getId(), share.getShare());
+		        	   		}
+		        	   }
 		           }
 		      }
 			  
@@ -264,12 +272,17 @@ public class SQLConnection {
 				  }
 				  if(contains == false){
 					  deleteUserFromEvent(event.getId(), iduser);
+					  for(Expense expense : event.getExpenses()){
+						  for(ShareSimple share : expense.getShares()){
+							  deleteUserFromExpense(expense.getExpenseId(), iduser);
+						  }
+					  }
 				  }
 			  }
+			  
 			check = true;
 			
 		} catch (SQLException e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}	  
 	  }
@@ -567,7 +580,7 @@ public class SQLConnection {
 			  ResultSet result = query.executeQuery(sql);
 			  
 			  while(result.next()){
-				  liste.add(result.getString("ideventuser"));
+				  liste.add(result.getString("idexpenseuser"));
 			  }
 			  
 		  }catch(SQLException e){
@@ -601,6 +614,12 @@ public class SQLConnection {
 	        preparedStatement.setString(6, expense.getCreatorId());
 	        preparedStatement.executeUpdate();
 	        
+	        
+	        for(ShareSimple share : expense.getShares()){
+	        	addUserToExpense(expense.getExpenseId(), share.getId(), share.getShare());
+	        }
+	        
+	        /*
 	        String sql2 = "INSERT INTO ausgabenuser(idexpenseuser, iduser, idexpense, betrag) " +
                     "VALUES(?, ?, ?, ?)";
 	        PreparedStatement prepStatment2= conn.prepareStatement(sql2);
@@ -609,9 +628,9 @@ public class SQLConnection {
 	        prepStatment2.setString(3, expense.getExpenseId());
 	        prepStatment2.setString(4, expense.getAmount());
 	        prepStatment2.executeUpdate();
-	        
+	        */
 	        preparedStatement.close();
-	        prepStatment2.close();
+	        //prepStatment2.close();
 	        
 	        check = true;
 	 
@@ -684,7 +703,6 @@ public class SQLConnection {
 			  check = true;			  			  
 			  
 		} catch (SQLException e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}		  		  
 	  }	  
@@ -823,7 +841,6 @@ public class SQLConnection {
 			  check = true;
 			  
 		} catch (SQLException e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}  	  
 	  }  
