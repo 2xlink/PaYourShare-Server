@@ -641,9 +641,7 @@ public class SQLConnection {
 			e.printStackTrace();
 		}
 	  }
-	  
-	 // Expense expense = new Expense(creatorId,amount, name, expenseId, "0", idevent);
-	  
+	  /*
 	  for(int i=0; i<liste.size(); i++){
 		  System.out.println("Expense: " + liste.get(i).getName());
 		  System.out.println("Expenseuser:");
@@ -651,13 +649,10 @@ public class SQLConnection {
 			  
 			  for(Entry<User,String> entry : liste.get(i).getShares().get(z).getMap().entrySet()){
 				  System.out.println("User: " + entry.getKey().getId());
-			  }
-			  
-			  
-		  }
-		  
-		  
+			  }			  
+		  }	  
 	  }
+	  */	  
 	  return liste;
   }
   
