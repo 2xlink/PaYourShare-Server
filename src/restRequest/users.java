@@ -86,6 +86,7 @@ public class users {
 		share.setMap(map);
 		List<Share> list2 = new LinkedList<Share>();
 		*/
+		
 		ShareSimple share = new ShareSimple("1","30");
 		ShareSimple share2 = new ShareSimple("2","30");
 		ShareSimple share3 = new ShareSimple("1","5");
@@ -94,9 +95,9 @@ public class users {
 		List<ShareSimple> list2 = new LinkedList<ShareSimple>();
 		List<ShareSimple> list21 = new LinkedList<ShareSimple>();
 		list2.add(share);
-		list2.add(share2);
+		//list2.add(share2);
 		list21.add(share3);
-		list21.add(share4);
+		//list21.add(share4);
 		expense.setShares(list2);
 		expense2.setShares(list21);
 		
@@ -106,7 +107,7 @@ public class users {
 		
 		event.setExpenses(list3);
 		
-		SQLConnection.updateEvent(event);
+		//SQLConnection.updateEvent(event);
 		//SQLConnection.createExpense(expense);
 		//SQLConnection.deleteExpense(expense);
 		//SQLConnection.addUserToExpense("002", "3", "676");

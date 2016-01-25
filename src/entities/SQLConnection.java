@@ -247,22 +247,20 @@ public class SQLConnection {
 			query.executeUpdate(sql);
 			  
 			
-			  //Add User to server
+			  //Add User to Event
 			  for (User user : event.getUsers()){
 		           if(existUserEvent(user.getId(), event.getId())){
-		        	   addUserToEvent(user.getEmail(), event.getId());
-		        	   for(Expense expense : event.getExpenses()){
-		        		   	for(ShareSimple share : expense.getShares()){
-		        		   		System.out.println("test1");
-		        		   		if(existExpenseUser(user.getId(), expense.getExpenseId()))
-		        		   			System.out.println(user.getId());
-		        		   			addUserToExpense(expense.getExpenseId(), user.getId(), share.getShare());
-		        	   		}
-		        	   }
+		        	   addUserToEvent(user.getEmail(), event.getId());  
 		           }
 		      }
-			  
-			  //Delete User from Server
+			  //Add User to Expense
+			  for(Expense expense : event.getExpenses()){
+				  for(ShareSimple share : expense.getShares()){	  
+					  if(existExpenseUser(share.getId(), expense.getExpenseId()))
+					  addUserToExpense(expense.getExpenseId(), share.getId(), share.getShare());
+				  }
+		       }
+			  //Delete User from Event
 			  for(String iduser : getUserFromIdevent(event.getId())){
 				  boolean contains = false;
 				  for(int i=0; i<event.getUsers().size(); i++){
@@ -276,6 +274,22 @@ public class SQLConnection {
 						  for(ShareSimple share : expense.getShares()){
 							  deleteUserFromExpense(expense.getExpenseId(), iduser);
 						  }
+					  }
+				  }
+			  }
+			  //Delete User from Expense
+			  for(Expense expense : getExpenseFromIdevent(event.getId())){
+				  for(ShareSimple share : getShareFromIdexpense(expense.getExpenseId())){
+					  boolean contains = false;
+					  for(Expense expenseapp : event.getExpenses()){
+						  for(ShareSimple shareapp : expenseapp.getShares()){
+							  if(share.getId().equals(shareapp.getId())){
+								  contains = true;								  
+							  }
+						  }
+					  }
+					  if(contains == false){
+						  deleteUserFromShare(share.getId(), expense.getExpenseId());
 					  }
 				  }
 			  }
@@ -974,4 +988,26 @@ public class SQLConnection {
 	  
   }
   
+  public static boolean deleteUserFromShare(String iduser, String idexpense){
+	  conn = getInstance();
+	  boolean check = false;
+	  if(conn != null && !existExpenseUser(iduser, idexpense)){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+
+			  String sql = "DELETE FROM ausgabenuser " +
+	                    "WHERE iduser = '" + iduser + "'" +
+	                    " AND idexpense = '" + idexpense + "'";
+			  query.executeUpdate(sql);
+		       
+		      check = true; 
+		       
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }
+	  }
+	  
+	  return check;
+  }
 }
