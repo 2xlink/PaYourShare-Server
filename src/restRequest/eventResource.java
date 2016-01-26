@@ -51,10 +51,13 @@ public class eventResource {
 		boolean noerrors = true;
 		// create the event and add users to it
 		noerrors = SQLConnection.createEvent(req.getName(), creatorId, eventId, req.getDesc());
+		System.out.println("Created Event: " + noerrors);
 		for (User thisUser : req.getUsers()) {
 			// do not try to add the creator to the event, as he is already in it
-			if (thisUser.getId().equals(req.getCreatorId())) { continue; }
+			if (thisUser.getId().equals(creatorId)) { continue; }
+			System.out.println("Adding user " + thisUser.getEmail());
 			noerrors = noerrors && SQLConnection.addUserToEvent(thisUser.getEmail(), eventId);
+			System.out.println(noerrors);
 		}
 		
 		System.out.println(noerrors);

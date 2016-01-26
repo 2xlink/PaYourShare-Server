@@ -254,9 +254,9 @@ public class SQLConnection {
 		        	   for(Expense expense : event.getExpenses()){
 		        		   	for(ShareSimple share : expense.getShares()){
 		        		   		System.out.println("test1");
-		        		   		if(existExpenseUser(user.getId(), expense.getExpenseId()))
+		        		   		if(existExpenseUser(user.getId(), expense.getId()))
 		        		   			System.out.println(user.getId());
-		        		   			addUserToExpense(expense.getExpenseId(), user.getId(), share.getShare());
+		        		   			addUserToExpense(expense.getId(), user.getId(), share.getShare());
 		        	   		}
 		        	   }
 		           }
@@ -274,7 +274,7 @@ public class SQLConnection {
 					  deleteUserFromEvent(event.getId(), iduser);
 					  for(Expense expense : event.getExpenses()){
 						  for(ShareSimple share : expense.getShares()){
-							  deleteUserFromExpense(expense.getExpenseId(), iduser);
+							  deleteUserFromExpense(expense.getId(), iduser);
 						  }
 					  }
 				  }
@@ -606,7 +606,7 @@ public class SQLConnection {
 	        String sql = "INSERT INTO ausgaben(idexpense, idevent, name, description, betrag, idcreator) " +
 	                     "VALUES(?, ?, ?, ?, ?, ?)";
 	        PreparedStatement preparedStatement = conn.prepareStatement(sql);
-	        preparedStatement.setString(1, expense.getExpenseId());
+	        preparedStatement.setString(1, expense.getId());
 	        preparedStatement.setString(2, expense.getEventId());
 	        preparedStatement.setString(3, expense.getName());
 	        preparedStatement.setString(4, expense.getType());
@@ -616,7 +616,7 @@ public class SQLConnection {
 	        
 	        
 	        for(ShareSimple share : expense.getShares()){
-	        	addUserToExpense(expense.getExpenseId(), share.getId(), share.getShare());
+	        	addUserToExpense(expense.getId(), share.getId(), share.getShare());
 	        }
 	        
 	        /*
@@ -685,14 +685,14 @@ public class SQLConnection {
 			  				" ,betrag = " + "'" + expense.getAmount() + "'" +
 			  				" ,description = " + "'" + expense.getType() + "'" +
 			  				" ,idevent = " + "'" + expense.getEventId() + "'" + 
-			  				" Where idexpense = " +  "'" + expense.getExpenseId() + "'";
+			  				" Where idexpense = " +  "'" + expense.getId() + "'";
 			  int i=0;
 			  
 			  for (ShareSimple share  : expense.getShares()){
 		            i++;
 		            
 		            String sql2 = "Update ausgabenuser SET betrag = " + "'" + share.getShare()+ "'" +
-		            				" WHERE idexpense = " + "'" + expense.getExpenseId() +"'" +
+		            				" WHERE idexpense = " + "'" + expense.getId() +"'" +
 		            				"AND iduser = " + "'" + share.getId() + "'";
 		            query.executeUpdate(sql2);
 		            
@@ -712,15 +712,15 @@ public class SQLConnection {
   public static boolean deleteExpense(Expense expense){
 	  conn = getInstance();
 	  boolean check = false;
-	  if(conn != null && existExpense(expense.getExpenseId())){
+	  if(conn != null && existExpense(expense.getId())){
 		  Statement query;
 		  try{
 			  query = conn.createStatement();
 			  
 			  String sql = "DELETE FROM ausgaben " +
-	                    "WHERE idexpense = '" + expense.getExpenseId() + "'";
+	                    "WHERE idexpense = '" + expense.getId() + "'";
 			  String sql2 = "DELETE FROM ausgabenuser " +
-	                    "Where idexpense = " + "'" + expense.getExpenseId() + "'";
+	                    "Where idexpense = " + "'" + expense.getId() + "'";
 			  query.executeUpdate(sql);
 		      query.executeUpdate(sql2);
 		      check = true; 

@@ -7,18 +7,18 @@ public class Expense {
 	private String creatorId;
 	private String amount;
 	private String name;
-	private String expenseId;
+	private String id;
 	private String type;
 	private String eventId;
 	private List<ShareSimple> shares;
 	
 	public Expense() {}
 	public Expense(String creatorId, String amount,String name,
-			String expenseId,String type,String eventId, List<ShareSimple> shares){
+			String id,String type,String eventId, List<ShareSimple> shares){
 	this.creatorId = creatorId;
 	this.amount = amount;
 	this.name = name;
-	this.expenseId = expenseId;
+	this.id = id;
 	this.type = type;
 	this.eventId = eventId;
 	this.shares = shares;
@@ -49,12 +49,12 @@ public class Expense {
 		this.name = name;
 	}
 
-	public String getExpenseId() {
-		return expenseId;
+	public String getId() {
+		return id;
 	}
 
-	public void setExpenseId(String expenseId) {
-		this.expenseId = expenseId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getType() {
