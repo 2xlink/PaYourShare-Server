@@ -247,22 +247,20 @@ public class SQLConnection {
 			query.executeUpdate(sql);
 			  
 			
-			  //Add User to server
+			  //Add User to Event
 			  for (User user : event.getUsers()){
 		           if(existUserEvent(user.getId(), event.getId())){
-		        	   addUserToEvent(user.getEmail(), event.getId());
-		        	   for(Expense expense : event.getExpenses()){
-		        		   	for(ShareSimple share : expense.getShares()){
-		        		   		System.out.println("test1");
-		        		   		if(existExpenseUser(user.getId(), expense.getId()))
-		        		   			System.out.println(user.getId());
-		        		   			addUserToExpense(expense.getId(), user.getId(), share.getShare());
-		        	   		}
-		        	   }
+		        	   addUserToEvent(user.getEmail(), event.getId());  
 		           }
 		      }
-			  
-			  //Delete User from Server
+			  //Add User to Expense
+			  for(Expense expense : event.getExpenses()){
+				  for(ShareSimple share : expense.getShares()){	  
+					  if(existExpenseUser(share.getId(), expense.getId()))
+					  addUserToExpense(expense.getId(), share.getId(), share.getShare());
+				  }
+		       }
+			  //Delete User from Event
 			  for(String iduser : getUserFromIdevent(event.getId())){
 				  boolean contains = false;
 				  for(int i=0; i<event.getUsers().size(); i++){
@@ -279,6 +277,41 @@ public class SQLConnection {
 					  }
 				  }
 			  }
+			  //Delete User from Expense
+			  for(Expense expense : getExpenseFromIdevent(event.getId())){
+				  for(ShareSimple share : getShareFromIdexpense(expense.getId())){
+					  boolean contains = false;
+					  for(Expense expenseapp : event.getExpenses()){
+						  for(ShareSimple shareapp : expenseapp.getShares()){
+							  if(share.getId().equals(shareapp.getId())){
+								  contains = true;								  
+							  }
+						  }
+					  }
+					  if(contains == false){
+						  deleteUserFromShare(share.getId(), expense.getId());
+					  }
+				  }
+			  }
+			  //Add Expense to Event
+			  for(Expense expense : event.getExpenses()){
+				  if(!existExpenseEvent(expense.getId(), expense.getEventId())){
+					  createExpense(expense);
+				  }
+			  }
+			  //Delete Expense to Event
+			  for(Expense expense : getExpenseFromIdevent(event.getId())){
+				  boolean contains = false;
+				  for(Expense expenseapp : event.getExpenses()){
+					  if(expense.getId().equals(expenseapp.getId())){
+						  contains = true;
+					  }
+				  }
+				  if(!contains){
+					  deleteExpense(expense);
+				  }
+			  }
+			  
 			  
 			check = true;
 			
@@ -553,7 +586,31 @@ public class SQLConnection {
 			  
 			  String sql = "Select idexpense From ausgaben where idexpense = " + "'" + idexpense + "'";
 			  ResultSet result = query.executeQuery(sql);
-			  System.out.println(sql);
+			  while(result.next()){
+				  liste.add(result.getString("idexpense"));
+			  }
+			  
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }			 
+	  }
+	  if(liste.size() != 1) check = false;
+	  return check;
+  }
+  
+  private static boolean existExpenseEvent(String idexpense, String idevent){
+	  boolean check = true;
+	  ArrayList<String>	liste = new ArrayList<String>();
+	  conn = getInstance();	  
+	  
+	  if(conn != null){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+			  
+			  String sql = "Select idexpense From ausgaben where idexpense = " + "'" + idexpense + "'"
+					  		+ " AND idevent = "	+ "'" + idevent + "'";
+			  ResultSet result = query.executeQuery(sql);
 			  while(result.next()){
 				  liste.add(result.getString("idexpense"));
 			  }
@@ -625,7 +682,7 @@ public class SQLConnection {
 	        PreparedStatement prepStatment2= conn.prepareStatement(sql2);
 	        prepStatment2.setString(1, idexpenseuser);
 	        prepStatment2.setString(2, expense.getCreatorId());
-	        prepStatment2.setString(3, expense.getExpenseId());
+	        prepStatment2.setString(3, expense.getId());
 	        prepStatment2.setString(4, expense.getAmount());
 	        prepStatment2.executeUpdate();
 	        */
@@ -974,4 +1031,26 @@ public class SQLConnection {
 	  
   }
   
+  public static boolean deleteUserFromShare(String iduser, String idexpense){
+	  conn = getInstance();
+	  boolean check = false;
+	  if(conn != null && !existExpenseUser(iduser, idexpense)){
+		  Statement query;
+		  try{
+			  query = conn.createStatement();
+
+			  String sql = "DELETE FROM ausgabenuser " +
+	                    "WHERE iduser = '" + iduser + "'" +
+	                    " AND idexpense = '" + idexpense + "'";
+			  query.executeUpdate(sql);
+		       
+		      check = true; 
+		       
+		  }catch(SQLException e){
+			  e.printStackTrace();
+		  }
+	  }
+	  
+	  return check;
+  }
 }
