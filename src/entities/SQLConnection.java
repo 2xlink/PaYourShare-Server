@@ -54,7 +54,7 @@ public class SQLConnection {
   }
  
  
-  public static boolean createEvent(String name, String idcreator, String idevent, String description){
+  public static boolean createEvent(String name, String idcreator, String idevent, String description, String version){
 	  String ideventuser = UUID.randomUUID().toString();
 	  boolean check = false;
 	  //String idevent = UUID.randomUUID().toString();
@@ -64,14 +64,15 @@ public class SQLConnection {
 	    {
 	      try {
 	 
-	        String sql = "INSERT INTO event(idevent, name, description,idmoderator) " +
-	                     "VALUES(?, ?, ?, ?)";
+	        String sql = "INSERT INTO event(idevent, name, description, idmoderator, version) " +
+	                     "VALUES(?, ?, ?, ?, ?)";
 	        PreparedStatement preparedStatement = conn.prepareStatement(sql);
 	        // Erstes Fragezeichen durch "firstName" Parameter ersetzen
 	        preparedStatement.setString(1, idevent);
 	        preparedStatement.setString(2, name);
 	        preparedStatement.setString(3, description);
 	        preparedStatement.setString(4, idcreator);
+	        preparedStatement.setString(5, version);
 	        // SQL ausf�hren.
 	        preparedStatement.executeUpdate();
 	        
@@ -231,6 +232,7 @@ public class SQLConnection {
 	  return list;
   }
   
+  //todo update version of the expense if needed
   public static boolean updateEvent(Event event){
 	  boolean check = false;
 	  conn = getInstance();
@@ -243,6 +245,7 @@ public class SQLConnection {
 			
 			String sql = "UPDATE event SET name = " + "'" + event.getName() + "'" +
 	  				" ,description = " + "'" + event.getDescription() + "'" +
+					" ,version = " + "'" + event.getVersion() + "'" +
 	  				" WHERE idevent = " +  "'" + event.getId() + "'";		
 			query.executeUpdate(sql);
 			  
@@ -508,14 +511,15 @@ public class SQLConnection {
 		  try{
 			  query = conn.createStatement();
 			  
-			  String sql = "Select idevent, name, description,idmoderator From event where idevent =" + "'" + idevent + "'";
+			  String sql = "Select idevent, name, description,idmoderator, version From event where idevent =" + "'" + idevent + "'";
 			  ResultSet result = query.executeQuery(sql);
 			  
 			  while(result.next()){
 				  event.setId(result.getString(1));
 				  event.setName(result.getString(2));
 				  event.setDescription(result.getString(3));
-				  event.setCreatorId(result.getString(4));	  
+				  event.setCreatorId(result.getString(4));
+				  event.setVersion(result.getString(5));
 			  }
 			  
 		  }catch(SQLException e){
@@ -660,8 +664,8 @@ public class SQLConnection {
 	    {
 	      try {
 	 
-	        String sql = "INSERT INTO ausgaben(idexpense, idevent, name, description, betrag, idcreator) " +
-	                     "VALUES(?, ?, ?, ?, ?, ?)";
+	        String sql = "INSERT INTO ausgaben(idexpense, idevent, name, description, betrag, idcreator, version) " +
+	                     "VALUES(?, ?, ?, ?, ?, ?, ?)";
 	        PreparedStatement preparedStatement = conn.prepareStatement(sql);
 	        preparedStatement.setString(1, expense.getId());
 	        preparedStatement.setString(2, expense.getEventId());
@@ -669,6 +673,7 @@ public class SQLConnection {
 	        preparedStatement.setString(4, expense.getType());
 	        preparedStatement.setString(5, expense.getAmount());
 	        preparedStatement.setString(6, expense.getCreatorId());
+	        preparedStatement.setString(7, expense.getVersion());
 	        preparedStatement.executeUpdate();
 	        
 	        
@@ -709,7 +714,15 @@ public class SQLConnection {
 			String sql = "SELECT * FROM ausgaben WHERE idevent = " + "'" + idevent + "'";
 			ResultSet resultsql = query.executeQuery(sql);
 			while(resultsql.next()){
-				liste.add(new Expense(resultsql.getString("idcreator"),resultsql.getString("betrag"),resultsql.getString("name"),resultsql.getString("idexpense"),"0",idevent, getShareFromIdexpense(resultsql.getString("idexpense"))));
+				liste.add(new Expense(
+						resultsql.getString("idcreator"),
+						resultsql.getString("betrag"),
+						resultsql.getString("name"),
+						resultsql.getString("idexpense"),
+						"0",
+						idevent,
+						resultsql.getString("version"),
+						getShareFromIdexpense(resultsql.getString("idexpense"))));
 			}
 			
 			
@@ -742,6 +755,7 @@ public class SQLConnection {
 			  				" ,betrag = " + "'" + expense.getAmount() + "'" +
 			  				" ,description = " + "'" + expense.getType() + "'" +
 			  				" ,idevent = " + "'" + expense.getEventId() + "'" + 
+			  				" ,version= " + "'" + expense.getVersion() + "'" +
 			  				" Where idexpense = " +  "'" + expense.getId() + "'";
 			  int i=0;
 			  

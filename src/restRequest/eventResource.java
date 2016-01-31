@@ -50,7 +50,7 @@ public class eventResource {
 		
 		boolean noerrors = true;
 		// create the event and add users to it
-		noerrors = SQLConnection.createEvent(req.getName(), creatorId, eventId, req.getDesc());
+		noerrors = SQLConnection.createEvent(req.getName(), creatorId, eventId, req.getDesc(), req.getVersion());
 		System.out.println("Created Event: " + noerrors);
 		for (User thisUser : req.getUsers()) {
 			// do not try to add the creator to the event, as he is already in it
@@ -123,7 +123,7 @@ public class eventResource {
 			return new StatusResponse("false");
 		}
 		
-		Event event = new Event(req.getName(), req.getId(), req.getUsers(), req.getDesc(), req.getCreatorId(), req.getExpenses());
+		Event event = new Event(req.getName(), req.getId(), req.getUsers(), req.getDesc(), req.getCreatorId(), req.getVersion(), req.getExpenses());
 		event.setExpenses(SQLConnection.getExpenseFromIdevent(eventId));
 		
 		boolean noerrors = true;

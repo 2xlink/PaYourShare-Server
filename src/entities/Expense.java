@@ -10,17 +10,19 @@ public class Expense {
 	private String id;
 	private String type;
 	private String eventId;
+	private String version;
 	private List<ShareSimple> shares;
 	
 	public Expense() {}
 	public Expense(String creatorId, String amount,String name,
-			String id,String type,String eventId, List<ShareSimple> shares){
+			String id,String type,String eventId, String version, List<ShareSimple> shares){
 	this.creatorId = creatorId;
 	this.amount = amount;
 	this.name = name;
 	this.id = id;
 	this.type = type;
 	this.eventId = eventId;
+	this.version = version;
 	this.shares = shares;
 	}
 	
@@ -81,6 +83,12 @@ public class Expense {
 
 	public void setEventId(String eventId) {
 		this.eventId = eventId;
+	}
+	public String getVersion() {
+		return version;
+	}
+	public void setVersion(String version) {
+		this.version = version;
 	}
 	
 	
