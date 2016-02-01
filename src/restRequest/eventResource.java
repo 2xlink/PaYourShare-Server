@@ -106,19 +106,19 @@ public class eventResource {
 			System.out.println(user2.getEmail() + user2.getId() + user2.getName());
 		}
 //		System.out.println(oldUsers.get(0).equals(newUsers.get(0)));
-		boolean modified = false;
+		boolean hasOpenShares = false;
 		for (User thisUser : oldUsers) { // we check for every user that was deleted ...
 			List<Expense> eventExpenses = SQLConnection.getExpenseFromIdevent(eventId);
 			for (Expense thisExpense : eventExpenses) { // in every expense of this event
 				List<ShareSimple> expenseShares = thisExpense.getShares();
 				for (ShareSimple thisShare : expenseShares) { // and every share in every expense
 					if (thisShare.getId().equals(thisUser.getId())) { // whether this share is the user's
-						modified = modified || thisShare.getShare() != "0"; // and then set modified to true if his share is not zero
+						hasOpenShares = hasOpenShares || thisShare.getShare() != "0"; // and then set modified to true if his share is not zero
 					}
 				}
 			}
 		}
-		if (modified) {
+		if (hasOpenShares) {
 			System.out.println("Wanted to remove a user who still has shares.");
 			return new StatusResponse("false");
 		}
