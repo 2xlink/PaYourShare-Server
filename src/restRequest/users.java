@@ -67,7 +67,7 @@ public class users {
 		//SQLConnection.deleteUserFromEvent("1","3");
 		//SQLConnection.getUserFromToken("token3");
 		//SQLConnection.getUserFromIduser("3");
-		Event event = new Event("Zug1","2",null,"platzhalter", "1", null);
+		Event event = new Event("Zug1","2",null,"platzhalter", "1", "0", null);
 		User user = new User("1","test1@test.de");
 		User user2 = new User("2","test2@test.de");
 		User user3 = new User("3","test3@test.de");
@@ -76,8 +76,8 @@ public class users {
 		list.add(user2);
 		list.add(user3);
 		event.setUsers(list); 
-		Expense expense = new Expense("1", "60", "Tickets", "1", "platzhalter", "2", null);
-		Expense expense2 = new Expense("1", "10", "Popcorn", "2", "platzhalter", "2", null);
+		Expense expense = new Expense("1", "60", "Tickets", "1", "platzhalter", "2", "0", null);
+		Expense expense2 = new Expense("1", "10", "Popcorn", "2", "platzhalter", "2", "0", null);
 		//Expense expense3 = new Expense("2", "2", "Doof", "9", "platzhalter", "2", null);
 		/*
 		Map<User, String> map = new HashMap<>();

@@ -8,15 +8,17 @@ public class Event {
 	private List<User> users;
 	private String description;
 	private String creatorId;
+	private String version;
 	private List<Expense> expenses;
 	
 	public Event() {}
-	public Event(String name, String Id, List<User> users, String description, String creatorId, List<Expense> expenses) {
+	public Event(String name, String Id, List<User> users, String description, String creatorId, String version, List<Expense> expenses) {
 		setName(name);
 		setId(Id);
 		setUsers(users);
 		setDescription(description);
 		setCreatorId(creatorId);
+		setVersion(version);
 		setExpenses(expenses);
 	}
 	
@@ -60,5 +62,11 @@ public class Event {
 	}
 	public void setExpenses(List<Expense> expenses) {
 		this.expenses = expenses;
+	}
+	public String getVersion() {
+		return version;
+	}
+	public void setVersion(String version) {
+		this.version = version;
 	}
 }

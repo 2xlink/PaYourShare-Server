@@ -72,7 +72,7 @@ public class expenseResource {
 //                    thisshare.getShare());
 //            shares.add(new Share(thismap));
 //        }
-        Expense expense = new Expense(creatorId, req.getAmount(), req.getName(), req.getId(), req.getType(), req.getEventId(), req.getShares());
+        Expense expense = new Expense(creatorId, req.getAmount(), req.getName(), req.getId(), req.getType(), req.getEventId(), req.getVersion(), req.getShares());
         
         boolean noerrors = true;
         try {
@@ -120,7 +120,7 @@ public class expenseResource {
 //                    thisshare.getShare());
 //            shares.add(new Share(thismap));
 //        }
-        Expense expense = new Expense(creatorId, req.getAmount(), req.getName(), req.getId(), req.getType(), req.getEventId(), req.getShares());
+        Expense expense = new Expense(creatorId, req.getAmount(), req.getName(), req.getId(), req.getType(), req.getEventId(), req.getVersion(), req.getShares());
         
         boolean noerrors;
         noerrors = SQLConnection.updateExpense(expense);
