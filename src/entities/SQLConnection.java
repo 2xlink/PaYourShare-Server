@@ -30,11 +30,7 @@ public class SQLConnection {
   
   private SQLConnection() {
 	  try {
-      // Datenbanktreiber f�r ODBC Schnittstellen laden.
-      // F�r verschiedene ODBC-Datenbanken muss dieser Treiber
-      // nur einmal geladen werden.
       Class.forName("com.mysql.jdbc.Driver");
-      // Verbindung zur Datenbank herstellen
       conn = DriverManager.getConnection("jdbc:mysql://" + dbHost + ":"
           + dbPort + "/" + database + "?" + "user=" + dbUser + "&"
           + "password=" + dbPassword);
@@ -67,13 +63,11 @@ public class SQLConnection {
 	        String sql = "INSERT INTO event(idevent, name, description, idmoderator, version) " +
 	                     "VALUES(?, ?, ?, ?, ?)";
 	        PreparedStatement preparedStatement = conn.prepareStatement(sql);
-	        // Erstes Fragezeichen durch "firstName" Parameter ersetzen
 	        preparedStatement.setString(1, idevent);
 	        preparedStatement.setString(2, name);
 	        preparedStatement.setString(3, description);
 	        preparedStatement.setString(4, idcreator);
 	        preparedStatement.setString(5, version);
-	        // SQL ausf�hren.
 	        preparedStatement.executeUpdate();
 	        
 	        String sql2 = "INSERT INTO eventuser(ideventuser, idevent, iduser) " +
@@ -110,7 +104,6 @@ public class SQLConnection {
 	        
 	        while (result.next()) {
 	            password = result.getString("password"); // Alternativ: result.getString(1);
-	            //System.out.println(password);
 	          }
 	        
 	      } catch (SQLException e) {
@@ -218,11 +211,7 @@ public class SQLConnection {
 					  	+ " WHERE eu.idevent = " + "'" + event.getId() + "'";
 			  ResultSet result = query.executeQuery(sql);
 			  while(result.next()){
-				  //user.setId(result.getString(1));
-				  //user.setName(result.getString(2));
-				  //user.setEmail(result.getString(3));
 				  list.add(new User(result.getString(1), result.getString(3)));
-				  //list.add(user);
 			  }
 			  
 		  }catch(SQLException e){
@@ -232,7 +221,6 @@ public class SQLConnection {
 	  return list;
   }
   
-  //todo update version of the expense if needed
   public static boolean updateEvent(Event event){
 	  boolean check = false;
 	  conn = getInstance();
@@ -430,8 +418,7 @@ public class SQLConnection {
 			  e.printStackTrace();
 		  }	 
 	  }
-		  
-	  //System.out.println(liste.get(0));  
+ 
 	  return liste.get(0);
   }
   
@@ -719,7 +706,7 @@ public class SQLConnection {
 						resultsql.getString("betrag"),
 						resultsql.getString("name"),
 						resultsql.getString("idexpense"),
-						"0",
+						resultsql.getString("description"),
 						idevent,
 						resultsql.getString("version"),
 						getShareFromIdexpense(resultsql.getString("idexpense"))));
@@ -730,15 +717,7 @@ public class SQLConnection {
 			e.printStackTrace();
 		}
 	  }
-	  /*
-	  for(int i=0; i<liste.size(); i++){
-		  System.out.println("Expense: " + liste.get(i).getName());
-		  System.out.println("Expenseuser:");  
-			  for(ShareSimple share : liste.get(i).getShares()){
-				  System.out.println("User: " + share.getId());
-			  }			    
-	  }	
-	  */  
+  
 	  return liste;
   }
   
